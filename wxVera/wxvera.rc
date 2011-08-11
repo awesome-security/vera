@@ -1,0 +1,3 @@
+mondrian ICON "icons/vera.ico"
+#include "wx/msw/wx.rc"
+

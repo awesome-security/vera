@@ -1,0 +1,52 @@
+0.001a Blackhat USA 2009
+Initial release
+
+0.002a 9/29/2009
+GUI fixes, reloading of files, etc.
+
+0.1 4/19/2010
+Fixed panning so it matches the mouse
+Clean up of display code and moved it outside the MFC OnTimer function
+Fixed right-click selection code. Currently a stub function but more will come later
+Center graph on first load
+Highlight the start of the graph with a big blue box
+Added arrows
+Implemented frustum culling for rendering font text.
+
+0.11 6/13/2010
+Statically linked the executables so they would work with Visual Studio 2008 Installations
+Fixed a memory leak caused by a bad call to the freetype library
+
+0.20 08/12/2010
+Rewrite of entire codebase to wxWidgets
+Added configuration file (~/.wxVera/wxvera.ini)
+Read/save previous window position and size from/to config file
+Fixed a graph centering problem
+Added update checking code
+Reloading of graphs more efficient
+Added welcome message
+Introduced notebook style for GUI
+
+0.30 12/23/2010
+* Added processing of trace files without having to use gengraph via new wizard
+* Better handling of low memory situations
+* Major code cleanup, refactoring, and new buzzwordy sounding tasks
+* Added a toolbar, because everyone loves those
+* Added IDA integration and IDA Pro module
+* Fixed a bug involving parsing of non-traditional Ether trace files
+* Now should support larger and more complicated graphs
+
+0.31 02/07/2011
+* Added processing of new VeraTrace modules
+* Support for viewing API calls inside traces
+* Various bug fixes
+* ShmooCon 2011 release
+
+0.40 XX/XX/2011
+* New search bar
+* Option to not look for updates on every start up
+* More efficient GL rendering
+* Remote Windbg support
+* Remote GDB support (serial too?)
+* Portable to 64-bit analysis systems
+
