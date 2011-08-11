@@ -1,6 +1,6 @@
 //#include "wxvera.h"
-#include "Trace.h"
 
+#include "Trace.h"
 #include "ogdf/energybased/FMMMLayout.h"
 
 // The edge keys contain a unique value of the combination of the source key and
@@ -29,6 +29,15 @@ Trace::Trace(wxString tracefile, wxString orig_exe_file, wxString outputfile)
 	strncpy(this->tracefile, tracefile.ToAscii(), sizeof(this->tracefile) - 1);
 	strncpy(this->orig_exe_file, orig_exe_file.ToAscii(), sizeof(this->orig_exe_file) - 1);
 	strncpy(this->outputfile, outputfile.ToAscii(), sizeof(this->outputfile) -1);
+
+	this->parseFiles();
+}
+
+Trace::Trace(char *tracefile, char *orig_exe_file, char *outputfile)
+{
+	strncpy(this->tracefile, tracefile, sizeof(this->tracefile) - 1);
+	strncpy(this->orig_exe_file, orig_exe_file, sizeof(this->orig_exe_file) - 1);
+	strncpy(this->outputfile, outputfile, sizeof(this->outputfile) - 1);
 
 	this->parseFiles();
 }
@@ -209,15 +218,6 @@ void Trace::parseFiles(void)
 		//wxLogDebug(wxT("Entropy is %2.2f\n"), sectionEntropy[i]);
 
 	}
-}
-
-Trace::Trace(char *tracefile, char *orig_exe_file, char *outputfile)
-{
-	strncpy(this->tracefile, tracefile, sizeof(this->tracefile) - 1);
-	strncpy(this->orig_exe_file, orig_exe_file, sizeof(this->orig_exe_file) - 1);
-	strncpy(this->outputfile, outputfile, sizeof(this->outputfile) - 1);
-
-	this->parseFiles();
 }
 
 inline bool branchMatch(char *inst)

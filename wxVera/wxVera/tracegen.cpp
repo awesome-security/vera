@@ -32,7 +32,8 @@ void usage(void)
 		"[-t tracefile] "
 		"[-e executable (PE only)] "
 		"[-o GML output file] "
-		"[-b process basic blocks]"
+		"[-b process basic blocks] "
+		"[-v prints version] "
 		"\n");
 
 }
@@ -90,6 +91,7 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 	if (oopt != 0)
 		output_finalgraph = wxString(oopt);
 
+	// This should be fixed to not collide with multiple running versions
 	output_graph = wxT("temp_graph.gml");
 
 	bool printedUsage = false;
