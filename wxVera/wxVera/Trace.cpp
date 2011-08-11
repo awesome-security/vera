@@ -127,6 +127,13 @@ void Trace::parseFiles(void)
 		throw "Not a valid DOS header";
 
 	// Get the NT headers
+	// 
+	// WARNING FROM THE PAST:
+	// This code is most likely going to be the cause of problems when porting to 64-bit.
+	// The reason is because either the e_lfanew structure member doesn't get converted properly
+	// in the GCC compiler or the msvc compiler doesn't convert the pointers properly. at any
+	// rate they don't agree.
+	// Danny, August 2011
 	pPeHeader = (PIMAGE_NT_HEADERS) (origData + pDosHeader->e_lfanew);
 
 	if(pPeHeader->Signature != IMAGE_NT_SIGNATURE)
