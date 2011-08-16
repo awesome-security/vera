@@ -6,7 +6,7 @@ CC=/usr/bin/g++
 FLAGS=`/usr/bin/wx-config --cppflags` -g -D_USE_WX_EVENTS_ -Wno-write-strings -Wno-deprecated \
 	-I/usr/include/freetype2 -I../../ogdf/linux
 OGDF=../../ogdf/linux/ogdf/libOGDF.a
-LIBS=`/usr/bin/wx-config --libs` -lglut -lfreetype -lpthread -lwx_gtk2u_gl-2.8 
+LIBS=-L../../ogdf/linux `/usr/bin/wx-config --libs` -lglut -lfreetype -lpthread -lwx_gtk2u_gl-2.8 
 endif
 
 # Mac OS X
