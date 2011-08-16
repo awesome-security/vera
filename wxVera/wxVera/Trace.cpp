@@ -330,7 +330,7 @@ void Trace::processVeraPin(bool doBasicBlocks)
 	if (fin == 0)
 		return;
 
-	initAddress(&bblMap[START_ADDR], START_ADDR, "START", 1, bblnum++);
+	initAddress(&bblMap[START_ADDR], START_ADDR, (char *) "START", 1, bblnum++);
 
 	while (fgetws(widein, sizeof(widein)-1, fin) != NULL)
 	{
@@ -378,7 +378,7 @@ void Trace::processVeraPin(bool doBasicBlocks)
 				}
 				else
 				{
-					initAddress(&bblMap[daddr], daddr, (isImport == true ? api : inst), 0, bblnum++);
+					initAddress(&bblMap[daddr], daddr, (char *) (isImport == true ? api : inst), 0, bblnum++);
 					bblMap[daddr].isApi = isImport;
 				}
 				
@@ -440,7 +440,7 @@ void Trace::processEther(bool doBasicBlocks)
 	//wxLogDebug(wxT("%s opened successfully\n"), this->tracefile);
 
 	// Add the start basic block and edge
-	initAddress(&bblMap[START_ADDR], START_ADDR, "START", 1, bblnum++);
+	initAddress(&bblMap[START_ADDR], START_ADDR, (char *) "START", 1, bblnum++);
 	lastbbl = START_ADDR;
 
 	while(fgets(in, sizeof(in)-1, fin) != NULL)

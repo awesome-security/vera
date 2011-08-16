@@ -17,7 +17,11 @@
 #endif
 
 // Windows Compatibility headers
-#ifndef _WIN32
+#ifdef _WIN32
+// To get the C99 standard uintXX_t types Upgrading to Visual Studio 2010 is purported to fix this
+#include "stdint.h"
+#include "inttypes.h"
+#else
 #include "wincompat.h"
 #endif
 
@@ -92,8 +96,8 @@ typedef map<uint32_t, trace_address_t> bblMap_t; // Possible 64 bit conversion p
 typedef map<uint64_t, trace_edge_t> edgeMap_t;
 
 // Prototypes
-void initEdge(trace_edge_t *edge, uint32_t src, uint32_t dst, uint32_t count, uint32_t inum);
-void initAddress(trace_address_t *address, uint32_t addr, char *inst, DWORD count, uint32_t inum);
+inline void initEdge(trace_edge_t *edge, uint32_t src, uint32_t dst, uint32_t count, uint32_t inum);
+inline void initAddress(trace_address_t *address, uint32_t addr, char *inst, uint32_t count, uint32_t inum);
 
 class Trace
 {

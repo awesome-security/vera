@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ogdf\debug;&quot;$(WXWIN)\include&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;"
+				AdditionalIncludeDirectories=".\windows;..\..\ogdf\windows\debug;&quot;$(WXWIN)\include&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;"
 				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;_USE_WX_EVENTS_"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
