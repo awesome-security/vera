@@ -93,6 +93,8 @@ void Trace::parseFiles(void)
 	struct stat st = {0};
 
 	stat(this->orig_exe_file, &st);
+
+	dwFileSize = st.st_size;
 	
 	FILE *fin = fopen(this->orig_exe_file, "rb");
 
@@ -133,7 +135,10 @@ void Trace::parseFiles(void)
 	
 	// Check for a valid header
 	if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE)
+	{
+		wxLogDebug(wxT("Not a valid DOS header"));
 		throw "Not a valid DOS header";
+	}
 
 	// Get the NT headers
 	// 
@@ -147,15 +152,14 @@ void Trace::parseFiles(void)
 
 	if(pPeHeader->Signature != IMAGE_NT_SIGNATURE)
 	{
-		//wxLogDebug(wxT("Not a valid NT header"));
+		wxLogDebug(wxT("Not a valid NT header"));
 		throw "Not a valid NT header";
 	}
 
 	pOptHeader = &(pPeHeader->OptionalHeader);
 
-	pSectionHeader = (PIMAGE_SECTION_HEADER) ( (PIMAGE_SECTION_HEADER) pOptHeader + (DWORD) (pPeHeader->FileHeader.SizeOfOptionalHeader));
-
-	//wxLogDebug(wxT("%s has been successfully loaded and parsed\n"), orig_exe_file);
+	// This is going to be a 64 bit conversion problem
+	pSectionHeader = (PIMAGE_SECTION_HEADER) ( (DWORD) pOptHeader + (DWORD) (pPeHeader->FileHeader.SizeOfOptionalHeader));
 
 	// Calculate entropy of all the sections
 	// This is the standard Shannon entropy algorithm, and was adopted from Ero Carrera's
@@ -165,7 +169,7 @@ void Trace::parseFiles(void)
 
 	if (sectionEntropy == NULL)
 	{
-		//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+		wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
 		return;
 	}
 
@@ -173,12 +177,10 @@ void Trace::parseFiles(void)
 	
 	if (sectionCharProb == NULL)
 	{
-		//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+		wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
 		return;
 	}
 	
-	PIMAGE_SECTION_HEADER pHeaderTmp = pSectionHeader;
-
 	for(WORD i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++)
 	{
 		sectionEntropy[i] = 0.0;
@@ -186,13 +188,13 @@ void Trace::parseFiles(void)
 
 		if (sectionCharProb[i] == NULL)
 		{
-			//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+			wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
 			return;
 		}
 
 		memset(sectionCharProb[i], 0, sizeof(float) * 256);
 		
-		//wxLogDebug(wxT("Processing section %s\n"), pSectionHeader[i].Name);
+		wxLogDebug(wxT("Processing section %s\n"), pSectionHeader[i].Name);
 		
 		// Get the character count from the section data
 		if(pSectionHeader[i].SizeOfRawData > 0)
@@ -215,7 +217,7 @@ void Trace::parseFiles(void)
 			
 		}
 
-		//wxLogDebug(wxT("Entropy is %2.2f\n"), sectionEntropy[i]);
+		wxLogDebug(wxT("Entropy is %2.2f\n"), sectionEntropy[i]);
 
 	}
 }

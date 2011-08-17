@@ -85,8 +85,6 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 		}
 	}
 
-	printf("%s %s %s\n", topt, eopt, oopt);
-	
 	if (topt != 0)
 		input_trace = wxString(topt);
 	if (eopt != 0)
