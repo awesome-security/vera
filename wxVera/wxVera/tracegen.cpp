@@ -57,7 +57,7 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 	wxString output_finalgraph;
 	wxString output_graph;
 
-	bool missing_arguments = true;
+	bool missing_arguments = false;
 
 	while ( (c = getopt(argc, argv, "t:e:o:bv")) != -1)
 	{
@@ -79,10 +79,13 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 			version();
 			exit(0);
 		default:
+			printf("Bad input\n");
 			usage();
 			exit(1);
 		}
 	}
+
+	printf("%s %s %s\n", topt, eopt, oopt);
 	
 	if (topt != 0)
 		input_trace = wxString(topt);
@@ -139,7 +142,8 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 			usage();
 			printedUsage = true;
 		}
-		
+
+		fprintf(stderr, "ERROR: missing arguments\n");
 		return 1;
 	}
 
