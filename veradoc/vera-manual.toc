@@ -1,0 +1,16 @@
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {subsection}{\numberline {1.1}Recommended Hardware}{1}
+\contentsline {subsection}{\numberline {1.2}License and Copyright Information}{1}
+\contentsline {section}{\numberline {2}Installing VERA}{2}
+\contentsline {section}{\numberline {3}Ether}{2}
+\contentsline {subsection}{\numberline {3.1}Installation Steps}{2}
+\contentsline {subsection}{\numberline {3.2}Setting up a Windows Virtual Machine}{3}
+\contentsline {subsection}{\numberline {3.3}Generating Traces}{3}
+\contentsline {subsection}{\numberline {3.4}Generating the Traces}{3}
+\contentsline {subsection}{\numberline {3.5}Trace File Format}{4}
+\contentsline {section}{\numberline {4}Intel PIN Based VERAtrace}{5}
+\contentsline {section}{\numberline {5}VERA GUI and Usage}{6}
+\contentsline {subsection}{\numberline {5.1}Loading a Sample Trace File}{6}
+\contentsline {subsection}{\numberline {5.2}Interacting with the Graph}{7}
+\contentsline {subsection}{\numberline {5.3}Identifiying Program Constructs in VERA}{8}
+\contentsline {subsection}{\numberline {5.4}Interacting with IDA Pro}{9}
