@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.7.13)  18 AUG 2011 10:08
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.7.13)  18 AUG 2011 17:21
 entering extended mode
  %&-line parsing enabled.
 **vera-manual.tex
@@ -141,19 +141,19 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 [2]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 35.
+(Font)              <9> on input line 34.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 35.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 35.
+(Font)              <5> on input line 34.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 34.
  (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 42.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 36.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 42.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 36.
 
-Overfull \hbox (0.45555pt too wide) in paragraph at lines 65--71
+Overfull \hbox (0.45555pt too wide) in paragraph at lines 59--65
 \OT1/ptm/m/n/10.95 REP-RE-SENTS THAT ITS USE WOULD NOT IN-FRINGE PRI-VATELY OWN
 ED
  []
@@ -165,19 +165,19 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [1] [2]
-Overfull \hbox (53.9095pt too wide) in paragraph at lines 131--131
+Overfull \hbox (53.9095pt too wide) in paragraph at lines 122--122
 []\OT1/pcr/m/n/10.95 module /boot/vmlinuz-2.6.26-2-xen-amd64 root=/dev/sda1 ro 
 quiet[] 
  []
 
 [3] [4]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 263.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 252.
 
  (/usr/share/texmf-texlive/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 263.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 252.
  [5]
 <vera-trace-dialog.png, id=29, 267.24844pt x 288.3272pt>
 File: vera-trace-dialog.png Graphic file (type png)
@@ -186,13 +186,18 @@ File: vera-trace-dialog.png Graphic file (type png)
 <vera-notepad-trace.png, id=33, 553.31718pt x 419.31656pt>
 File: vera-notepad-trace.png Graphic file (type png)
 
-<use vera-notepad-trace.png> [7 <./vera-trace-dialog.png (PNG copy)>] [8 <./ver
-a-notepad-trace.png (PNG copy)>]
-<vera-notepad-trace-zoom3.png, id=40, 553.31718pt x 419.31656pt>
+<use vera-notepad-trace.png>
+Overfull \hbox (17.33322pt too wide) in paragraph at lines 316--321
+\OT1/ptm/m/n/10.95 sec-ond is the ba-sic blocks graph. This will have the name 
+of ``bbl-yourgraphname.gml''.
+ []
+
+[7 <./vera-trace-dialog.png (PNG copy)>] [8 <./vera-notepad-trace.png (PNG copy
+)>] <vera-notepad-trace-zoom3.png, id=40, 553.31718pt x 419.31656pt>
 File: vera-notepad-trace-zoom3.png Graphic file (type png)
 
 <use vera-notepad-trace-zoom3.png>
-Overfull \hbox (1.34999pt too wide) in paragraph at lines 389--390
+Overfull \hbox (1.34999pt too wide) in paragraph at lines 365--366
  [][] 
  []
 
@@ -200,7 +205,7 @@ Overfull \hbox (1.34999pt too wide) in paragraph at lines 389--390
 File: vera-notepad-trace-zoom2.png Graphic file (type png)
 
 <use vera-notepad-trace-zoom2.png>
-Overfull \hbox (1.34999pt too wide) in paragraph at lines 402--403
+Overfull \hbox (1.34999pt too wide) in paragraph at lines 378--379
  [][] 
  []
 
@@ -211,7 +216,7 @@ rsion <1.5>, but at most version <1.4> allowed
 <architecture.pdf, id=45, 722.7pt x 542.025pt>
 File: architecture.pdf Graphic file (type pdf)
  <use architecture.pdf>
-Overfull \hbox (1.34999pt too wide) in paragraph at lines 424--425
+Overfull \hbox (1.34999pt too wide) in paragraph at lines 397--398
  [][] 
  []
 
@@ -228,13 +233,13 @@ Here is how much of TeX's memory you used:
  4713 multiletter control sequences out of 15000+50000
  25181 words of font info for 54 fonts, out of 3000000 for 9000
  73 hyphenation exceptions out of 8191
- 25i,11n,43p,215b,310s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 25i,11n,43p,505b,310s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texli
 ve/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/ty
 pe1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/helvetic/u
 hvb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></usr/shar
 e/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb>
-Output written on vera-manual.pdf (13 pages, 395382 bytes).
+Output written on vera-manual.pdf (13 pages, 395704 bytes).
 PDF statistics:
  86 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

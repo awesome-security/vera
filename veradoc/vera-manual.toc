@@ -8,7 +8,7 @@
 \contentsline {subsection}{\numberline {3.3}Generating Traces}{3}
 \contentsline {subsection}{\numberline {3.4}Generating the Traces}{3}
 \contentsline {subsection}{\numberline {3.5}Trace File Format}{4}
-\contentsline {section}{\numberline {4}Intel PIN Based VERAtrace}{5}
+\contentsline {section}{\numberline {4}Intel PIN-Based VERAtrace}{5}
 \contentsline {section}{\numberline {5}VERA GUI and Usage}{6}
 \contentsline {subsection}{\numberline {5.1}Loading a Sample Trace File}{6}
 \contentsline {subsection}{\numberline {5.2}Interacting with the Graph}{7}

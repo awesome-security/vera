@@ -23,21 +23,15 @@
 \section{Introduction}
 VERA is a visualization tool for analyzing compiled executables. It is
 built on an OpenGL framework with the wxWidgets package. The current
-version is only for use with the Windows XP and higher operating
-system. This manual will detail the steps that are needed to run and
+version is only for use with Windows XP and higher operating
+systems. This manual will detail the steps that are needed to run and
 analyze a sample of malware. 
 
 There are two ways to generate trace data for VERA. The first is with
 the Ether hypervisor. Ether is a set of patches made to the Xen hypervisor that
 allows for covert analysis of running processes. It makes an ideal
 environment to monitor and trace running programs. More information is
-available from the Ether website
-\footnote{Ether Website: \url{http://ether.gtisc.gtech.edu}}. The next
-option is to use the VERA Trace Intel PIN module. This is a much
-simpler way of running traces and can be used inside any virtual
-machine. When available, choose the Ether system for generating
-traces. Ether is more resilient to detection over the Intel PIN based
-Veratrace.
+available from the Ether website.\footnote{Ether Website: \url{http://ether.gtisc.gtech.edu}} The next option is to use the VERAtrace Intel PIN module. This is a much simpler way of running traces and can be used inside any virtual machine. When available, choose the Ether system for generating traces. Ether is more resilient to detection over the Intel PIN-based VERAtrace.
 
 \subsection{Recommended Hardware}
 
@@ -71,23 +65,22 @@ THAT ITS USE WOULD NOT INFRINGE PRIVATELY OWNED RIGHTS.
 
 \section{Installing VERA}
 
-Installing VERA is very straight forward. Simply download the package
-from Offensive Computing
-\footnote{\url{http://www.offensivecomputing.net/vera/}} and
+Installing VERA is very straightforward. Simply download the package
+from Offensive Computing\footnote{\url{http://www.offensivecomputing.net/vera/}} and
 double-click on the installation file. The files will be installed
-into the standard program files directory unless you specify
+into the standard Program Files directory unless you specify
 otherwise. 
 
 To execute VERA either find the VERA directory in program files and
 double-click the wxvera.exe file, or find the shortcut that was placed
-in your start menu. 
+in the Start menu or on the desktop. 
 
 \section{Ether}
 
 Installing the Ether patches to Xen can be an interesting
 experience. This section will attempt to aide you in this process. As
 always please consult with the official Georgia Tech Ether website for
-the most up to date information.
+the most up-to-date information.
 
 \subsection{Installation Steps}
 
@@ -100,17 +93,15 @@ will get you through much of the difficulty.
 
 \begin{enumerate}
 \item Download and install the Debian AMD64 net installation
-ISO \footnote{\url{http://www.debian.org/CD/netinst/}}. You'll need to
+ISO.\footnote{\url{http://www.debian.org/CD/netinst/}} You'll need to
 get the ``Lenny'' release of Debian. Also make sure to get the 64-bit
 version installed.
 \item Install the required packages for a working Xen system. A
-complete list can be found at Offensive Computing
-\footnote{\url{http://www.offensivecomputing.net/ether_install_packages.log}}.
+complete list can be found at Offensive Computing.\footnote{\url{http://www.offensivecomputing.net/ether_install_packages.log}}
 \item Next install the Ether system. There are two methods for doing
 this: from source or from a Debian package. We have prepared a Debian
 package that may alleviate some of the problems of compiling from
-source
-\footnote{\url{http://www.offensivecomputing.net/?q=node/1575}}.
+source.\footnote{\url{http://www.offensivecomputing.net/?q=node/1575}}
 \item Make sure that the Grub configuration matches your system
 installation. While the package we have prepared does a decent job of
 preparing the menu.lst file, there are some problems that may
@@ -141,8 +132,7 @@ boot into a non-Ether patched system when you are first configuring a
 VM.
 
 Ensure that you have followed the VM installation instructions from
-Georgia Tech
-\footnote{\url{http://ether.gtisc.gatech.edu/xen_install_windows.pdf}}.
+Georgia Tech.\footnote{\url{http://ether.gtisc.gatech.edu/xen_install_windows.pdf}}
 Failure to create a proper VM will result in crashes and other
 problems. Once your system is installed, you can begin taking traces for use
 inside of VERA. 
@@ -160,7 +150,7 @@ without any additional processing.
 \subsection{Generating the Traces}
 This section will overview generating traces inside of Ether. The
 example that will be used is the notepad.exe file. First, start up a
-virtual machine inside of your Ether system. Once the OS is booted,
+virtual machine inside of the Ether system. Once the OS is booted,
 the virtual machine ID will be needed. To find the ID, simply run the
 ``xm list'' command. This will display a listing of running virtual
 machines. This ID is necessary to run Ether.
@@ -170,9 +160,9 @@ Next execute ether using the following command:
 \begin{verbatim}ether_ctl instrace # notepad.exe > notepad.trace\end{verbatim}
 
 Be sure to substitute the ``\#'' with the VM ID from the ``xm list''
-command. This will generate a text listing of some initial Ether boiler plate,
+command. This will generate a text listing of some initial Ether boilerplate,
 and the instruction traces used to build the later GML file. Transfer
-the notepad.trace file to your analysis machine where VERA is
+the notepad.trace file to the analysis machine where VERA is
 installed. Section~\ref{sec:gui} details loading the trace files in
 the GUI.
 
@@ -227,10 +217,10 @@ ASCII representation of the instruction.
 \caption{The contents of the instruction trace portion.}\label{fig:instructions}
 \end{figure}
 
-Finally the end of the file should contain the string ``Handling
+Finally, the end of the file should contain the string ``Handling
 sigint'' twice. This denotes the end of a trace. Figure~\ref{fig:end}
 shows an example of this data. Once this is
-completed the files should be parsable by VERA and will generate
+completed, the files should be parsable by VERA and will generate
 graphs.
 
 \begin{figure}[htb]
@@ -245,18 +235,17 @@ Handling sigint
 \caption{The ending structure of the trace file.}\label{fig:end}
 \end{figure}
 
-A full sample file can be found on the VERA webpage
-\footnote{\url{http://www.offensivecomputing.net/vera/notepad.trace.gz}}.
+A full sample file can be found on the VERA webpage.\footnote{\url{http://www.offensivecomputing.net/vera/notepad.trace.gz}}
 
-\section{Intel PIN Based VERAtrace}\label{sec:pinvera}
+\section{Intel PIN-Based VERAtrace}\label{sec:pinvera}
 
-VERAtrace is a tracing system based on the Intel PIN monitoring
+VERAtrace is a tracing system based on the Intel PIN-monitoring
 framework. It can be used to generate similar traces as can be found
 from Ether, but does not require a full Xen/Ether installation. Traces
 also include an import resolution system, which can be displayed in
 the VERA GUI.
 
-To generate traces, you will need the following files from your VERA
+To generate traces, you will need the following files from the VERA
 installation directory:
 
 \begin{itemize}
@@ -282,14 +271,12 @@ Solitaire program}\label{fig:veratrace}
 The output will be a trace file with the name of the executable (minus
 the directory) along with the PID used to run the program. The output
 of the command in Figure~\ref{fig:veratrace} was the file named
-``sol.exe-2015.trace''. This file can then be copied to where you run
-VERA and processed normally.
+``sol.exe-2015.trace''. This file can then be copied to the VERA directory and processed normally.
 
 \section{VERA GUI and Usage}\label{sec:gui}
 
 The VERA GUI is a front-end to allow you to quickly visualize and
-explore a program's execution trace. Once you have a trace file
-generated, VERA can be used to process and generate a graph. This
+explore a program's execution trace. After generating a trace file, VERA can be used to process and generate a graph. This
 process converts the trace into a GML file that can be loaded and
 explored in the GUI.
 
@@ -297,9 +284,9 @@ explored in the GUI.
 
 Included in the VERA executable distribution is a sample trace file
 that contains a runtime trace of the ``notepad.exe'' program from a
-standard Windows XP service pack 2 installation. To load the program,
-simply use the open folder in the tool bar or the ``File'' ``Open''
-menus and find the trace file named ``notepad.trace''.
+standard Windows XP Service Pack 2 installation. To load the program,
+simply use the open folder icon in the tool bar or the ``File/Open''
+menus; find the trace file named ``notepad.trace''.
 
 
 \begin{figure}[htb]
@@ -309,7 +296,7 @@ menus and find the trace file named ``notepad.trace''.
 \end{figure}
 
 
-A separate window will open resembling
+A separate window will open, resembling
 Figure~\ref{vera:trace-gen}. Two pieces of information must be entered
 in these fields. The first is the original executable for the
 file. This file is needed to analyze the running sections of the
@@ -318,36 +305,25 @@ name to use to store the GML file. The name you enter here will be the
 source for the output names based on the type of graph you're looking
 for. The next options are for processing a graph that has all the
 addresses rendered as a node in the graph. Rendering all the addresses
-as vertices is referred to as ``All Addresses'' mode. To only render the
-beginnings and ends of basic blocks, select the Basic Block check
-box. Once you are ready to process the trace file click the ``Finish''
-button. A new thread will be created to show you the results of your
-graph that you have built. Figure~\ref{vera:notepad-trace} shows the
-results of parsing the Notepad trace.
+as vertices is referred to as ``All Addresses'' mode. To only render the beginnings and ends of basic blocks, select the ``Basic Block'' check box. Once you are ready to process the trace file, click the ``Finish'' button. A new thread will be created to show you the results of the graph. Figure~\ref{vera:notepad-trace} shows the results of parsing the Notepad trace.
 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=4.0in]{vera-notepad-trace.png}
-  \caption{The resulting graph from processing the notepad trace.}\label{vera:notepad-trace}
+  \caption{The resulting graph from processing the Notepad trace.}\label{vera:notepad-trace}
 \end{figure}
 
 Depending on the options, two different graphs can be created. The
 first will be the all vertices graph. This will have the name of
-all-yourgraphname.gml. The second is the basic blocks graph. This will
-have the name of bbl-yourgraphname.gml. The default behavior is for
-VERA to load the all- file. If you wish to load the basic blocks
-graph, you will need to load the BBL file using the standard file-open
-process.
+``all-yourgraphname.gml''. The second is the basic blocks graph. This will
+have the name of ``bbl-yourgraphname.gml''. The default behavior is for
+VERA to load the ``all-'' file. To load the basic blocks graph, load the ``bbl-'' file using the ``File/Open'' menus.
+
 
 \subsection{Interacting with the Graph}
 
 Interaction with the generated graphs was designed to emulate many
-common 2D navigation systems. If you are familiar with the Google Maps
-interface it is very similar to that. There are two methods for moving
-a graph: First by panning left, right, up, and down. The second is to
-zoom in and out. All are accomplished with the mouse
-key. Table~\ref{table:controls} lists each of the controls for
-interacting with the graph.
+common 2D navigation systems. The interface is similar to that of Google Maps. There are two methods for moving a graph: First by panning left, right, up, and down. The second is to zoom in and out. All are accomplished with the mouse. Table~\ref{table:controls} lists each of the controls for interacting with the graph.
 
 \begin{table}[htb]
 \centering
@@ -355,30 +331,30 @@ interacting with the graph.
 \hline
 \bf{Action} & \bf{Mouse Control}\\
 \hline
-Pan Left & Left Mouse, drag left \\
-Pan Right & Left Mouse,drag right \\
+Pan Left & Left-click, drag left \\
+Pan Right & Left-click, drag right \\
 Zoom In & Mouse wheel up \\
 Zoom Out & Mouse wheel down \\
 Navigate in IDA & Right-click \\
 \hline
 
-\end{tabular}\caption{Mouse controls for actions.}\label{table:controls}
+\end{tabular}\caption{Mouse controls for navigation.}\label{table:controls}
 \end{table}
 
 \subsection{Identifiying Program Constructs in VERA}
 
 Various features in the graph correlate to features inside of the
-code. First, any series of addresses that have exactly one entrance,
-and one exit, that are not part of a loop can be safely
+code. First, any series of addresses that have exactly one entrance
+and one exit, and that are not part of a loop, can be safely
 considered initialization code. Many of the constructs also show up in
 multiple areas of the executable. The initialization portion of the
 Notepad graph in Figure~\ref{vera:notepad-trace} shows an initial
 series of instructions, followed by a loop prior to entering the main
-portion of execution. This is a very common shape that is created by
+portion of execution. This is a very common shape created by
 Microsoft compilers. 
 
 A section of code that shows a branching operation, such as
-illustrated in Figure~\ref{fig:notepad-branch} correlate to a decision
+illustrated in Figure~\ref{fig:notepad-branch}, correlate to a decision
 point in the program. Please note that if the branch always takes a
 single path, the structure will not be shown in the graph. This is
 because VERA relies upon traces of execution from the code, and does
@@ -391,7 +367,7 @@ not note the possible paths of execution available.
 \end{figure}
 
 Whenever a portion of code is executed multiple times, the edges
-between the nodes is drawn with a thicker width. This allows for
+between the nodes are drawn with a thicker width. This allows for
 quicker identification of the most commonly used areas of code. For
 instance, if a messaging processing loop is present in a program, that
 loop will be highlighted. Figure~\ref{fig:notepad-loop} shows a loop
@@ -407,15 +383,12 @@ in the Notepad program.
 
 A new feature in VERA 0.3 is the interaction capability with a program
 loaded in IDA Pro. This alleviates the need to separately interact
-with IDA and manually entering the addresses. To initiate a connection
-to an IDA system, you will need a couple of things. First, of course,
-is a copy of IDA Pro. The VERA-IDA plugin will need to be installed so that you
-can successfully interact with IDA. You can download a copy from
-Offensive Computing
-\footnote{\url{http://www.offensivecomputing.net/vera}}. 
+with IDA and manually enter the addresses. To initiate a connection
+to an IDA system, you will need a couple of things: First, of course,
+is a copy of IDA Pro. The second is the VERA--IDA plugin for successful interaction with IDA. You can download a copy from
+Offensive Computing.\footnote{\url{http://www.offensivecomputing.net/vera}}
 
-Precompiled versions of the IDA module are available for version 5.6
-and later of IDA Pro. The source code is available for earlier
+Precompiled versions of the IDA module are available for IDA Pro versions 5.6 and later. The source code is available for earlier
 versions of IDA, and you're welcome to try to compile it. They are
 not, however, officially supported.
 
@@ -431,7 +404,7 @@ to restart IDA.
 
 Once the module has been installed and IDA has been restarted, you
 should see a message in your IDA console that looks very similar to
-Figure~\ref{fig:vera_plugin}. If you do not see the message then you
+Figure~\ref{fig:vera_plugin}. If you do not see the message, then you
 will need to verify that the IDA plugin was installed correctly. 
 
 \begin{figure}[htb]
@@ -440,14 +413,7 @@ will need to verify that the IDA plugin was installed correctly.
   \caption{IDA console text showing the IDA Pro module loaded correctly.}\label{fig:vera_plugin}
 \end{figure}
 
-To start the IDA Pro server, click on the IDA Pro icon in the toolbar. From
-here the server should be started. Next, you will need to figure out
-the IP address of your computer that is executing VERA. A TCP/IP
-connection is made from the IDA Pro system to the VERA system. This
-allows you to take advantage of virtual machines when analyzing the
-malware. This architecture was chosen to allow for an IDA Pro instance
-on a virtual machine talk to VERA running on a machine with a real
-hardware graphics accelerator. 
+To start the IDA Pro server, click on the IDA Pro icon in the VERA toolbar. From here the server should be started. Next, you will need to figure out the computer's IP address. A TCP/IP connection is made from the IDA Pro system to the VERA system. This allows you to take advantage of virtual machines when analyzing malware. This architecture was chosen to allow for an IDA Pro instance on a virtual machine talk to VERA running on a machine with a real hardware graphics accelerator. 
 
 
 \newpage
