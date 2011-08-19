@@ -7,7 +7,7 @@
 #include <winsock2.h>
 #include <windows.h>
 
-#else __GNUC__
+#elif defined __GNUC__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,7 +75,7 @@ using namespace __gnu_cxx;
 #include "wx/thread.h"
 #include "wx/checkbox.h"
 
-
+// wxVera includes
 #include "threadTraceBuilder.h"
 #include "threadIdaServer.h"
 #include "Viz.h"
@@ -88,9 +88,7 @@ using namespace __gnu_cxx;
 #include "LegendFrame.h"
 #include "util.h"
 
-
-
-
+// Icons
 #ifndef __XPM_DATA__
 #define __XPM_DATA__
 #include "icons/vera.xpm"
@@ -105,6 +103,7 @@ using namespace __gnu_cxx;
 #include "icons/idaConnected_32.xpm"
 #endif
 
+// Identifier strings
 #define __VERA_VERSION__				"0.40"
 #define __VERA_UPDATE_URL__				"http://www.offensivecomputing.net/vera/currentversion"
 #define __VERA_UPDATE_DOWNLOAD_URL__	"http://www.offensivecomputing.net/vera/"

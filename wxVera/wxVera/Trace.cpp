@@ -35,6 +35,7 @@ Trace::Trace(wxString tracefile, wxString orig_exe_file, wxString outputfile)
 
 Trace::Trace(char *tracefile, char *orig_exe_file, char *outputfile)
 {
+	
 	strncpy(this->tracefile, tracefile, sizeof(this->tracefile) - 1);
 	strncpy(this->orig_exe_file, orig_exe_file, sizeof(this->orig_exe_file) - 1);
 	strncpy(this->outputfile, outputfile, sizeof(this->outputfile) - 1);
@@ -578,6 +579,7 @@ void Trace::processEther(bool doBasicBlocks)
 			}
 			else
 			{
+
 				if(bblMap.find(daddr) != bblMap.end())
 				{
 					bblMap[daddr].count++;
