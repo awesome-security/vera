@@ -1,0 +1,247 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.7.13)  18 AUG 2011 17:21
+entering extended mode
+ %&-line parsing enabled.
+**vera-manual.tex
+(./vera-manual.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, ibycus, monogreek, greek, ancientgreek, loaded.
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/size11.clo
+File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf-texlive/tex/latex/sectsty/sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
+les
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/share/texmf-texlive/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/share/texmf-texlive/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip43
+\f@ncyO@elh=\skip44
+\f@ncyO@erh=\skip45
+\f@ncyO@olh=\skip46
+\f@ncyO@orh=\skip47
+\f@ncyO@elf=\skip48
+\f@ncyO@erf=\skip49
+\f@ncyO@olf=\skip50
+\f@ncyO@orf=\skip51
+)
+(/usr/share/texmf-texlive/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 285.
+LaTeX Info: Redefining \nocite on input line 356.
+Package: cite 2009/08/29  v 5.2
+)
+(/usr/share/texmf-texlive/tex/latex/lastpage/lastpage.sty
+Package: lastpage 1994/06/25 v0.1b LaTeX2e package for refs to last page number
+ (JPG)
+)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+) (./vera-manual.aux)
+\openout1 = `vera-manual.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 6.
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count88
+\scratchdimen=\dimen105
+\scratchbox=\box26
+\nofMPsegments=\count89
+\nofMParguments=\count90
+\everyMPshowfont=\toks15
+\MPscratchCnt=\count91
+\MPscratchDim=\dimen106
+\MPnumerator=\count92
+\everyMPtoPDFconversion=\toks16
+)
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 13.
+ [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 16.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 16.
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1phv.fd
+File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
+)
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 16.
+ (./vera-manual.toc
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 2.
+)
+\tf@toc=\write3
+\openout3 = `vera-manual.toc'.
+
+
+[2]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 34.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 34.
+ (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 36.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 36.
+
+Overfull \hbox (0.45555pt too wide) in paragraph at lines 59--65
+\OT1/ptm/m/n/10.95 REP-RE-SENTS THAT ITS USE WOULD NOT IN-FRINGE PRI-VATELY OWN
+ED
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[1] [2]
+Overfull \hbox (53.9095pt too wide) in paragraph at lines 122--122
+[]\OT1/pcr/m/n/10.95 module /boot/vmlinuz-2.6.26-2-xen-amd64 root=/dev/sda1 ro 
+quiet[] 
+ []
+
+[3] [4]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 252.
+
+ (/usr/share/texmf-texlive/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 252.
+ [5]
+<vera-trace-dialog.png, id=29, 267.24844pt x 288.3272pt>
+File: vera-trace-dialog.png Graphic file (type png)
+
+<use vera-trace-dialog.png> [6]
+<vera-notepad-trace.png, id=33, 553.31718pt x 419.31656pt>
+File: vera-notepad-trace.png Graphic file (type png)
+
+<use vera-notepad-trace.png>
+Overfull \hbox (17.33322pt too wide) in paragraph at lines 316--321
+\OT1/ptm/m/n/10.95 sec-ond is the ba-sic blocks graph. This will have the name 
+of ``bbl-yourgraphname.gml''.
+ []
+
+[7 <./vera-trace-dialog.png (PNG copy)>] [8 <./vera-notepad-trace.png (PNG copy
+)>] <vera-notepad-trace-zoom3.png, id=40, 553.31718pt x 419.31656pt>
+File: vera-notepad-trace-zoom3.png Graphic file (type png)
+
+<use vera-notepad-trace-zoom3.png>
+Overfull \hbox (1.34999pt too wide) in paragraph at lines 365--366
+ [][] 
+ []
+
+<vera-notepad-trace-zoom2.png, id=41, 553.31718pt x 419.31656pt>
+File: vera-notepad-trace-zoom2.png Graphic file (type png)
+
+<use vera-notepad-trace-zoom2.png>
+Overfull \hbox (1.34999pt too wide) in paragraph at lines 378--379
+ [][] 
+ []
+
+[9 <./vera-notepad-trace-zoom3.png (PNG copy)>]
+
+pdfTeX warning: pdflatex (file ./architecture.pdf): PDF inclusion: found PDF ve
+rsion <1.5>, but at most version <1.4> allowed
+<architecture.pdf, id=45, 722.7pt x 542.025pt>
+File: architecture.pdf Graphic file (type pdf)
+ <use architecture.pdf>
+Overfull \hbox (1.34999pt too wide) in paragraph at lines 397--398
+ [][] 
+ []
+
+<vera-ida-text.png, id=47, 307.1475pt x 33.87656pt>
+File: vera-ida-text.png Graphic file (type png)
+ <use vera-ida-text.png>
+[10 <./vera-notepad-trace-zoom2.png (PNG copy)>] [11 <./architecture.pdf> <./ve
+ra-ida-text.png (PNG copy)>] AED: lastpage setting LastPage (./vera-manual.aux)
+ ) 
+Here is how much of TeX's memory you used:
+ 1537 strings out of 494985
+ 19864 string characters out of 1181034
+ 1064601 words of memory out of 4019333
+ 4713 multiletter control sequences out of 15000+50000
+ 25181 words of font info for 54 fonts, out of 3000000 for 9000
+ 73 hyphenation exceptions out of 8191
+ 25i,11n,43p,505b,310s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texli
+ve/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/ty
+pe1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/helvetic/u
+hvb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></usr/shar
+e/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb>
+Output written on vera-manual.pdf (13 pages, 395704 bytes).
+PDF statistics:
+ 86 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+
