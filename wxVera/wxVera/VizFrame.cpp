@@ -15,7 +15,7 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
 	EVT_MOUSEWHEEL(VizFrame::mouseWheelMoved)
 	EVT_KEY_DOWN(VizFrame::keyPressed)
 	EVT_COMMAND(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED, VizFrame::ProcessEvent)
-	EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
+        EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
 	EVT_TEXT_ENTER(Vera_Search, VizFrame::SearchTextEvent)
 END_EVENT_TABLE()
 #endif
@@ -612,8 +612,14 @@ void VizFrame::keyPressed(wxKeyEvent& event)
 {
 	wxWindow *curWin = noteBook->GetCurrentPage();
 
+	// Check to see if this is for the currently focused text box
+
+	if ( event.GetEventObject()->IsKindOf(CLASSINFO(wxTextCtrl)))
+	{
+		printf("BOLINK!\n");
+	}
 	// If the name is a GLCanvas, this means we have a VeraPane object we can send the event to.
-	if ( curWin->GetName().Contains(wxT("GLCanvas")) )
+	else if ( curWin->GetName().Contains(wxT("GLCanvas")) )
 	{
 		((VeraPane *) curWin)->keyPressed(event);
 	}
