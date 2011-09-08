@@ -27,11 +27,13 @@ section
 	file .\veratrace.dll
 	file .\wxVera.exe
 	file .\zlib1.dll
+	file .\vcredist_x86.exe
 	
 
 
 
 	WriteUninstaller $INSTDIR\vera0.3_uninstall.exe
+ 	ExecWait "$INSTDIR\vcredist_x86.exe"
 
 	CreateDirectory "$SMPROGRAMS\VERA"
 	CreateShortCut "$SMPROGRAMS\VERA\VERA 0.3.lnk" "$INSTDIR\wxVera.exe"
