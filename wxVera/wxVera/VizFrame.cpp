@@ -13,7 +13,6 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
 	EVT_MENU(Vera_ConnectToIDA, VizFrame::OnIda)
 	EVT_MENU(Vera_Config, VizFrame::OnConfig)
 	EVT_MOUSEWHEEL(VizFrame::mouseWheelMoved)
-	EVT_KEY_DOWN(VizFrame::keyPressed)
 	EVT_COMMAND(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED, VizFrame::ProcessEvent)
     EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
 	EVT_TEXT_ENTER(Vera_Search, VizFrame::SearchTextEvent)
@@ -151,7 +150,7 @@ void VizFrame::SetVeraToolbar(wxToolBar *tb)
 	if (NULL != textSearch)
 		delete textSearch;
 	
-	textSearch = new wxTextCtrl(tb, Vera_Search, wxT(TEXT_SEARCH_DEFAULT));
+	textSearch = new wxTextCtrl(tb, Vera_Search, wxT(TEXT_SEARCH_DEFAULT), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 
 	if (NULL == textSearch)
 	{
@@ -487,9 +486,9 @@ void VizFrame::SearchTextEvent(wxCommandEvent &event)
 	node_t *s = veraPane->nodeHashMap[searchVal];
 
 	if (s != NULL)
-		wxLogDebug(wxT("BOINK: %s"), s->label);
-	else
-		wxLogDebug(wxT("%s Not found"), event.GetString().MakeUpper());
+		printf("Found %s\n", s->label);
+
+
 }
 
 void VizFrame::CheckForUpdate(wxCommandEvent& event)
@@ -615,13 +614,8 @@ void VizFrame::keyPressed(wxKeyEvent& event)
 {
 	wxWindow *curWin = noteBook->GetCurrentPage();
 
-	// Check to see if this is for the currently focused text box
-	if ( event.GetEventObject()->IsKindOf(CLASSINFO(wxTextCtrl)))
-	{
-		printf("BOLINK!\n");
-	}
 	// If the name is a GLCanvas, this means we have a VeraPane object we can send the event to.
-	else if ( curWin->GetName().Contains(wxT("GLCanvas")) )
+	if ( event.GetEventObject()->IsKindOf(CLASSINFO(VeraPane)) && curWin->GetName().Contains(wxT("GLCanvas")) )
 	{
 		((VeraPane *) curWin)->keyPressed(event);
 	}

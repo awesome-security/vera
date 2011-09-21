@@ -174,12 +174,12 @@ void VeraPane::keyPressed(wxKeyEvent& event)
 		return;
 
 	int key = event.GetKeyCode();
-	if (key == 'a' || key == 'A')
+	if (key == '=' || key == '+')
 		// zoom in
 	{
 		zoomControl(true);
 	}
-	else if (key == 'z' || key == 'Z')
+	else if (key == '-')
 	{
 		zoomControl(false);
 	}

@@ -9,7 +9,7 @@
 #include "traceWizard.h"
 #include "threadIdaServer.h"
 
-#define TEXT_SEARCH_DEFAULT "Search"
+#define TEXT_SEARCH_DEFAULT "Search..."
 
 class MyApp;
 class VeraPane;
