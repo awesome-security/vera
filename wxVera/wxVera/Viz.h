@@ -29,6 +29,7 @@
 #define MAX_ZOOM 			-1000.0
 #define ZOOM_STEPPING		2000.00
 #define LABEL_LEN			256
+#define LABEL_CHAR_LEN		8
 #define SELECT_BUFF_LEN		10000 // This value is large to accomodate graphs with lots of nodes in them
 
 // Frustum coordinates
@@ -82,6 +83,10 @@ namespace __gnu_cxx
 /** END FIX **/
 #endif
 
+// Function prototypes
+string normalizeNodeString(string str);
+
+// Class definition
 class VizFrame;
 
 class VeraPane : public wxGLCanvas
@@ -110,6 +115,7 @@ public:
 	void mouseLeftWindow	(wxMouseEvent& event);
 	void keyPressed			(wxKeyEvent& event);
 	void keyReleased		(wxKeyEvent& event);
+	node_t * searchByString (string searchString);
 
 private:
 	void DrawScene			(void);
@@ -121,7 +127,7 @@ private:
 	void DeleteNodes		(void);
 	void DeleteEdges		(void);
 	void zoomControl		(bool doZoomIn);
-
+	
 #ifdef _WIN32 // Windows
 	stdext::hash_map<int, node_t *>	nodeMap;
 	stdext::hash_map<string, node_t *> nodeHashMap;

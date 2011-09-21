@@ -143,7 +143,7 @@ bool MyApp::OnInit()
 	config = new Config();
 
     // create the main application window
-    vizFrame = new VizFrame(wxT("VERA - Version " __VERA_VERSION__),
+    vizFrame = new VizFrame(wxT(__VERA_WINDOW_TITLE__),
 			    config->startPoint,
 			    config->windowSize,
 			    this);

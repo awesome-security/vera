@@ -892,12 +892,56 @@ void VeraPane::getGLCoords(wxPoint point, GLdouble *posX, GLdouble *posY, GLdoub
 	gluUnProject(winX, winY, winZ, modelview, projection, viewport, posX, posY, posZ);
 }
 
+// Convert the string into the format the hashmap is expecting
+// The normalized form is a lower-case, 4 byte hex representation of
+// the data (e.g. 0040bb08 or 00104000
+string normalizeNodeString(string str)
+{
+	char		label[LABEL_LEN]	= {0};
+	uint32_t	label_val			= -1;
 
+	strncpy(label, str.c_str(), MIN(sizeof(label) - 1, str.length()));
 
+	// There's probably a C++ way to do this
+	// This also truncates the labels too
+	// This will cause problems in a 64-bit version
 
+	sscanf(label, "%x", &label_val);
+	sprintf(label, "%8.8x", label_val);
 
+	return string(label);
+}
 
+// Search the list of nodes for a specific string we're looking for
+node_t * VeraPane::searchByString (string searchString)
+{
+	node_t *ret = NULL;
+	char searchStr[LABEL_LEN + 1] = {0};
+	string normalizedString;
 
+	// Too short of a string
+	if (searchString.length() == 0)
+		return NULL;
+
+	// Too long of a string
+	if (searchString.length() > LABEL_LEN)
+		return NULL;
+
+	// Make sure the string is actually a hex string
+	if ( ! isHexString(searchString.c_str(), searchString.length()) )
+	{
+		return NULL;
+	}
+
+	// Normalize the string so it looks like what's in the nodeHashMap
+	normalizedString = normalizeNodeString(searchString);
+
+	// Now try to find in the nodeMap
+
+	ret = this->nodeHashMap[normalizedString];
+
+	return ret;
+}
 
 
 

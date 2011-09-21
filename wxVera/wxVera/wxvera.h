@@ -109,6 +109,7 @@ using namespace __gnu_cxx;
 #define __VERA_UPDATE_DOWNLOAD_URL__	"http://www.offensivecomputing.net/vera/"
 #define VERA_OBJECT_ARGS				{WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0}
 #define VERA_QUIET_UPDATE_CHECK			1
+#define __VERA_WINDOW_TITLE__			"VERA - Version " __VERA_VERSION__
 
 // Custom event message IDs
 enum CUSTOM_EVENT_IDS
@@ -135,6 +136,7 @@ class LegendFrame;
 // Define a new application type, each program should derive a class from wxApp
 class MyApp : public wxApp
 {
+	friend class VizFrame;
 public:
     // override base class virtuals
     // ----------------------------

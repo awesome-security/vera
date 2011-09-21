@@ -348,6 +348,8 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 			traceWiz->Destroy();
 
 		}
+		this->SetTitle(wxString::Format(wxT("%s - %s"), wxT(__VERA_WINDOW_TITLE__), path.c_str()));
+		this->SetStatusText(wxString::Format(wxT("Loaded %s"), path.c_str()));
 
 	}
 
@@ -482,11 +484,15 @@ void VizFrame::SearchTextEvent(wxCommandEvent &event)
 					 wxT("Invalid Search"),
 					 wxICON_ERROR);
 
-	std::string searchVal = event.GetString().MakeUpper().ToAscii();
-	node_t *s = veraPane->nodeHashMap[searchVal];
+	std::string searchVal = event.GetString().MakeLower().ToAscii();
+	node_t *s = veraPane->searchByString(searchVal);
 
 	if (s != NULL)
-		printf("Found %s\n", s->label);
+	{
+		this->SetStatusText(wxString::Format(wxT("Found %s"), s->label));
+	}
+	else
+		wxLogMessage(wxT("Could not find search term %s"), searchVal.c_str());
 
 
 }
