@@ -752,6 +752,9 @@ bool VeraPane::openFile(wxString filename)
 					label, 
 					sizeof(tmp->label) - 1);
 
+				size_t len = strlen(tmp->label) < sizeof(tmp->label) ? strlen(label) : sizeof(tmp->label);
+				TOLOWER(tmp->label, len);
+
 				nodeMap[id] = tmp;
 
 				// Store the id in a hash map

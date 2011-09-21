@@ -15,7 +15,7 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
 	EVT_MOUSEWHEEL(VizFrame::mouseWheelMoved)
 	EVT_KEY_DOWN(VizFrame::keyPressed)
 	EVT_COMMAND(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED, VizFrame::ProcessEvent)
-        EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
+    EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
 	EVT_TEXT_ENTER(Vera_Search, VizFrame::SearchTextEvent)
 END_EVENT_TABLE()
 #endif
@@ -483,10 +483,13 @@ void VizFrame::SearchTextEvent(wxCommandEvent &event)
 					 wxT("Invalid Search"),
 					 wxICON_ERROR);
 
-	node_t *s = veraPane->nodeHashMap[string(event.GetString().ToAscii())];
+	std::string searchVal = event.GetString().MakeUpper().ToAscii();
+	node_t *s = veraPane->nodeHashMap[searchVal];
 
 	if (s != NULL)
 		wxLogDebug(wxT("BOINK: %s"), s->label);
+	else
+		wxLogDebug(wxT("%s Not found"), event.GetString().MakeUpper());
 }
 
 void VizFrame::CheckForUpdate(wxCommandEvent& event)
@@ -613,7 +616,6 @@ void VizFrame::keyPressed(wxKeyEvent& event)
 	wxWindow *curWin = noteBook->GetCurrentPage();
 
 	// Check to see if this is for the currently focused text box
-
 	if ( event.GetEventObject()->IsKindOf(CLASSINFO(wxTextCtrl)))
 	{
 		printf("BOLINK!\n");

@@ -24,3 +24,6 @@ wxString	prependFileName(wxFileName input, wxString stringToPrepend);
 
 #define MAX(x,y) ((x) > (y) ? (x) : (y))
 #define MIN(x,y) ((x) < (y) ? (x) : (y))
+
+#define TOUPPER(s, l) for (size_t i = 0 ; i < (l) ; i++) (s)[i] = toupper((s)[i])
+#define TOLOWER(s, l) for (size_t i = 0 ; i < (l) ; i++) (s)[i] = tolower((s)[i])
