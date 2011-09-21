@@ -21,6 +21,7 @@
 
 int		xtoi(const char* xs, unsigned int* result);
 wxString	prependFileName(wxFileName input, wxString stringToPrepend);
+bool isHexString(const char *str, size_t len);
 
 #define MAX(x,y) ((x) > (y) ? (x) : (y))
 #define MIN(x,y) ((x) < (y) ? (x) : (y))
