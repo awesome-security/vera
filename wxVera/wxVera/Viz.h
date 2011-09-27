@@ -25,7 +25,7 @@
 #define DEG2RAD(x) ((x)*PI/180)
 #define RAD2DEG(x) ((x)*180/PI)
 
-#define MIN_ZOOM 			-100000.00
+#define MIN_ZOOM 			-150000.00
 #define MAX_ZOOM 			-1000.0
 #define ZOOM_STEPPING		2000.00
 #define LABEL_LEN			256
@@ -36,7 +36,7 @@
 #define FOV					45.0f
 //#define CLIPNEAR 0.01f
 #define CLIPNEAR			100.0f
-#define CLIPFAR				100000.0f
+#define CLIPFAR				(-(MIN_ZOOM))
 #define MIN_ARROW_WIDTH		25.0f
 #define ARROW_THETA			45.0f
 
