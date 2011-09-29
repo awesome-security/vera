@@ -575,7 +575,7 @@ int VeraPane::ProcessSelection(wxPoint point, int *items, size_t maxItems, bool 
 // This should only be used to open a GML file
 bool VeraPane::openFile(wxString filename)
 {
-	char line[256];
+	char line[256] = {0};
 
 	bool inNode = false;
 	bool inEdge = false;
@@ -592,7 +592,7 @@ bool VeraPane::openFile(wxString filename)
 	GLfloat x = 0.0;
 	GLfloat y = 0.0;
 	int id = -1;
-	char label[LABEL_LEN] = {};
+	char label[LABEL_LEN] = {0};
 	float cr = -1.0, cg = -1.0, cb = -1.0;
 	float labelcr = -1.0, labelcg = -1.0, labelcb = -1.0;
 
@@ -816,6 +816,10 @@ bool VeraPane::openFile(wxString filename)
 	midY = (maxY - minY) / 2;
 	
 	fclose(fin);
+
+	// Validate the file contents, present error if there's a problem
+	if (edgeVector.empty() || nodeMap.empty() )
+		return false;
 
 	nodesLoaded = true;
 

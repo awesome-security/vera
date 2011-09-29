@@ -230,8 +230,17 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 		if (path.EndsWith(wxT(".gml")))
 		{
 			// Check the return value here.
-			veraPane->openFile(path);
-			this->SetStatusText(wxString::Format(wxT("Loaded %s"), path.c_str()));
+			if (!veraPane->openFile(path))
+			{
+				wxMessageBox(wxString::Format(wxT("Error loading GML file %s, invalid format. Is this actually a .gml file?"), path));
+				this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
+				this->SetStatusText(wxString::Format(wxT("Error loading %s"), path.c_str()));
+				return;
+			}
+			else
+			{
+				this->SetStatusText(wxString::Format(wxT("Loaded %s"), path.c_str()));
+			}
 		}
 		else if (path.EndsWith(wxT(".trace")))
 		{
@@ -348,6 +357,14 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 			traceWiz->Destroy();
 
 		}
+		else
+		{
+			wxMessageBox(wxString::Format(wxT("Error loading file %s. File needs to have .gml or .trace as the file extension."), path));
+			this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
+			this->SetStatusText(wxString::Format(wxT("Error loading %s"), path.c_str()));
+			return;
+		}
+		
 		this->SetTitle(wxString::Format(wxT("%s - %s"), wxT(__VERA_WINDOW_TITLE__), path.c_str()));
 		this->SetStatusText(wxString::Format(wxT("Loaded %s"), path.c_str()));
 
@@ -372,7 +389,15 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 	case THREAD_TRACE_NONE_PROCESSED: // There was an error with one of the traces
 		wxLogDebug(wxT("No trace processed"));
 		return;
-		break;
+	case THREAD_TRACE_ERROR:
+		{
+			wxString errorMsg = event.GetString();
+			wxLogDebug(wxT("Error processing file: %s"), errorMsg);
+			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg),
+						 wxT("Graph Processing Error"),
+						 wxICON_ERROR);
+			return;
+		}
 	case THREAD_TRACE_BASIC_BLOCKS_PROCESSED: // Processed a basic block graph
 	case THREAD_TRACE_BOTH_PROCESSED: // Processed both a basic block and an instruction graph
 	case THREAD_TRACE_ALL_ADDRESSES_PROCESSED: // All instruction graph processed
@@ -668,16 +693,16 @@ void VizFrame::OnIda(wxCommandEvent& event)
 	// Disabled to get IDA ready to run code
 	if (this->idaServer == NULL)
 	{
-		//idaServer = new threadIdaServer(this);
-		//idaServer->Create();
-		//idaServer->Run();
+		idaServer = new threadIdaServer(this);
+		idaServer->Create();
+		idaServer->Run();
 
 		bmpIda = new wxBitmap(idaConnected_32_xpm);
 	}
 	else
 	{
-		//idaServer->Delete();
-		//idaServer = NULL;
+		idaServer->Delete();
+		idaServer = NULL;
 
 		bmpIda = new wxBitmap(ida_32_xpm);
 	}
@@ -696,10 +721,8 @@ void VizFrame::OnIda(wxCommandEvent& event)
 // Stub, needs to be finished
 bool VizFrame::sendIdaMsg(char *msg)
 {
-	/*if (idaServer != NULL)
+	if (idaServer != NULL)
 		return idaServer->sendData(msg, strlen(msg));
 	else
-	return false;*/
-
-	return true;
+		return false;
 }
