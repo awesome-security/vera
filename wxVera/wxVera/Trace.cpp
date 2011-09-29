@@ -413,9 +413,10 @@ void Trace::processVeraPin(bool doBasicBlocks)
 void Trace::processEther(bool doBasicBlocks)
 {
 	FILE *fin = NULL;
-	char in[LINELEN];
-	char lastline[LINELEN];
-	char addr[ADDRLEN], inst[INSTLEN];
+	char in[LINELEN] = {0};
+	char lastline[LINELEN] = {0};
+	char addr[ADDRLEN] = {0};
+	char inst[INSTLEN] = {0};
 	uint32_t daddr = 0;
 	unsigned long lines = 0;
 	uint32_t inum = 0;
@@ -434,7 +435,7 @@ void Trace::processEther(bool doBasicBlocks)
 
 	fin = fopen(this->tracefile, "r");
 	
-	if(fin == 0)
+	if(fin == NULL)
 	{
 		//wxLogDebug(wxT("Error opening file %s\n"), this->tracefile);
 		return;
@@ -458,7 +459,11 @@ void Trace::processEther(bool doBasicBlocks)
 		if(!inInstructions && (strstr(in, "Entry Point:") ))
 		{
 			inInstructions = true;
-			sscanf(in, "%*s%*s%s", addr);
+#ifdef _WIN32
+			sscanf_s(in, "%*s%*s%s", addr, sizeof(addr));
+#else
+			sscanf(in, "%*s%*s%31s", addr);
+#endif
 			//wxLogDebug(wxT("Entry point: %s\n"), addr);
 			continue;
 		}
@@ -609,6 +614,7 @@ void Trace::processEther(bool doBasicBlocks)
 		}
 		inum++;
 		lines++;
+		memset(in, 0, sizeof(in));
 	}
 
 	fclose(fin);

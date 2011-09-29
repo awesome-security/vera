@@ -20,8 +20,11 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 
 void *threadTraceBuilder::Entry()
 {
+	// Trace *t is declared here so that on an exception we can delete the memory properly.
+	Trace *t = NULL;
 	try
 	{
+
 		// Process the basic blocks
 		if (m_doBbl)
 		{
@@ -29,8 +32,7 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-bbl-"));
 			
-
-			Trace *t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+			t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
 
 			if (t == NULL)
 			{
@@ -67,6 +69,7 @@ void *threadTraceBuilder::Entry()
 			}
 
 			delete t;
+			t = NULL;
 			
 			if (!wxRemoveFile(tmpfilename))
 			{
@@ -88,7 +91,7 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-all-"));
 
-			Trace *t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+			t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
 
 			if (t == NULL)
 			{
@@ -126,6 +129,7 @@ void *threadTraceBuilder::Entry()
 			}
 
 			delete t;
+			t = NULL;
 
 			if (!wxRemoveFile(tmpfilename))
 			{
@@ -177,6 +181,15 @@ void *threadTraceBuilder::Entry()
 	}
 	catch (char *e)
 	{
+		// It's possible to get to the state where Trace *t has thrown an error, and should be deallocated.
+		// So delete it.
+		if (t != NULL)
+		{
+			delete t;
+			t = NULL;
+		}
+
+		// If the parent frame has been established, prepare an error message and send it to the VizFrame (m_parentFrame)
 		if (m_parentFrame)
 		{
 			wxCommandEvent ErrorEvent( wxEVT_COMMAND_BUTTON_CLICKED );
@@ -184,8 +197,6 @@ void *threadTraceBuilder::Entry()
 			ErrorEvent.SetString(wxString(e));
 
 			wxMutexGuiEnter();
-			if (m_prog)
-				m_prog->Destroy();
 			wxPostEvent(m_parentFrame, ErrorEvent);
 			wxMutexGuiLeave();
 		}

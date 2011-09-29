@@ -380,7 +380,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 // This function strikes me as ugly and non-optimal -Danny
 void VizFrame::ProcessEvent(wxCommandEvent & event)
 {
-	int		traceType		= event.GetInt();
+	int			traceType		= event.GetInt();
 	wxString	filename;
 
 	// Only print out the trace message for the trace messages
@@ -393,9 +393,11 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 		{
 			wxString errorMsg = event.GetString();
 			wxLogDebug(wxT("Error processing file: %s"), errorMsg);
+			this->dlgProgress->Destroy();
 			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg),
 						 wxT("Graph Processing Error"),
 						 wxICON_ERROR);
+
 			return;
 		}
 	case THREAD_TRACE_BASIC_BLOCKS_PROCESSED: // Processed a basic block graph
