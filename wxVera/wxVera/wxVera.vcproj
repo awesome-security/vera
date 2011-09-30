@@ -54,7 +54,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_WINDOWS;NOPCH"
-				AdditionalIncludeDirectories="$(WXWIN)\include;$(WXWIN)\lib\vc_lib\mswd"
+				AdditionalIncludeDirectories="..\..\libs\windows\wxWidgets-2.8.12\include;..\..\libs\windows\wxWidgets-2.8.12\lib\vc_lib\mswd"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
