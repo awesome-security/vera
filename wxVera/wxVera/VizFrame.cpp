@@ -285,14 +285,32 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 				}
 
 				// Check for invalid exe files
+				int answer = -1;
+				bool doProcessExe = true;
 
 				if ( page1->m_origExeFile->GetValue().StartsWith(wxT("Enter")) )
 				{
-					wxMessageBox(wxT("You must select the original executable\n"
-							 "file for processing."),
-						     wxT("Trace Processing Error"), 
-						     wxICON_ERROR);
-					return;
+					// Ask the user if they want to generate a trace without the executable
+					answer = wxMessageBox(
+							wxT("Do you want to generate a trace without an executable?\n"
+								"Certain features will be unavailable if one is not provided."),
+							wxT("Missing .exe file"),
+							wxCENTER | wxYES_NO);
+	
+					switch (answer)
+					{
+					case wxYES:
+						// Nothing else is needed to do
+						doProcessExe = false;
+						break;
+					case wxNO:
+						// Return with nothing being done
+						return;
+						break;
+					default:
+						wxLogDebug(wxT("Strange error"));
+						break;
+					}
 				}
 
 				// Check for invalid save file or duplicates
@@ -321,7 +339,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 
 				// Create a new thread to handle the actual trace generation
 				tbThread = new threadTraceBuilder(path, 
-								  page1->m_origExeFile->GetValue(),
+								  (doProcessExe ? page1->m_origExeFile->GetValue() : wxString(wxT("")) ), // Empty string indicates processing trace file without a PE
 								  page1->m_saveFile->GetValue(), 
 								  page1->m_genBblAddressesCheckBox->GetValue(),
 								  page1->m_genAllAddressesCheckBox->GetValue(),

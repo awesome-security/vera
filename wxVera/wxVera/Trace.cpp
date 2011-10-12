@@ -27,7 +27,15 @@ Trace::Trace(wxString tracefile, wxString orig_exe_file, wxString outputfile)
 	graphColoringAlgorithm = GRAPH_COLOR_PACKER;
 
 	strncpy(this->tracefile, tracefile.ToAscii(), sizeof(this->tracefile) - 1);
-	strncpy(this->orig_exe_file, orig_exe_file.ToAscii(), sizeof(this->orig_exe_file) - 1);
+	if (orig_exe_file.length() > 0) // Zero length string means don't process the exe
+	{
+		doProcessExe = true;
+		strncpy(this->orig_exe_file, orig_exe_file.ToAscii(), sizeof(this->orig_exe_file) - 1);
+	}
+	else
+	{
+		doProcessExe = false;
+	}
 	strncpy(this->outputfile, outputfile.ToAscii(), sizeof(this->outputfile) -1);
 
 	this->parseFiles();
@@ -37,7 +45,15 @@ Trace::Trace(char *tracefile, char *orig_exe_file, char *outputfile)
 {
 	
 	strncpy(this->tracefile, tracefile, sizeof(this->tracefile) - 1);
-	strncpy(this->orig_exe_file, orig_exe_file, sizeof(this->orig_exe_file) - 1);
+	if (strlen(orig_exe_file) > 0) // Zero length string means don't process the exe
+	{
+		doProcessExe = true;
+		strncpy(this->orig_exe_file, orig_exe_file, sizeof(this->orig_exe_file) - 1);
+	}
+	else
+	{
+		doProcessExe = false;
+	}
 	strncpy(this->outputfile, outputfile, sizeof(this->outputfile) - 1);
 
 	this->parseFiles();
@@ -46,19 +62,25 @@ Trace::Trace(char *tracefile, char *orig_exe_file, char *outputfile)
 Trace::~Trace(void)
 {	
 	// Free sectionEntropy
-	free(sectionEntropy);
-	sectionEntropy = NULL;
-
-	// Free character probability of =each section
-	for(WORD i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++)
+	if (doProcessExe == true && sectionEntropy != NULL)
 	{
-		free(sectionCharProb[i]);
-		sectionCharProb[i] = NULL;
-	}
+		free(sectionEntropy);
+		sectionEntropy = NULL;
+	
+		if (sectionCharProb == NULL)
+		{
+			// Free character probability of =each section
+			for(WORD i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++)
+			{
+				free(sectionCharProb[i]);
+				sectionCharProb[i] = NULL;
+			}
 
-	// Free the dynamic array of all the memory
-	free(sectionCharProb);
-	sectionCharProb = NULL;
+			// Free the dynamic array of all the memory
+			free(sectionCharProb);
+			sectionCharProb = NULL;
+		}
+	}
 
 	// Free the original data
 	if (origData)
@@ -94,6 +116,19 @@ inline void initAddress(trace_address_t *address, uint32_t addr, char *inst, uin
 void Trace::parseFiles(void)
 {
 	struct stat st = {0};
+
+	// No exe processing required
+	if (!doProcessExe)
+	{
+		pDosHeader			= NULL;
+		origData			= NULL;
+		pPeHeader			= NULL;
+		pOptHeader			= NULL;
+		pSectionHeader		= NULL;
+		sectionEntropy		= NULL;
+		sectionCharProb		= NULL;
+		return;
+	}
 
 	stat(this->orig_exe_file, &st);
 
@@ -807,14 +842,17 @@ void Trace::layoutGraph(const char *infile, const char *outfile)
 
 uint32_t Trace::packerAddrColor(uint32_t addr)
 {
+	// Color the start address blue
+	if (START_ADDR == addr)
+		return doColorBlind ? CB_START_ADDR_COLOR : START_ADDR_COLOR;
+
+	if (doProcessExe == false)
+		return doColorBlind ? CB_NORMAL_COLOR : NORMAL_COLOR;
+
 	DWORD rva = addr - pOptHeader->ImageBase;
 	PIMAGE_SECTION_HEADER pSection = pSectionHeader;
 	bool foundSection = false;
 	uint32_t i = 0;
-
-	// Color the start address blue
-	if (START_ADDR == addr)
-		return doColorBlind ? CB_START_ADDR_COLOR : START_ADDR_COLOR;
 
 	// Get the Section
 	for(i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++, pSection++)
@@ -838,7 +876,7 @@ uint32_t Trace::packerAddrColor(uint32_t addr)
 	return doColorBlind ? CB_NORMAL_COLOR : NORMAL_COLOR;
 }
 
-uint32_t Trace::addrColor(uint32_t addr)
+inline uint32_t Trace::addrColor(uint32_t addr)
 {
 	switch (graphColoringAlgorithm)
 	{

@@ -11,6 +11,7 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 	m_traceFile = traceFile;
 	m_exeFile = exeFile;
 	m_gmlSaveFile = gmlSaveFile;
+	m_doProcessExe = (exeFile.length() > 0 ? true : false); // If the length of the string is greater than zero, process with an exe, otherwise don't.
 	m_prog = prog;
 	m_doBbl = doBbl;
 	m_doAll = doAll;
@@ -32,7 +33,7 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-bbl-"));
 			
-			t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+			t = new Trace(m_traceFile.GetFullPath(), ( m_doProcessExe ? m_exeFile.GetFullPath() : wxString(wxT("")) ), outfilename);
 
 			if (t == NULL)
 			{
@@ -91,7 +92,7 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-all-"));
 
-			t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+			t = new Trace(m_traceFile.GetFullPath(), ( m_doProcessExe ? m_exeFile.GetFullPath() : wxString(wxT("")) ), outfilename);
 
 			if (t == NULL)
 			{
