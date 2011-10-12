@@ -83,8 +83,10 @@ inline void initAddress(trace_address_t *address, uint32_t addr, char *inst, uin
 	address->addr = addr;
 	strncpy(address->info.inst, inst, INSTLEN);
 	size_t len = strlen(address->info.inst);
+
 	if (address->info.inst[len-1] == '\n')
 		address->info.inst[len-1] = '\0';
+	
 	address->count = count;
 	address->num = inum;
 }
