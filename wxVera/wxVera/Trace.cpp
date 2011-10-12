@@ -338,6 +338,13 @@ void Trace::process(bool doBasicBlocks)
 		processVeraPin(doBasicBlocks);
 	else
 		processEther(doBasicBlocks);
+
+	if (bblMap.size() <= 1 || edgeMap.size() <= 1) // Error
+	{
+		char errstr[128] = {0};
+		sprintf(errstr, "Could not parse trace file %s (bad format)", this->tracefile);
+		throw errstr;
+	}
 }
 
 void Trace::processVeraPin(bool doBasicBlocks)
