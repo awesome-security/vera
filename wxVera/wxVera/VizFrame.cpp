@@ -383,6 +383,12 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					}
 				}
 
+				if (doProcessAllBlocks == false && doProcessBasicBlocks == false)
+				{
+					this->SetStatusText(wxT("No files loaded"));
+					return;
+				}
+
 				// Begin the actual processing
 				dlgProgress = new wxProgressDialog(wxT("Processing trace file"),
 								   wxT("Processing the tracefile"),
