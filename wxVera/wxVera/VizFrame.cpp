@@ -313,13 +313,74 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					}
 				}
 
+				wxString saveFile = page1->m_saveFile->GetValue();
+
 				// Check for invalid save file or duplicates
-				if ( page1->m_saveFile->GetValue().StartsWith(wxT("Enter")) )
+				if ( saveFile.StartsWith(wxT("Enter")) )
 				{
 					wxMessageBox(wxT("You must choose where to save\nthe graph data file."),
 						     wxT("Trace Processing Error"), 
 						     wxICON_ERROR);
 					return;
+				}
+
+				// Check to see if the GML file already exists
+				bool doProcessBasicBlocks = page1->m_genAllAddressesCheckBox->GetValue();
+				bool doProcessAllBlocks   = page1->m_genAllAddressesCheckBox->GetValue();
+				
+				// Check for the basic blocks file
+				if (doProcessBasicBlocks == true)
+				{
+					wxString fullFileName = prependFileName(saveFile, wxT("bbl-"));
+					if (wxFileExists(fullFileName) )
+					{
+						int answer = wxMessageBox(
+							wxString::Format(wxT("File %s already exists, do you want to overwrite it?"), 
+							fullFileName),
+							wxT("File already exists"),
+							wxCENTER | wxYES_NO );
+						
+						switch (answer)
+						{
+						case wxNO:
+							doProcessBasicBlocks = false;
+							break;
+						case wxYES:
+							doProcessBasicBlocks = true;
+							break;
+						default:
+							// Weirdness
+							wxLogDebug(wxString::Format(wxT("Strange case reached at line %u in %s"),  __LINE__, __FILE__ ));
+							return;
+						}
+					}
+				}
+
+				if ( doProcessAllBlocks == true)
+				{
+					wxString fullFileName = prependFileName(saveFile, wxT("all-"));
+					if (wxFileExists(fullFileName) )
+					{
+						int answer = wxMessageBox(
+							wxString::Format(wxT("File %s already exists, do you want to overwrite it?"), 
+							fullFileName),
+							wxT("File already exists"),
+							wxCENTER | wxYES_NO );
+						
+						switch (answer)
+						{
+						case wxNO:
+							doProcessAllBlocks = false;
+							break;
+						case wxYES:
+							doProcessAllBlocks = true;
+							break;
+						default:
+							// Weirdness
+							wxLogDebug(wxString::Format(wxT("Strange case reached at line %u in %s"),  __LINE__, __FILE__ ));
+							return;
+						}
+					}
 				}
 
 				// Begin the actual processing
@@ -340,9 +401,9 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 				// Create a new thread to handle the actual trace generation
 				tbThread = new threadTraceBuilder(path, 
 								  (doProcessExe ? page1->m_origExeFile->GetValue() : wxString(wxT("")) ), // Empty string indicates processing trace file without a PE
-								  page1->m_saveFile->GetValue(), 
-								  page1->m_genBblAddressesCheckBox->GetValue(),
-								  page1->m_genAllAddressesCheckBox->GetValue(),
+								  saveFile, 
+								  doProcessBasicBlocks,
+								  doProcessAllBlocks,
 								  this,
 								  dlgProgress);
 
