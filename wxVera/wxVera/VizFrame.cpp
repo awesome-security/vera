@@ -14,7 +14,7 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
 	EVT_MENU(Vera_Config, VizFrame::OnConfig)
 	EVT_MOUSEWHEEL(VizFrame::mouseWheelMoved)
 	EVT_COMMAND(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED, VizFrame::ProcessEvent)
-        EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
+    EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
 	EVT_TEXT_ENTER(Vera_Search, VizFrame::SearchTextEvent)
 END_EVENT_TABLE()
 #endif
@@ -230,8 +230,17 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 		if (path.EndsWith(wxT(".gml")))
 		{
 			// Check the return value here.
-			veraPane->openFile(path);
-			this->SetStatusText(wxString::Format(wxT("Loaded %s"), path.c_str()));
+			if (!veraPane->openFile(path))
+			{
+				wxMessageBox(wxString::Format(wxT("Error loading GML file %s, invalid format. Is this actually a .gml file?"), path));
+				this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
+				this->SetStatusText(wxString::Format(wxT("Error loading %s"), path.c_str()));
+				return;
+			}
+			else
+			{
+				this->SetStatusText(wxString::Format(wxT("Loaded %s"), path.c_str()));
+			}
 		}
 		else if (path.EndsWith(wxT(".trace")))
 		{
@@ -276,22 +285,107 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 				}
 
 				// Check for invalid exe files
+				int answer = -1;
+				bool doProcessExe = true;
 
 				if ( page1->m_origExeFile->GetValue().StartsWith(wxT("Enter")) )
 				{
-					wxMessageBox(wxT("You must select the original executable\n"
-							 "file for processing."),
+					// Ask the user if they want to generate a trace without the executable
+					answer = wxMessageBox(
+							wxT("Do you want to generate a trace without an executable?\n"
+								"Certain features will be unavailable if one is not provided."),
+							wxT("Missing .exe file"),
+							wxCENTER | wxYES_NO);
+	
+					switch (answer)
+					{
+					case wxYES:
+						// Nothing else is needed to do
+						doProcessExe = false;
+						break;
+					case wxNO:
+						// Return with nothing being done
+						return;
+						break;
+					default:
+						wxLogDebug(wxT("Strange error"));
+						break;
+					}
+				}
+
+				wxString saveFile = page1->m_saveFile->GetValue();
+
+				// Check for invalid save file or duplicates
+				if ( saveFile.StartsWith(wxT("Enter")) )
+				{
+					wxMessageBox(wxT("You must choose where to save\nthe graph data file."),
 						     wxT("Trace Processing Error"), 
 						     wxICON_ERROR);
 					return;
 				}
 
-				// Check for invalid save file or duplicates
-				if ( page1->m_saveFile->GetValue().StartsWith(wxT("Enter")) )
+				// Check to see if the GML file already exists
+				bool doProcessBasicBlocks = page1->m_genAllAddressesCheckBox->GetValue();
+				bool doProcessAllBlocks   = page1->m_genAllAddressesCheckBox->GetValue();
+				
+				// Check for the basic blocks file
+				if (doProcessBasicBlocks == true)
 				{
-					wxMessageBox(wxT("You must choose where to save\nthe graph data file."),
-						     wxT("Trace Processing Error"), 
-						     wxICON_ERROR);
+					wxString fullFileName = prependFileName(saveFile, wxT("bbl-"));
+					if (wxFileExists(fullFileName) )
+					{
+						int answer = wxMessageBox(
+							wxString::Format(wxT("File %s already exists, do you want to overwrite it?"), 
+							fullFileName),
+							wxT("File already exists"),
+							wxCENTER | wxYES_NO );
+						
+						switch (answer)
+						{
+						case wxNO:
+							doProcessBasicBlocks = false;
+							break;
+						case wxYES:
+							doProcessBasicBlocks = true;
+							break;
+						default:
+							// Weirdness
+							wxLogDebug(wxString::Format(wxT("Strange case reached at line %u in %s"),  __LINE__, __FILE__ ));
+							return;
+						}
+					}
+				}
+
+				if ( doProcessAllBlocks == true)
+				{
+					wxString fullFileName = prependFileName(saveFile, wxT("all-"));
+					if (wxFileExists(fullFileName) )
+					{
+						int answer = wxMessageBox(
+							wxString::Format(wxT("File %s already exists, do you want to overwrite it?"), 
+							fullFileName),
+							wxT("File already exists"),
+							wxCENTER | wxYES_NO );
+						
+						switch (answer)
+						{
+						case wxNO:
+							doProcessAllBlocks = false;
+							break;
+						case wxYES:
+							doProcessAllBlocks = true;
+							break;
+						default:
+							// Weirdness
+							wxLogDebug(wxString::Format(wxT("Strange case reached at line %u in %s"),  __LINE__, __FILE__ ));
+							return;
+						}
+					}
+				}
+
+				if (doProcessAllBlocks == false && doProcessBasicBlocks == false)
+				{
+					this->SetStatusText(wxT("No files loaded"));
 					return;
 				}
 
@@ -312,10 +406,10 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 
 				// Create a new thread to handle the actual trace generation
 				tbThread = new threadTraceBuilder(path, 
-								  page1->m_origExeFile->GetValue(),
-								  page1->m_saveFile->GetValue(), 
-								  page1->m_genBblAddressesCheckBox->GetValue(),
-								  page1->m_genAllAddressesCheckBox->GetValue(),
+								  (doProcessExe ? page1->m_origExeFile->GetValue() : wxString(wxT("")) ), // Empty string indicates processing trace file without a PE
+								  saveFile, 
+								  doProcessBasicBlocks,
+								  doProcessAllBlocks,
 								  this,
 								  dlgProgress);
 
@@ -348,6 +442,16 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 			traceWiz->Destroy();
 
 		}
+		else
+		{
+			wxMessageBox(wxString::Format(wxT("Error loading file %s. File needs to have .gml or .trace as the file extension."), path));
+			this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
+			this->SetStatusText(wxString::Format(wxT("Error loading %s"), path.c_str()));
+			return;
+		}
+		
+		this->SetTitle(wxString::Format(wxT("%s - %s"), wxT(__VERA_WINDOW_TITLE__), path.c_str()));
+		this->SetStatusText(wxString::Format(wxT("Loaded %s"), path.c_str()));
 
 	}
 
@@ -361,7 +465,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 // This function strikes me as ugly and non-optimal -Danny
 void VizFrame::ProcessEvent(wxCommandEvent & event)
 {
-	int		traceType		= event.GetInt();
+	int			traceType		= event.GetInt();
 	wxString	filename;
 
 	// Only print out the trace message for the trace messages
@@ -370,7 +474,17 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 	case THREAD_TRACE_NONE_PROCESSED: // There was an error with one of the traces
 		wxLogDebug(wxT("No trace processed"));
 		return;
-		break;
+	case THREAD_TRACE_ERROR:
+		{
+			wxString errorMsg = event.GetString();
+			wxLogDebug(wxT("Error processing file: %s"), errorMsg);
+			this->dlgProgress->Destroy();
+			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg),
+						 wxT("Graph Processing Error"),
+						 wxICON_ERROR);
+
+			return;
+		}
 	case THREAD_TRACE_BASIC_BLOCKS_PROCESSED: // Processed a basic block graph
 	case THREAD_TRACE_BOTH_PROCESSED: // Processed both a basic block and an instruction graph
 	case THREAD_TRACE_ALL_ADDRESSES_PROCESSED: // All instruction graph processed
@@ -482,10 +596,15 @@ void VizFrame::SearchTextEvent(wxCommandEvent &event)
 					 wxT("Invalid Search"),
 					 wxICON_ERROR);
 
-	node_t *s = veraPane->nodeHashMap[string(event.GetString().ToAscii())];
+	std::string searchVal = event.GetString().MakeLower().ToAscii();
+	node_t *s = veraPane->searchByString(searchVal);
 
 	if (s != NULL)
-		printf("Found %s\n", s->label);
+	{
+		this->SetStatusText(wxString::Format(wxT("Found %s"), s->label));
+	}
+	else
+		wxLogMessage(wxT("Could not find search term %s"), searchVal.c_str());
 
 
 }
@@ -661,16 +780,16 @@ void VizFrame::OnIda(wxCommandEvent& event)
 	// Disabled to get IDA ready to run code
 	if (this->idaServer == NULL)
 	{
-		//idaServer = new threadIdaServer(this);
-		//idaServer->Create();
-		//idaServer->Run();
+		idaServer = new threadIdaServer(this);
+		idaServer->Create();
+		idaServer->Run();
 
 		bmpIda = new wxBitmap(idaConnected_32_xpm);
 	}
 	else
 	{
-		//idaServer->Delete();
-		//idaServer = NULL;
+		idaServer->Delete();
+		idaServer = NULL;
 
 		bmpIda = new wxBitmap(ida_32_xpm);
 	}
@@ -689,10 +808,8 @@ void VizFrame::OnIda(wxCommandEvent& event)
 // Stub, needs to be finished
 bool VizFrame::sendIdaMsg(char *msg)
 {
-	/*if (idaServer != NULL)
+	if (idaServer != NULL)
 		return idaServer->sendData(msg, strlen(msg));
 	else
-	return false;*/
-
-	return true;
+		return false;
 }

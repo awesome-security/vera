@@ -100,7 +100,7 @@ void *threadTraceBuilder::Entry()
 		if (m_prog)
 		{
 			wxMutexGuiEnter();
-			//m_prog->Update(60);
+			m_prog->Update(60);
 			wxMutexGuiLeave();
 		}
 
@@ -109,7 +109,7 @@ void *threadTraceBuilder::Entry()
 		if (m_prog)
 		{
 			wxMutexGuiEnter();
-			//m_prog->Update(80);
+			m_prog->Update(80);
 			wxMutexGuiLeave();
 		}
 
@@ -118,7 +118,7 @@ void *threadTraceBuilder::Entry()
 		if (m_prog)
 		{
 			wxMutexGuiEnter();
-			//m_prog->Update(90);
+			m_prog->Update(90);
 			wxMutexGuiLeave();
 		}
 
@@ -135,14 +135,14 @@ void *threadTraceBuilder::Entry()
 	if (m_prog)
 	{
 		wxMutexGuiEnter();
-		//m_prog->Update(100);
+		m_prog->Update(100);
 		wxMutexGuiLeave();
 	}
 
 	if (m_prog != NULL)
 	{
 		wxMutexGuiEnter();
-		//m_prog->Destroy();
+		m_prog->Destroy();
 		wxMutexGuiLeave();
 	}
 

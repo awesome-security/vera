@@ -17,7 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinTools", "..\pin-2.8-3730
 		{0C1EF1B0-637E-4716-A1C1-16F7268395C8} = {0C1EF1B0-637E-4716-A1C1-16F7268395C8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdasm", "..\libdasm\libdasm.vcproj", "{0C1EF1B0-637E-4716-A1C1-16F7268395C8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdasm", "..\libs\windows\libdasm\libdasm.vcproj", "{0C1EF1B0-637E-4716-A1C1-16F7268395C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

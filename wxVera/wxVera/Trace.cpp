@@ -27,7 +27,15 @@ Trace::Trace(wxString tracefile, wxString orig_exe_file, wxString outputfile)
 	graphColoringAlgorithm = GRAPH_COLOR_PACKER;
 
 	strncpy(this->tracefile, tracefile.ToAscii(), sizeof(this->tracefile) - 1);
-	strncpy(this->orig_exe_file, orig_exe_file.ToAscii(), sizeof(this->orig_exe_file) - 1);
+	if (orig_exe_file.length() > 0) // Zero length string means don't process the exe
+	{
+		doProcessExe = true;
+		strncpy(this->orig_exe_file, orig_exe_file.ToAscii(), sizeof(this->orig_exe_file) - 1);
+	}
+	else
+	{
+		doProcessExe = false;
+	}
 	strncpy(this->outputfile, outputfile.ToAscii(), sizeof(this->outputfile) -1);
 
 	this->parseFiles();
@@ -37,7 +45,15 @@ Trace::Trace(char *tracefile, char *orig_exe_file, char *outputfile)
 {
 	
 	strncpy(this->tracefile, tracefile, sizeof(this->tracefile) - 1);
-	strncpy(this->orig_exe_file, orig_exe_file, sizeof(this->orig_exe_file) - 1);
+	if (strlen(orig_exe_file) > 0) // Zero length string means don't process the exe
+	{
+		doProcessExe = true;
+		strncpy(this->orig_exe_file, orig_exe_file, sizeof(this->orig_exe_file) - 1);
+	}
+	else
+	{
+		doProcessExe = false;
+	}
 	strncpy(this->outputfile, outputfile, sizeof(this->outputfile) - 1);
 
 	this->parseFiles();
@@ -46,19 +62,25 @@ Trace::Trace(char *tracefile, char *orig_exe_file, char *outputfile)
 Trace::~Trace(void)
 {	
 	// Free sectionEntropy
-	free(sectionEntropy);
-	sectionEntropy = NULL;
-
-	// Free character probability of =each section
-	for(WORD i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++)
+	if (doProcessExe == true && sectionEntropy != NULL)
 	{
-		free(sectionCharProb[i]);
-		sectionCharProb[i] = NULL;
-	}
+		free(sectionEntropy);
+		sectionEntropy = NULL;
+	
+		if (sectionCharProb == NULL)
+		{
+			// Free character probability of =each section
+			for(WORD i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++)
+			{
+				free(sectionCharProb[i]);
+				sectionCharProb[i] = NULL;
+			}
 
-	// Free the dynamic array of all the memory
-	free(sectionCharProb);
-	sectionCharProb = NULL;
+			// Free the dynamic array of all the memory
+			free(sectionCharProb);
+			sectionCharProb = NULL;
+		}
+	}
 
 	// Free the original data
 	if (origData)
@@ -83,8 +105,10 @@ inline void initAddress(trace_address_t *address, uint32_t addr, char *inst, uin
 	address->addr = addr;
 	strncpy(address->info.inst, inst, INSTLEN);
 	size_t len = strlen(address->info.inst);
+
 	if (address->info.inst[len-1] == '\n')
 		address->info.inst[len-1] = '\0';
+	
 	address->count = count;
 	address->num = inum;
 }
@@ -92,6 +116,19 @@ inline void initAddress(trace_address_t *address, uint32_t addr, char *inst, uin
 void Trace::parseFiles(void)
 {
 	struct stat st = {0};
+
+	// No exe processing required
+	if (!doProcessExe)
+	{
+		pDosHeader			= NULL;
+		origData			= NULL;
+		pPeHeader			= NULL;
+		pOptHeader			= NULL;
+		pSectionHeader		= NULL;
+		sectionEntropy		= NULL;
+		sectionCharProb		= NULL;
+		return;
+	}
 
 	stat(this->orig_exe_file, &st);
 
@@ -137,7 +174,7 @@ void Trace::parseFiles(void)
 	// Check for a valid header
 	if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE)
 	{
-		wxLogDebug(wxT("Not a valid DOS header"));
+		//wxLogDebug(wxT("Not a valid DOS header"));
 		throw "Not a valid DOS header";
 	}
 
@@ -153,7 +190,7 @@ void Trace::parseFiles(void)
 
 	if(pPeHeader->Signature != IMAGE_NT_SIGNATURE)
 	{
-		wxLogDebug(wxT("Not a valid NT header"));
+		//wxLogDebug(wxT("Not a valid NT header"));
 		throw "Not a valid NT header";
 	}
 
@@ -170,7 +207,7 @@ void Trace::parseFiles(void)
 
 	if (sectionEntropy == NULL)
 	{
-		wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+		//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
 		return;
 	}
 
@@ -178,7 +215,7 @@ void Trace::parseFiles(void)
 	
 	if (sectionCharProb == NULL)
 	{
-		wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+		//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
 		return;
 	}
 	
@@ -189,13 +226,13 @@ void Trace::parseFiles(void)
 
 		if (sectionCharProb[i] == NULL)
 		{
-			wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+			//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
 			return;
 		}
 
 		memset(sectionCharProb[i], 0, sizeof(float) * 256);
 		
-		wxLogDebug(wxT("Processing section %s\n"), pSectionHeader[i].Name);
+		//wxLogDebug(wxT("Processing section %s\n"), pSectionHeader[i].Name);
 		
 		// Get the character count from the section data
 		if(pSectionHeader[i].SizeOfRawData > 0)
@@ -218,7 +255,7 @@ void Trace::parseFiles(void)
 			
 		}
 
-		wxLogDebug(wxT("Entropy is %2.2f\n"), sectionEntropy[i]);
+		//									wxLogDebug(wxT("Entropy is %2.2f\n"), sectionEntropy[i]);
 
 	}
 }
@@ -301,6 +338,13 @@ void Trace::process(bool doBasicBlocks)
 		processVeraPin(doBasicBlocks);
 	else
 		processEther(doBasicBlocks);
+
+	if (bblMap.size() <= 1 || edgeMap.size() <= 1) // Error
+	{
+		char errstr[128] = {0};
+		sprintf(errstr, "Could not parse trace file %s (bad format)", this->tracefile);
+		throw errstr;
+	}
 }
 
 void Trace::processVeraPin(bool doBasicBlocks)
@@ -413,9 +457,10 @@ void Trace::processVeraPin(bool doBasicBlocks)
 void Trace::processEther(bool doBasicBlocks)
 {
 	FILE *fin = NULL;
-	char in[LINELEN];
-	char lastline[LINELEN];
-	char addr[ADDRLEN], inst[INSTLEN];
+	char in[LINELEN] = {0};
+	char lastline[LINELEN] = {0};
+	char addr[ADDRLEN] = {0};
+	char inst[INSTLEN] = {0};
 	uint32_t daddr = 0;
 	unsigned long lines = 0;
 	uint32_t inum = 0;
@@ -434,7 +479,7 @@ void Trace::processEther(bool doBasicBlocks)
 
 	fin = fopen(this->tracefile, "r");
 	
-	if(fin == 0)
+	if(fin == NULL)
 	{
 		//wxLogDebug(wxT("Error opening file %s\n"), this->tracefile);
 		return;
@@ -458,7 +503,11 @@ void Trace::processEther(bool doBasicBlocks)
 		if(!inInstructions && (strstr(in, "Entry Point:") ))
 		{
 			inInstructions = true;
-			sscanf(in, "%*s%*s%s", addr);
+#ifdef _WIN32
+			sscanf_s(in, "%*s%*s%s", addr, sizeof(addr));
+#else
+			sscanf(in, "%*s%*s%31s", addr);
+#endif
 			//wxLogDebug(wxT("Entry point: %s\n"), addr);
 			continue;
 		}
@@ -609,6 +658,7 @@ void Trace::processEther(bool doBasicBlocks)
 		}
 		inum++;
 		lines++;
+		memset(in, 0, sizeof(in));
 	}
 
 	fclose(fin);
@@ -799,14 +849,17 @@ void Trace::layoutGraph(const char *infile, const char *outfile)
 
 uint32_t Trace::packerAddrColor(uint32_t addr)
 {
+	// Color the start address blue
+	if (START_ADDR == addr)
+		return doColorBlind ? CB_START_ADDR_COLOR : START_ADDR_COLOR;
+
+	if (doProcessExe == false)
+		return doColorBlind ? CB_NORMAL_COLOR : NORMAL_COLOR;
+
 	DWORD rva = addr - pOptHeader->ImageBase;
 	PIMAGE_SECTION_HEADER pSection = pSectionHeader;
 	bool foundSection = false;
 	uint32_t i = 0;
-
-	// Color the start address blue
-	if (START_ADDR == addr)
-		return doColorBlind ? CB_START_ADDR_COLOR : START_ADDR_COLOR;
 
 	// Get the Section
 	for(i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++, pSection++)
@@ -830,7 +883,7 @@ uint32_t Trace::packerAddrColor(uint32_t addr)
 	return doColorBlind ? CB_NORMAL_COLOR : NORMAL_COLOR;
 }
 
-uint32_t Trace::addrColor(uint32_t addr)
+inline uint32_t Trace::addrColor(uint32_t addr)
 {
 	switch (graphColoringAlgorithm)
 	{

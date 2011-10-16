@@ -28,6 +28,7 @@ private:
 	wxProgressDialog *	m_prog;
 	bool 				m_doBbl;
 	bool 				m_doAll;
+	bool				m_doProcessExe;
 
 };
 

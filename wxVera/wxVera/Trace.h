@@ -118,9 +118,10 @@ private:
 	PIMAGE_SECTION_HEADER		                pSectionHeader;
 	PIMAGE_OPTIONAL_HEADER		                pOptHeader;
 	enum GRAPH_COLORING_ALG		                graphColoringAlgorithm;
-	bool						doColorBlind;
+	bool						doColorBlind; 
+	bool						doProcessExe;
 
-	uint32_t	        addrColor(uint32_t addr);
+	inline uint32_t	        addrColor(uint32_t addr);
 	float			calcEntropy(unsigned char *data, size_t len);
 	void			parseFiles(void);
 	uint32_t	        packerAddrColor(uint32_t addr);

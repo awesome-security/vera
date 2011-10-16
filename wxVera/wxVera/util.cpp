@@ -65,3 +65,40 @@ wxString prependFileName(wxFileName input, wxString stringToPrepend)
 		stringToPrepend +
 		input.GetFullName();
 }
+
+bool isHexString(const char *str, size_t len)
+{
+	bool ret = true;
+	char *lstr = (char *) str;
+	size_t llen = len;
+	
+	// Check for obviously bad inputs
+	if (str == NULL || len == 0)
+		return false;
+
+	// Check for 0x prefix
+	if (lstr[0] == '0' && (lstr[1] == 'x' || lstr[1] == 'X'))
+	{
+		lstr = &lstr[2];
+		llen -= 2;
+	}
+
+	// Check if the string is zero or if we have somehow underflowed the register
+	if (llen == 0 || llen > len)
+		return false;
+
+	for (size_t i = 0 ; i < llen ; i++)
+	{
+		if ( isxdigit(lstr[i]) )
+		{
+			 continue;
+		}
+		else
+		{
+			ret = false;
+			break;
+		}
+	}
+
+	return ret;
+}
