@@ -1,0 +1,20 @@
+
+
+Please read "readme.txt" before reading this file!
+
+
+How to install SDK under Mac OS X
+------------------------------
+
+The installation for Mac OS X is the same as for Linux.
+Please refer to the install_linux.txt file for details.
+
+The only difference is that you have to define the environment
+variable __MAC__.
+
+In order to compile the iPhone debugger server, you'll have to specify
+the __IPHONE__ variable:
+
+alias im='__IPHONE__=1 idamake.pl 2>&1'
+
+Please note that the iPhone debugger server can handle only iPhone v1.x
