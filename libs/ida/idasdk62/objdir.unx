@@ -1,0 +1,4 @@
+# this makefile creates the output directories for object files
+
+objdir $(OBJDIR):
+	-@if [ ! -d "$(OBJDIR)" ] ; then mkdir -p 2>/dev/null $(OBJDIR) ; fi
