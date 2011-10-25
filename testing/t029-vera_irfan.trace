@@ -1,0 +1,1993 @@
+After init:
+		shared_page_ptr: 0xffff830000fd9000
+		shared_page_mfn: 0xfd9
+		domid_source: 0
+		event_channel_port: 34
+Shared Page va: 0x7fde19b77000
+Shared Page test:
+		Page-Sharing is A-OK!
+		
+Trying to bind to local port...
+Success, bound to local port: 35
+Trying to get first pending notification...
+Taking off suprious pending notification...
+Setting filter by name to: notepad.exe
+Execution of Target detected:
+		Image Base: 0x40000
+		Image Size: 0x14000
+		Entry Point: 0x4f7431
+4f7431: xor eax, eax
+4f7433: push 0
+4f7435: cmp [esp+4+arg_0], eax
+4f7439: push 1000h
+4f743e: setz al
+4f7441: push eax
+m4f7442
+i7339303:HeapCreate
+4f7448: test eax, eax
+4f744a: mov ds:hHeap, eax
+4f744f: jz short loc_4F7487
+4f7451: call sub_4F72E9
+4f72e9: push ebp
+4f72ea: mov ebp, esp
+4f72ec: mov eax, 122Ch
+4f72f1: call __alloca_probe
+4f72f6: lea eax, [ebp+VersionInformation]
+4f72fc: push ebx
+4f72fd: push eax
+4f72fe: mov [ebp+VersionInformation.dwOSVersionInfoSize], 94h
+4f7308: call ds:GetVersionExA
+4f730e: test eax, eax
+4f7310: jz short loc_4F732C
+4f7312: cmp [ebp+VersionInformation.dwPlatformId], 2
+4f7319: jnz short loc_4F732C
+4f731b: cmp [ebp+VersionInformation.dwMajorVersion], 5
+4f7322: jb short loc_4F732C
+4f7324: push 1
+4f7326: pop eax
+4f7327: jmp loc_4F742E
+4f742e: pop ebx
+4f742f: leave
+4f7430: retn
+4f7456: cmp eax, 3
+4f7459: mov ds:dword_549170, eax
+4f745e: jnz short loc_4F746D
+4f746d: cmp eax, 2
+4f7470: jnz short loc_4F748A
+4f748a: push 1
+4f748c: pop eax
+4f748d: retn
+42d440: sub esp, 104h
+42d446: lea eax, [esp+104h+FullPath]
+42d44a: push ebx
+42d44b: push esi
+42d44c: push edi
+42d44d: push 104h
+42d452: push eax
+42d453: push 0
+42d455: call ds:GetModuleFileNameA
+42d45b: mov ebx, [esp+110h+arg_0]
+42d462: push 3
+42d464: lea ecx, [esp+114h+FullPath]
+42d468: push ebx
+42d469: push ecx
+42d46a: call sub_42D310
+42d310: mov edx, [esp+FullPath]
+42d314: sub esp, 410h
+42d31a: or ecx, 0FFFFFFFFh
+42d31d: xor eax, eax
+42d31f: push ebp
+42d320: mov ebp, [esp+414h+arg_4]
+42d327: push esi
+42d328: push edi
+42d329: mov edi, edx
+42d32b: mov byte ptr [ebp+0], 0
+42d32f: repne scasb
+42d331: not ecx
+42d333: dec ecx
+42d334: jz loc_42D433
+42d33a: lea eax, [esp+41Ch+Ext]
+42d341: push ebx
+42d342: lea ecx, [esp+420h+Filename]
+42d349: push eax
+42d34a: push ecx
+42d34b: lea eax, [esp+428h+Dir]
+42d34f: lea ecx, [esp+428h+Drive]
+42d356: push eax
+42d357: push ecx
+42d358: push edx
+42d359: call __splitpath
+42d35e: mov bl, [esp+434h+arg_8]
+42d365: add esp, 14h
+42d368: test bl, 1
+42d36b: jz short loc_42D399
+42d36d: lea edi, [esp+420h+Drive]
+42d374: or ecx, 0FFFFFFFFh
+42d377: xor eax, eax
+42d379: repne scasb
+42d37b: not ecx
+42d37d: sub edi, ecx
+42d37f: mov esi, edi
+42d381: mov edx, ecx
+42d383: mov edi, ebp
+42d385: or ecx, 0FFFFFFFFh
+42d388: repne scasb
+42d38a: mov ecx, edx
+42d38c: dec edi
+42d38d: shr ecx, 2
+42d390: rep movsd
+42d392: mov ecx, edx
+42d394: and ecx, 3
+42d397: rep movsb
+42d399: test bl, 2
+42d39c: jz short loc_42D3D0
+42d39e: lea edi, [esp+420h+Dir]
+42d3a2: or ecx, 0FFFFFFFFh
+42d3a5: xor eax, eax
+42d3a7: push ebp
+42d3a8: repne scasb
+42d3aa: not ecx
+42d3ac: sub edi, ecx
+42d3ae: mov esi, edi
+42d3b0: mov edx, ecx
+42d3b2: mov edi, ebp
+42d3b4: or ecx, 0FFFFFFFFh
+42d3b7: repne scasb
+42d3b9: mov ecx, edx
+42d3bb: dec edi
+42d3bc: shr ecx, 2
+42d3bf: rep movsd
+42d3c1: mov ecx, edx
+42d3c3: and ecx, 3
+42d3c6: rep movsb
+42d3c8: call sub_42D830
+42d830: mov edx, [esp+arg_0]
+42d834: push edi
+42d835: mov edi, edx
+42d837: or ecx, 0FFFFFFFFh
+42d83a: xor eax, eax
+42d83c: repne scasb
+42d83e: not ecx
+42d840: dec ecx
+42d841: jz short loc_42D88A
+42d843: cmp ecx, 103h
+42d849: jnb short loc_42D88A
+42d84b: mov edi, edx
+42d84d: or ecx, 0FFFFFFFFh
+42d850: repne scasb
+42d852: not ecx
+42d854: dec ecx
+42d855: cmp byte ptr [ecx+edx-1], 5Ch
+42d85a: jz short loc_42D88A
+42d88a: pop edi
+42d88b: retn
+42d3cd: add esp, 4
+42d3d0: test bl, 4
+42d3d3: jz short loc_42D401
+42d401: test bl, 8
+42d404: pop ebx
+42d405: jz short loc_42D433
+42d433: pop edi
+42d434: pop esi
+42d435: pop ebp
+42d436: add esp, 410h
+42d43c: retn
+42d46f: mov edx, [esp+11Ch+arg_4]
+42d476: add esp, 0Ch
+42d479: lea eax, [edx-1]
+42d47c: cmp eax, 4
+42d47f: ja short loc_42D4CE
+42d4ce: pop edi
+42d4cf: pop esi
+42d4d0: pop ebx
+42d4d1: add esp, 104h
+42d4d7: retn
+469a90: sub esp, 208h
+469a96: push ebx
+469a97: push ebp
+469a98: push esi
+469a99: xor ebx, ebx
+469a9b: push edi
+469a9c: push ebx
+469a9d: push ebx
+469a9e: push ebx
+469a9f: push offset pszDriver
+469aa4: call ds:CreateDCA
+469aaa: mov esi, eax
+469aac: push 0Ch
+469aae: push esi
+469aaf: call ds:GetDeviceCaps
+469ab5: mov edx, 1
+469aba: mov ecx, eax
+469abc: shl edx, cl
+469abe: push esi
+469abf: mov ds:dword_547DA8, edx
+469ac5: call ds:DeleteDC
+469acb: mov ebp, ds:GetPrivateProfileStringA
+469ad1: push offset FileName
+469ad6: push 104h
+469adb: push offset String
+469ae0: push offset Data
+469ae5: push offset aIni_folder
+469aea: push offset aOthers
+469aef: call ebp
+469af1: cmp ds:String, bl
+469af7: jz loc_469C70
+469c70: mov esi, ds:GetPrivateProfileIntA
+469c76: push offset FileName
+469c7b: push ebx
+469c7c: push offset aLoadGrayscale
+469c81: push offset aJpeg
+469c86: call esi
+469c88: push offset FileName
+469c8d: push 1
+469c8f: push offset aExifrotate
+469c94: push offset aJpeg
+469c99: mov ds:dword_535F64, eax
+469c9e: call esi
+469ca0: push offset FileName
+469ca5: push 5
+469ca7: push offset aFitwindowoptio
+469cac: push offset aViewing
+469cb1: mov ds:dword_535F68, eax
+469cb6: call esi
+469cb8: push offset FileName
+469cbd: push 1
+469cbf: push offset aUseresample
+469cc4: push offset aViewing
+469cc9: mov ds:dword_524F40, eax
+469cce: call esi
+469cd0: push offset FileName
+469cd5: push 1
+469cd7: push offset aUsezoomresampl
+469cdc: push offset aViewing
+469ce1: mov ds:dword_524F5C, eax
+469ce6: call esi
+469ce8: push offset FileName
+469ced: push ebx
+469cee: push offset aUseicm
+469cf3: push offset aViewing
+469cf8: mov ds:dword_535FA0, eax
+469cfd: call esi
+469cff: push offset FileName
+469d04: push ebx
+469d05: push offset aUseicmalways
+469d0a: push offset aViewing
+469d0f: mov ds:dword_535F70, eax
+469d14: call esi
+469d16: push offset FileName
+469d1b: push 1
+469d1d: push offset aUseundo
+469d22: push offset aOthers
+469d27: mov ds:dword_535F74, eax
+469d2c: call esi
+469d2e: push offset FileName
+469d33: push ebx
+469d34: push offset aFilesortorder
+469d39: push offset aOthers
+469d3e: mov ds:dword_535F8C, eax
+469d43: call esi
+469d45: push offset FileName
+469d4a: push 0Ah
+469d4c: push offset aZoomfactor
+469d51: push offset aViewing
+469d56: mov ds:dword_535F78, eax
+469d5b: call esi
+469d5d: push offset FileName
+469d62: push ebx
+469d63: push offset aZoomoption
+469d68: push offset aViewing
+469d6d: mov ds:dword_524F78, eax
+469d72: call esi
+469d74: push offset FileName
+469d79: push 1
+469d7b: push offset aViewall
+469d80: push offset aViewing
+469d85: mov ds:dword_535FC8, eax
+469d8a: call esi
+469d8c: push offset FileName
+469d91: push ebx
+469d92: push offset aUsesingletrans
+469d97: push offset aMultigif
+469d9c: mov ds:dword_524F48, eax
+469da1: call esi
+469da3: push offset FileName
+469da8: mov ds:dword_535F88, eax
+469dad: push ebx
+469dae: push offset aCenterwindow
+469db3: push offset aOthers
+469db8: call esi
+469dba: push offset FileName
+469dbf: push ebx
+469dc0: push offset aDither24bpp
+469dc5: push offset aViewing
+469dca: mov ds:dword_535F90, eax
+469dcf: call esi
+469dd1: push offset FileName
+469dd6: push ebx
+469dd7: push offset aEnablegamma
+469ddc: push offset aViewing
+469de1: mov ds:dword_524F4C, eax
+469de6: call esi
+469de8: push offset FileName
+469ded: push 5
+469def: push offset aResamplefilter
+469df4: push offset aResize
+469df9: mov ds:dword_535F9C, eax
+469dfe: call esi
+469e00: push offset FileName
+469e05: push 1
+469e07: push offset aRenameextensio
+469e0c: push offset aOthers
+469e11: mov ds:dword_524F60, eax
+469e16: call esi
+469e18: push offset FileName
+469e1d: push 1
+469e1f: push offset aRememberwinpos
+469e24: push offset aOthers
+469e29: mov ds:dword_524F54, eax
+469e2e: call esi
+469e30: push offset FileName
+469e35: push ebx
+469e36: push offset aBackcolor
+469e3b: push offset aViewing
+469e40: mov ds:dword_524F58, eax
+469e45: call esi
+469e47: push offset FileName
+469e4c: push ebx
+469e4d: push offset aJumponpagekey
+469e52: push offset aOthers
+469e57: mov ds:color, eax
+469e5c: call esi
+469e5e: push offset FileName
+469e63: push 1
+469e65: push offset aMultipagescrol
+469e6a: push offset aViewing
+469e6f: mov ds:dword_535F7C, eax
+469e74: call esi
+469e76: push offset FileName
+469e7b: push ebx
+469e7c: push offset aAlwaysontop
+469e81: push offset aOthers
+469e86: mov ds:dword_524F50, eax
+469e8b: call esi
+469e8d: push offset FileName
+469e92: push ebx
+469e93: push offset aContextmenu
+469e98: push offset aViewing
+469e9d: mov ds:dword_535F98, eax
+469ea2: call esi
+469ea4: push offset FileName
+469ea9: push ebx
+469eaa: push offset aShowfullpath
+469eaf: push offset aOthers
+469eb4: mov ds:dword_535F6C, eax
+469eb9: call esi
+469ebb: push offset FileName
+469ec0: push 1
+469ec2: push offset aCentered
+469ec7: push offset aViewing
+469ecc: mov ds:dword_535F80, eax
+469ed1: call esi
+469ed3: push offset FileName
+469ed8: push 1
+469eda: push offset aVideods
+469edf: push offset aOthers
+469ee4: mov ds:dword_524F44, eax
+469ee9: call esi
+469eeb: push offset FileName
+469ef0: push ebx
+469ef1: push offset aUnicode
+469ef6: push offset aOthers
+469efb: mov ds:dword_535F94, eax
+469f00: call esi
+469f02: push offset FileName
+469f07: push ebx
+469f08: push offset aShowtifannot
+469f0d: push offset aOthers
+469f12: mov ds:dword_535FA4, eax
+469f17: call esi
+469f19: push offset FileName
+469f1e: push 10h
+469f20: push offset aSize
+469f25: push offset aToolbar
+469f2a: mov ds:dword_535F84, eax
+469f2f: call esi
+469f31: push offset FileName
+469f36: push ebx
+469f37: push offset aSelectiongrid
+469f3c: push offset aViewing
+469f41: mov ds:dword_524F38, eax
+469f46: call esi
+469f48: mov ds:dword_535FA8, eax
+469f4d: mov eax, ds:dword_524F38
+469f52: cmp eax, 0Ch
+469f55: jge short loc_469F63
+469f63: cmp eax, 80h
+469f68: jle short loc_469F74
+469f74: push offset byte_547CA0
+469f79: call sub_4699C0
+4699c0: sub esp, 208h
+4699c6: lea eax, [esp+208h+ReturnedString]
+4699ca: push esi
+4699cb: mov esi, ds:GetPrivateProfileStringA
+4699d1: push edi
+4699d2: push offset FileName
+4699d7: push 104h
+4699dc: push eax
+4699dd: push offset Data
+4699e2: push offset aDll
+4699e7: push offset aLanguage
+4699ec: call esi
+4699ee: lea edi, [esp+210h+ReturnedString]
+4699f2: or ecx, 0FFFFFFFFh
+4699f5: xor eax, eax
+4699f7: repne scasb
+4699f9: not ecx
+4699fb: dec ecx
+4699fc: jnz short loc_469A31
+4699fe: lea ecx, [esp+210h+FileName]
+469a05: push ecx
+469a06: call sub_469980
+469980: push ebx
+469981: mov ebx, [esp+4+arg_0]
+469985: push esi
+469986: push edi
+469987: push 0
+469989: push ebx
+46998a: call sub_42D440
+42d440: sub esp, 104h
+42d446: lea eax, [esp+104h+FullPath]
+42d44a: push ebx
+42d44b: push esi
+42d44c: push edi
+42d44d: push 104h
+42d452: push eax
+42d453: push 0
+42d455: call ds:GetModuleFileNameA
+42d45b: mov ebx, [esp+110h+arg_0]
+42d462: push 3
+42d464: lea ecx, [esp+114h+FullPath]
+42d468: push ebx
+42d469: push ecx
+42d46a: call sub_42D310
+42d310: mov edx, [esp+FullPath]
+42d314: sub esp, 410h
+42d31a: or ecx, 0FFFFFFFFh
+42d31d: xor eax, eax
+42d31f: push ebp
+42d320: mov ebp, [esp+414h+arg_4]
+42d327: push esi
+42d328: push edi
+42d329: mov edi, edx
+42d32b: mov byte ptr [ebp+0], 0
+42d32f: repne scasb
+42d331: not ecx
+42d333: dec ecx
+42d334: jz loc_42D433
+42d33a: lea eax, [esp+41Ch+Ext]
+42d341: push ebx
+42d342: lea ecx, [esp+420h+Filename]
+42d349: push eax
+42d34a: push ecx
+42d34b: lea eax, [esp+428h+Dir]
+42d34f: lea ecx, [esp+428h+Drive]
+42d356: push eax
+42d357: push ecx
+42d358: push edx
+42d359: call __splitpath
+42d35e: mov bl, [esp+434h+arg_8]
+42d365: add esp, 14h
+42d368: test bl, 1
+42d36b: jz short loc_42D399
+42d36d: lea edi, [esp+420h+Drive]
+42d374: or ecx, 0FFFFFFFFh
+42d377: xor eax, eax
+42d379: repne scasb
+42d37b: not ecx
+42d37d: sub edi, ecx
+42d37f: mov esi, edi
+42d381: mov edx, ecx
+42d383: mov edi, ebp
+42d385: or ecx, 0FFFFFFFFh
+42d388: repne scasb
+42d38a: mov ecx, edx
+42d38c: dec edi
+42d38d: shr ecx, 2
+42d390: rep movsd
+42d392: mov ecx, edx
+42d394: and ecx, 3
+42d397: rep movsb
+42d399: test bl, 2
+42d39c: jz short loc_42D3D0
+42d39e: lea edi, [esp+420h+Dir]
+42d3a2: or ecx, 0FFFFFFFFh
+42d3a5: xor eax, eax
+42d3a7: push ebp
+42d3a8: repne scasb
+42d3aa: not ecx
+42d3ac: sub edi, ecx
+42d3ae: mov esi, edi
+42d3b0: mov edx, ecx
+42d3b2: mov edi, ebp
+42d3b4: or ecx, 0FFFFFFFFh
+42d3b7: repne scasb
+42d3b9: mov ecx, edx
+42d3bb: dec edi
+42d3bc: shr ecx, 2
+42d3bf: rep movsd
+42d3c1: mov ecx, edx
+42d3c3: and ecx, 3
+42d3c6: rep movsb
+42d3c8: call sub_42D830
+42d830: mov edx, [esp+arg_0]
+42d834: push edi
+42d835: mov edi, edx
+42d837: or ecx, 0FFFFFFFFh
+42d83a: xor eax, eax
+42d83c: repne scasb
+42d83e: not ecx
+42d840: dec ecx
+42d841: jz short loc_42D88A
+42d843: cmp ecx, 103h
+42d849: jnb short loc_42D88A
+42d84b: mov edi, edx
+42d84d: or ecx, 0FFFFFFFFh
+42d850: repne scasb
+42d852: not ecx
+42d854: dec ecx
+42d855: cmp byte ptr [ecx+edx-1], 5Ch
+42d85a: jz short loc_42D88A
+42d88a: pop edi
+42d88b: retn
+42d3cd: add esp, 4
+42d3d0: test bl, 4
+42d3d3: jz short loc_42D401
+42d401: test bl, 8
+42d404: pop ebx
+42d405: jz short loc_42D433
+42d433: pop edi
+42d434: pop esi
+42d435: pop ebp
+42d436: add esp, 410h
+42d43c: retn
+42d46f: mov edx, [esp+11Ch+arg_4]
+42d476: add esp, 0Ch
+42d479: lea eax, [edx-1]
+42d47c: cmp eax, 4
+42d47f: ja short loc_42D4CE
+42d4ce: pop edi
+42d4cf: pop esi
+42d4d0: pop ebx
+42d4d1: add esp, 104h
+42d4d7: retn
+46998f: mov edi, offset aI_view32_ini
+469994: or ecx, 0FFFFFFFFh
+469997: xor eax, eax
+469999: add esp, 8
+46999c: repne scasb
+46999e: not ecx
+4699a0: sub edi, ecx
+4699a2: mov esi, edi
+4699a4: mov edx, ecx
+4699a6: mov edi, ebx
+4699a8: or ecx, 0FFFFFFFFh
+4699ab: repne scasb
+4699ad: mov ecx, edx
+4699af: dec edi
+4699b0: shr ecx, 2
+4699b3: rep movsd
+4699b5: mov ecx, edx
+4699b7: and ecx, 3
+4699ba: rep movsb
+4699bc: pop edi
+4699bd: pop esi
+4699be: pop ebx
+4699bf: retn
+469a0b: add esp, 4
+469a0e: lea edx, [esp+210h+FileName]
+469a15: lea eax, [esp+210h+ReturnedString]
+469a19: push edx
+469a1a: push 104h
+469a1f: push eax
+469a20: push offset Data
+469a25: push offset aDefaultlang
+469a2a: push offset aLanguage
+469a2f: call esi
+469a31: lea edi, [esp+210h+ReturnedString]
+469a35: or ecx, 0FFFFFFFFh
+469a38: xor eax, eax
+469a3a: repne scasb
+469a3c: not ecx
+469a3e: dec ecx
+469a3f: jz short loc_469A6E
+469a6e: mov eax, [esp+210h+arg_0]
+469a75: mov ecx, ds:dword_525170
+469a7b: pop edi
+469a7c: pop esi
+469a7d: mov [eax], ecx
+469a7f: mov edx, ds:off_525174
+469a85: mov [eax+4], edx
+469a88: add esp, 208h
+469a8e: retn
+469f7e: add esp, 4
+469f81: push offset FileName
+469f86: push 5
+469f88: push offset String
+469f8d: push offset a1_00
+469f92: push offset aGammavalue
+469f97: push offset aViewing
+469f9c: call ebp
+469f9e: push offset String
+469fa3: call _atof
+469fa8: fst ds:dbl_524F68
+469fae: fcomp ds:dbl_500750
+469fb4: add esp, 4
+469fb7: fnstsw ax
+469fb9: test ah, 1
+469fbc: jz short loc_469FD4
+469fd4: fld ds:dbl_524F68
+469fda: fcomp ds:dbl_500748
+469fe0: fnstsw ax
+469fe2: test ah, 41h
+469fe5: jnz short loc_469FFB
+469ffb: cmp [esp+218h+arg_4], ebx
+46a002: jz short loc_46A045
+46a004: push offset FileName
+46a009: push ebx
+46a00a: push offset aXkoord
+46a00f: push offset aWinposition
+46a014: call esi
+46a016: push offset FileName
+46a01b: push ebx
+46a01c: push offset aYkoord
+46a021: push offset aWinposition
+46a026: mov ds:X, eax
+46a02b: call esi
+46a02d: push offset Y
+46a032: push offset X
+46a037: push ebx
+46a038: mov ds:Y, eax
+46a03d: call sub_42B110
+42b110: sub esp, 10h
+42b113: lea edx, [esp+10h+pvParam]
+42b117: push esi
+42b118: mov esi, [esp+14h+arg_4]
+42b11c: push edi
+42b11d: mov edi, [esp+18h+arg_8]
+42b121: mov ecx, [esi]
+42b123: mov eax, [edi]
+42b125: push eax
+42b126: mov eax, [esp+1Ch+hWnd]
+42b12a: push ecx
+42b12b: push edx
+42b12c: push eax
+42b12d: call sub_42AE70
+42ae70: sub esp, 28h
+42ae73: push ebx
+42ae74: mov ebx, [esp+2Ch+pvParam]
+42ae78: push 0
+42ae7a: push ebx
+42ae7b: push 0
+42ae7d: push 30h
+42ae7f: call ds:SystemParametersInfoA
+42ae85: push 50h
+42ae87: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b34f: push offset ModuleName
+42b354: call ds:GetModuleHandleA
+42b35a: mov esi, eax
+42b35c: cmp esi, ebx
+42b35e: jz short loc_42B3DA
+42b360: mov edi, ds:GetProcAddress
+42b366: push offset aGetsystemmetri
+42b36b: push esi
+42b36c: call edi
+42b36e: cmp eax, ebx
+42b370: mov ds:dword_534F84, eax
+42b375: jz short loc_42B3DA
+42b377: push offset aMonitorfromwin
+42b37c: push esi
+42b37d: call edi
+42b37f: cmp eax, ebx
+42b381: mov ds:dword_534F88, eax
+42b386: jz short loc_42B3DA
+42b388: push offset aMonitorfromrec
+42b38d: push esi
+42b38e: call edi
+42b390: cmp eax, ebx
+42b392: mov ds:dword_534F8C, eax
+42b397: jz short loc_42B3DA
+42b399: push offset aMonitorfrompoi
+42b39e: push esi
+42b39f: call edi
+42b3a1: cmp eax, ebx
+42b3a3: mov ds:dword_534F90, eax
+42b3a8: jz short loc_42B3DA
+42b3aa: push offset aEnumdisplaymon
+42b3af: push esi
+42b3b0: call edi
+42b3b2: cmp eax, ebx
+42b3b4: mov ds:dword_534F98, eax
+42b3b9: jz short loc_42B3DA
+42b3bb: push offset aGetmonitorinfo
+42b3c0: push esi
+42b3c1: call edi
+42b3c3: cmp eax, ebx
+42b3c5: mov ds:dword_534F94, eax
+42b3ca: jz short loc_42B3DA
+42b3cc: mov eax, 1
+42b3d1: pop edi
+42b3d2: pop esi
+42b3d3: mov ds:dword_534F9C, eax
+42b3d8: pop ebx
+42b3d9: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae8c: cmp eax, 1
+42ae8f: jle short loc_42AF05
+42ae91: mov eax, [esp+2Ch+hWnd]
+42ae95: push ebp
+42ae96: mov ebp, [esp+30h+arg_8]
+42ae9a: push esi
+42ae9b: push edi
+42ae9c: mov edi, [esp+38h+arg_C]
+42aea0: test eax, eax
+42aea2: mov esi, ebp
+42aea4: jz short loc_42AECB
+42aecb: push 2
+42aecd: push edi
+42aece: push esi
+42aecf: call sub_42B560
+42b560: push esi
+42b561: push edi
+42b562: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b567: test eax, eax
+42b569: jz short loc_42B585
+42b56b: mov eax, [esp+8+arg_8]
+42b56f: mov ecx, [esp+8+arg_4]
+42b573: mov edx, [esp+8+arg_0]
+42b577: push eax
+42b578: push ecx
+42b579: push edx
+42b57a: call ds:dword_534F90
+42b580: pop edi
+42b581: pop esi
+42b582: retn 0Ch
+42aed4: lea ecx, [esp+38h+var_28]
+42aed8: mov [esp+38h+var_28], 28h
+42aee0: push ecx
+42aee1: push eax
+42aee2: call sub_42B6A0
+42b6a0: sub esp, 10h
+42b6a3: push esi
+42b6a4: push edi
+42b6a5: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b6aa: test eax, eax
+42b6ac: jz short loc_42B6C6
+42b6ae: mov eax, [esp+18h+arg_4]
+42b6b2: mov ecx, [esp+18h+arg_0]
+42b6b6: push eax
+42b6b7: push ecx
+42b6b8: call ds:dword_534F94
+42b6be: pop edi
+42b6bf: pop esi
+42b6c0: add esp, 10h
+42b6c3: retn 8
+42aee7: mov edx, [esp+38h+var_14]
+42aeeb: mov eax, [esp+38h+var_10]
+42aeef: mov ecx, [esp+38h+var_C]
+42aef3: mov [ebx], edx
+42aef5: mov edx, [esp+38h+var_8]
+42aef9: mov [ebx+4], eax
+42aefc: pop edi
+42aefd: mov [ebx+8], ecx
+42af00: pop esi
+42af01: mov [ebx+0Ch], edx
+42af04: pop ebp
+42af05: pop ebx
+42af06: add esp, 28h
+42af09: retn
+42b132: mov eax, [esp+28h+pvParam]
+42b136: mov ecx, [esi]
+42b138: add esp, 10h
+42b13b: cmp ecx, eax
+42b13d: jge short loc_42B141
+42b141: mov eax, [esp+18h+var_C]
+42b145: mov ecx, [edi]
+42b147: cmp ecx, eax
+42b149: jge short loc_42B14D
+42b14d: pop edi
+42b14e: pop esi
+42b14f: add esp, 10h
+42b152: retn
+46a042: add esp, 0Ch
+46a045: mov edi, offset byte_5475E0
+46a04a: or ecx, 0FFFFFFFFh
+46a04d: xor eax, eax
+46a04f: repne scasb
+46a051: not ecx
+46a053: dec ecx
+46a054: jz short loc_46A05F
+46a05f: push offset FileName
+46a064: push ebx
+46a065: push offset aStartoption
+46a06a: push offset aOthers
+46a06f: call esi
+46a071: dec eax
+46a072: jz short loc_46A097
+46a074: dec eax
+46a075: jnz short loc_46A0B7
+46a0b7: mov edi, offset byte_5475E0
+46a0bc: or ecx, 0FFFFFFFFh
+46a0bf: xor eax, eax
+46a0c1: repne scasb
+46a0c3: not ecx
+46a0c5: dec ecx
+46a0c6: jz short loc_46A0D5
+46a0d5: pop edi
+46a0d6: pop esi
+46a0d7: pop ebp
+46a0d8: pop ebx
+46a0d9: add esp, 208h
+46a0df: retn
+46a0e0: mov eax, ds:dword_535EF8
+46a0e5: push esi
+46a0e6: push edi
+46a0e7: xor edi, edi
+46a0e9: cmp eax, edi
+46a0eb: mov dword ptr ds:dbl_524F70, 0
+46a0f5: mov dword ptr ds:dbl_524F70+4, 40590000h
+46a0ff: jz short loc_46A11A
+46a11a: mov eax, [esp+8+arg_0]
+46a11e: mov esi, ds:KillTimer
+46a124: cmp eax, edi
+46a126: jz short loc_46A152
+46a128: mov ecx, ds:hWndParent
+46a12e: push 7CDh
+46a133: push ecx
+46a134: mov ds:dword_535F58, 1
+46a13e: mov ds:wParam, edi
+46a144: mov ds:dword_535F54, edi
+46a14a: mov ds:dword_535F48, edi
+46a150: call esi
+46a152: mov edx, ds:hWndParent
+46a158: push 7D4h
+46a15d: push edx
+46a15e: call esi
+46a160: push offset dword_546D80
+46a165: call sub_49C2C0
+49c2c0: mov eax, [esp+arg_0]
+49c2c4: or ecx, 0FFFFFFFFh
+49c2c7: mov [eax], ecx
+49c2c9: mov [eax+8], ecx
+49c2cc: mov [eax+4], ecx
+49c2cf: mov [eax+0Ch], ecx
+49c2d2: retn
+46a16a: call sub_49C930
+49c930: sub esp, 1Ch
+49c933: mov eax, ds:dword_535F18
+49c938: push esi
+49c939: mov esi, ds:ShowScrollBar
+49c93f: push edi
+49c940: push 0
+49c942: push 1
+49c944: push eax
+49c945: mov ds:dword_5475C8, 0
+49c94f: mov ds:dword_5475C0, 0
+49c959: call esi
+49c95b: mov ecx, ds:dword_535F18
+49c961: push 0
+49c963: push 0
+49c965: push ecx
+49c966: call esi
+49c968: mov esi, ds:SetScrollInfo
+49c96e: mov ecx, 7
+49c973: xor eax, eax
+49c975: lea edi, [esp+24h+var_1C]
+49c979: mov [esp+24h+var_1C], 1Ch
+49c981: lea edx, [esp+24h+var_1C]
+49c985: rep stosd
+49c987: push eax
+49c988: mov eax, ds:dword_535F18
+49c98d: push edx
+49c98e: push 1
+49c990: push eax
+49c991: mov [esp+34h+var_18], 17h
+49c999: call esi
+49c99b: mov edx, ds:dword_535F18
+49c9a1: lea ecx, [esp+24h+var_1C]
+49c9a5: push 0
+49c9a7: push ecx
+49c9a8: push 0
+49c9aa: push edx
+49c9ab: call esi
+49c9ad: mov eax, ds:dword_535F18
+49c9b2: push 0
+49c9b4: push 0
+49c9b6: push 408h
+49c9bb: push eax
+i49c9bc: SendMessageA
+49c9c2: pop edi
+49c9c3: pop esi
+49c9c4: add esp, 1Ch
+49c9c7: retn
+46a16f: push edi
+46a170: call sub_434440
+434440: mov eax, ds:dword_534FA8
+434445: test eax, eax
+434447: jz short loc_434464
+434464: mov eax, 1
+434469: retn
+46a175: push edi
+46a176: call sub_465F50
+465f50: mov eax, ds:dword_535F00
+465f55: push eax
+i465f56: IsWindow
+465f5c: test eax, eax
+465f5e: jz short locret_465FD5
+465fd5: retn
+46a17b: add esp, 0Ch
+46a17e: pop edi
+46a17f: pop esi
+46a180: retn
+42adf0: push 0
+42adf2: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42adf7: mov ecx, [esp+arg_0]
+42adfb: test ecx, ecx
+42adfd: jz short locret_42AE10
+42adff: push 4Eh
+42ae01: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae06: test eax, eax
+42ae08: jnz short locret_42AE10
+42ae10: retn
+42ae20: push 1
+42ae22: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae27: mov ecx, [esp+arg_0]
+42ae2b: test ecx, ecx
+42ae2d: jz short locret_42AE41
+42ae2f: push 4Fh
+42ae31: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae36: test eax, eax
+42ae38: jnz short locret_42AE41
+42ae41: retn
+4679f0: push offset FileName
+4679f5: push 20h
+4679f7: push offset String
+4679fc: push offset a1048555
+467a01: push offset aFlag
+467a06: push offset aToolbar
+i467a0b: GetPrivateProfileStringA
+467a11: push offset String
+467a16: call _atol
+467a1b: add esp, 4
+467a1e: xor edx, edx
+467a20: xor ecx, ecx
+467a22: test al, 1
+467a24: jz short loc_467A2B
+467a26: mov ecx, 1
+467a2b: test al, 2
+467a2d: jz short loc_467A30
+467a2f: inc ecx
+467a30: test al, 4
+467a32: jz short loc_467A35
+467a35: test al, 8
+467a37: jz short loc_467A3A
+467a39: inc ecx
+467a3a: test al, 10h
+467a3c: jz short loc_467A3F
+467a3f: test al, 20h
+467a41: jz short loc_467A49
+467a43: inc ecx
+467a44: mov edx, 1
+467a49: test al, 40h
+467a4b: jz short loc_467A4E
+467a4d: inc ecx
+467a4e: test al, 80h
+467a50: jz short loc_467A53
+467a52: inc ecx
+467a53: test ah, 1
+467a56: jz short loc_467A59
+467a58: inc ecx
+467a59: test ah, 2
+467a5c: jz short loc_467A60
+467a5e: inc ecx
+467a5f: inc edx
+467a60: test ah, 4
+467a63: jz short loc_467A66
+467a65: inc ecx
+467a66: test ah, 8
+467a69: jz short loc_467A6C
+467a6b: inc ecx
+467a6c: test ah, 10h
+467a6f: jz short loc_467A72
+467a71: inc ecx
+467a72: test ah, 20h
+467a75: jz short loc_467A78
+467a77: inc ecx
+467a78: test ah, 40h
+467a7b: jz short loc_467A7E
+467a7d: inc ecx
+467a7e: test ah, 80h
+467a81: jz short loc_467A84
+467a83: inc ecx
+467a84: test eax, 10000h
+467a89: jz short loc_467A8C
+467a8b: inc ecx
+467a8c: test eax, 20000h
+467a91: jz short loc_467A96
+467a93: add edx, 0Ah
+467a96: test eax, 40000h
+467a9b: jz short loc_467A9E
+467a9d: inc ecx
+467a9e: test eax, 80000h
+467aa3: jz short loc_467AA6
+467aa5: inc ecx
+467aa6: mov eax, ds:dword_524F38
+467aab: add eax, 7
+467aae: imul eax, ecx
+467ab1: lea eax, [eax+edx*8+8]
+467ab5: retn
+42ae20: push 1
+42ae22: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae27: mov ecx, [esp+arg_0]
+42ae2b: test ecx, ecx
+42ae2d: jz short locret_42AE41
+42ae2f: push 4Fh
+42ae31: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae36: test eax, eax
+42ae38: jnz short locret_42AE41
+42ae41: retn
+42adf0: push 0
+42adf2: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42adf7: mov ecx, [esp+arg_0]
+42adfb: test ecx, ecx
+42adfd: jz short locret_42AE10
+42adff: push 4Eh
+42ae01: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae06: test eax, eax
+42ae08: jnz short locret_42AE10
+42ae10: retn
+42ae20: push 1
+42ae22: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae27: mov ecx, [esp+arg_0]
+42ae2b: test ecx, ecx
+42ae2d: jz short locret_42AE41
+42ae2f: push 4Fh
+42ae31: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae36: test eax, eax
+42ae38: jnz short locret_42AE41
+42ae41: retn
+42ae20: push 1
+42ae22: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae27: mov ecx, [esp+arg_0]
+42ae2b: test ecx, ecx
+42ae2d: jz short locret_42AE41
+42ae2f: push 4Fh
+42ae31: call sub_42B4F0
+42b4f0: call sub_42B330
+42b330: mov eax, ds:dword_534F9C
+42b335: push ebx
+42b336: xor ebx, ebx
+42b338: push esi
+42b339: cmp eax, ebx
+42b33b: push edi
+42b33c: jz short loc_42B34F
+42b33e: mov ecx, ds:dword_534F94
+42b344: xor eax, eax
+42b346: cmp ecx, ebx
+42b348: pop edi
+42b349: pop esi
+42b34a: pop ebx
+42b34b: setnz al
+42b34e: retn
+42b4f5: test eax, eax
+42b4f7: jz short loc_42B507
+42b4f9: mov eax, [esp+nIndex]
+42b4fd: push eax
+42b4fe: call ds:dword_534F84
+42b504: retn 4
+42ae36: test eax, eax
+42ae38: jnz short locret_42AE41
+42ae41: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+415430: sub esp, 8
+415433: push esi
+415434: mov esi, 5
+415439: call sub_415910
+415910: mov eax, ds:dword_52CC98
+415915: retn
+41543e: test eax, eax
+415440: jz loc_41550A
+41550a: xor eax, eax
+41550c: cmp si, 4
+415510: setz al
+415513: pop esi
+415514: add esp, 8
+415517: retn
+Handling sigint
+Handling sigint
