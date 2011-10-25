@@ -1,0 +1,9 @@
+
+
+Please read "readme.txt" before reading this file!
+
+
+Plugins that use VCL are deprecated and will not work in
+IDA Pro 6.2 or later. You can still build plugins and other
+modules that use standard kernel functions from command line.
+See install_make.txt for details.
