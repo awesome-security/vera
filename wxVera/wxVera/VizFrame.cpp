@@ -10,7 +10,9 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
     EVT_MENU(Vera_About, VizFrame::OnAbout)
 	EVT_CLOSE(VizFrame::OnCloseWindow)
 	EVT_MENU(Vera_Check_Updates, VizFrame::CheckForUpdate)
-	EVT_MENU(Vera_ConnectToIDA, VizFrame::OnIda)
+#ifdef _WIN32
+        EVT_MENU(Vera_ConnectToIDA, VizFrame::OnIda)
+#endif
 	EVT_MENU(Vera_Config, VizFrame::OnConfig)
 	EVT_MOUSEWHEEL(VizFrame::mouseWheelMoved)
 	EVT_COMMAND(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED, VizFrame::ProcessEvent)
@@ -31,7 +33,9 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	traceWiz	= NULL;
 	parentApp	= parent;
 	tbThread    = NULL;
+	#ifdef _WIN32
 	idaServer   = NULL;
+	#endif
 	textSearchIsCleared = false;
 
 	// This is for the "tabbed" view at the top of the application
@@ -78,7 +82,9 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 		return;
 	}
 
+#ifdef _WIN32
 	toolsMenu->Append(Vera_ConnectToIDA, wxT("Start &IDA Server\tCtrl-I"), wxT("Start IDA Pro connection"));
+#endif
 	toolsMenu->Append(wxID_PROPERTIES, wxT("O&ptions"), wxT("Open Options and Configuration"));
 
 	// Create the Help Menu
@@ -125,7 +131,9 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	bmpOpen = new wxBitmap(folder_32_xpm);
 	bmpConfig = new wxBitmap(gear_32_xpm);
 	bmpAbout = new wxBitmap(help_32_xpm);
+#ifdef _WIN32
 	bmpIda = new wxBitmap(ida_32_xpm);
+#endif
 	//bmpEther = new wxBitmap(ether_32_xpm);
 
 	textSearch = NULL; // This is initialized in SetVeraToolbar to give the search box the right toolbar base
@@ -142,7 +150,9 @@ void VizFrame::SetVeraToolbar(wxToolBar *tb)
 {
 	// Add the icons, and reuse events where able
 	tb->AddTool(wxID_OPEN, *bmpOpen, wxT("Open GML graph or trace file"));
+#ifdef _WIN32
 	tb->AddTool(Vera_ConnectToIDA, *bmpIda, wxT("Start IDA Pro module listener"));
+#endif
 	tb->AddTool(wxID_PROPERTIES, *bmpConfig, wxT("Configure VERA"));
 	tb->AddTool(wxID_ABOUT, *bmpAbout, wxT("About VERA"));
 	
@@ -172,21 +182,26 @@ VizFrame::~VizFrame(void)
 	delete bmpOpen;
 	delete bmpConfig;
 	delete bmpAbout;
+#ifdef _WIN32
 	delete bmpIda;
-
-	bmpOpen = bmpConfig = bmpAbout = bmpIda = NULL;
-
+	bmpIda = NULL;
+#endif
+	bmpOpen    = NULL;
+	bmpConfig  = NULL;
+	bmpAbout   = NULL;
 }
 
 // event handlers
 
 void VizFrame::cleanupThreads(void)
 {
+	#ifdef _WIN32
 	if(idaServer)
 	{
 		idaServer->Delete();
 		idaServer = NULL;
 	}
+	#endif
 
 }
 
@@ -232,7 +247,11 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 			// Check the return value here.
 			if (!veraPane->openFile(path))
 			{
-				wxMessageBox(wxString::Format(wxT("Error loading GML file %s, invalid format. Is this actually a .gml file?"), path));
+				wxMessageBox(
+					wxString::Format(
+						wxT("Error loading GML file %s, invalid format. Is this actually a .gml file?"),
+						path.c_str())
+					);
 				this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
 				this->SetStatusText(wxString::Format(wxT("Error loading %s"), path.c_str()));
 				return;
@@ -336,7 +355,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					{
 						int answer = wxMessageBox(
 							wxString::Format(wxT("File %s already exists, do you want to overwrite it?"), 
-							fullFileName),
+									 fullFileName.c_str()),
 							wxT("File already exists"),
 							wxCENTER | wxYES_NO );
 						
@@ -363,7 +382,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					{
 						int answer = wxMessageBox(
 							wxString::Format(wxT("File %s already exists, do you want to overwrite it?"), 
-							fullFileName),
+									 fullFileName.c_str()),
 							wxT("File already exists"),
 							wxCENTER | wxYES_NO );
 						
@@ -444,7 +463,11 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 		}
 		else
 		{
-			wxMessageBox(wxString::Format(wxT("Error loading file %s. File needs to have .gml or .trace as the file extension."), path));
+			wxMessageBox(
+				wxString::Format(
+					wxT("Error loading file %s. File needs to have .gml or .trace as the file extension."),
+					path.c_str())
+				);
 			this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
 			this->SetStatusText(wxString::Format(wxT("Error loading %s"), path.c_str()));
 			return;
@@ -477,9 +500,9 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 	case THREAD_TRACE_ERROR:
 		{
 			wxString errorMsg = event.GetString();
-			wxLogDebug(wxT("Error processing file: %s"), errorMsg);
+			wxLogDebug(wxT("Error processing file: %s"), errorMsg.c_str());
 			this->dlgProgress->Destroy();
-			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg),
+			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg.c_str()),
 						 wxT("Graph Processing Error"),
 						 wxICON_ERROR);
 
@@ -774,6 +797,8 @@ void VizFrame::resized(wxSizeEvent& event)
 
 void VizFrame::OnIda(wxCommandEvent& event)
 {
+// IDA Integration only works on Windows
+#ifdef _WIN32
 	wxToolBar *newToolBar = new wxToolBar(this, wxID_ANY);
 	wxBitmap * tmp = bmpIda;
 
@@ -803,13 +828,20 @@ void VizFrame::OnIda(wxCommandEvent& event)
 	// Clear the memory of the old one
 	delete toolBar;
 	toolBar = newToolBar;
+#else
+	wxLogDebug(wxT("Not implemented!"));
+#endif
 }
 
-// Stub, needs to be finished
+ // Stub, needs to be finished
 bool VizFrame::sendIdaMsg(char *msg)
 {
+#ifdef _WIN32
 	if (idaServer != NULL)
 		return idaServer->sendData(msg, strlen(msg));
 	else
 		return false;
+#else
+	return false;
+#endif
 }
