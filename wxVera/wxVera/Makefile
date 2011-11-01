@@ -17,7 +17,7 @@ FLAGS=`/usr/local/bin/wx-config --cppflags` -cpp-precomp -g -arch i386 -D_USE_WX
 LIBS=-L../../ogdf/mac/ogdf `/usr/local/bin/wx-config --libs` -lwx_mac_gl-2.8 -framework GLUT -lfreetype -lOGDF
 endif
 
-all: wxvera tests tracegen
+all: wxvera tests tracegen Vera.app
 
 # Mac OS X application bundler
 Vera.app: wxvera tracegen
