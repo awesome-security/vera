@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+				<string>*</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>AllTypes</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>****</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+                <string>gml</string>
+                <string>GML</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>appico.icns</string>
+            <key>CFBundleTypeName</key>
+            <string>VERA Graphs</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>LSIsAppleDefaultForType</key>
+            <true/>
+        </dict>
+    </array>
+	<key>CFBundleIconFile</key>
+	<string>appico.icns</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Visualization for Reversing and Analysis</string>
+	<key>CFBundleSignature</key>
+	<string>VERA</string>
+	<key>CFBundleExecutable</key>
+	<string>wxvera</string>
+	<key>CFBundleIdentifier</key>
+	<string>gov.lanl.vera</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.40</string>
+	<key>CFBundleVersion</key>
+	<string>2011103101</string>
+</dict>
+</plist>
