@@ -1,12 +1,12 @@
-	RequestExecutionLevel admin
+RequestExecutionLevel admin
 
-Name "VERA 0.3"
-outfile "vera0.3_install.exe"
+Name "VERA 0.4beta1"
+outfile "vera0.4_beta1_install.exe"
 
 
 installDir $PROGRAMFILES\VERA
 
-	DirText "To install VERA 0.3, please choose a directory."
+	DirText "To install VERA 0.4beta1, please choose a directory."
 
 # open section
 section
@@ -32,12 +32,12 @@ section
 
 
 
-	WriteUninstaller $INSTDIR\vera0.3_uninstall.exe
+	WriteUninstaller $INSTDIR\vera0.4beta1_uninstall.exe
  	ExecWait "$INSTDIR\vcredist_x86.exe"
 
 	CreateDirectory "$SMPROGRAMS\VERA"
-	CreateShortCut "$SMPROGRAMS\VERA\VERA 0.3.lnk" "$INSTDIR\wxVera.exe"
-	CreateShortCut "$DESKTOP\VERA 0.3.lnk" "$INSTDIR\wxVera.exe"
+	CreateShortCut "$SMPROGRAMS\VERA\VERA 0.4beta1.lnk" "$INSTDIR\wxVera.exe"
+	CreateShortCut "$DESKTOP\VERA 0.4beta1.lnk" "$INSTDIR\wxVera.exe"
 
 sectionEnd
 
@@ -46,7 +46,7 @@ sectionEnd
 
 Section "Uninstall"
 
-	Delete $INSTDIR\vera0.3_uninstall.exe
+	Delete $INSTDIR\vera0.4beta_uninstall.exe
 
 
 	Delete $INSTDIR\demo.zip
@@ -67,8 +67,8 @@ Section "Uninstall"
 
 	RMDIR $INSTDIR
 
-	Delete "$SMPROGRAMS\VERA\VERA 0.3.lnk"
+	Delete "$SMPROGRAMS\VERA\VERA 0.4beta1.lnk"
 	RMDIR "$SMPROGRAMS\VERA\"
 
-	Delete "$DESKTOP\VERA 0.3.lnk"
+	Delete "$DESKTOP\VERA 0.4beta.lnk"
 SectionEnd
