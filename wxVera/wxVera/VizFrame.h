@@ -10,6 +10,8 @@
 #include "threadIdaServer.h"
 
 #define TEXT_SEARCH_DEFAULT "Search for Address"
+#define NO_EXE_FILE_SELECTED_TEXT "Enter executable file here..."
+#define NO_GML_FILE_SELECTED_TEXT "Enter file to save as here..."
 
 class MyApp;
 class VeraPane;

@@ -33,7 +33,7 @@ traceWizard::traceWizard(wxWizard *parent, wxWizardPage *prev, wxWizardPage *nex
 	// Trace file save
 	mainSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Original executable file:")), 0, wxALL, 5);
 
-	m_origExeFile = new wxTextCtrl(this, wxID_ANY, wxT("Enter executable file here..."), wxDefaultPosition, wxSize(200, 20));
+	m_origExeFile = new wxTextCtrl(this, wxID_ANY, wxT(NO_EXE_FILE_SELECTED_TEXT), wxDefaultPosition, wxSize(200, 20));
 
 	if (m_origExeFile == NULL)
 	{
@@ -58,7 +58,7 @@ traceWizard::traceWizard(wxWizard *parent, wxWizardPage *prev, wxWizardPage *nex
 	// GML file save
 	mainSizer->Add(new wxStaticText(this, wxID_ANY, wxT("GML Save file as:")), 0, wxALL, 5);
 
-	m_saveFile = new wxTextCtrl(this, wxID_ANY, wxT("Enter file to save as here..."), wxDefaultPosition, wxSize(200, 20));
+	m_saveFile = new wxTextCtrl(this, wxID_ANY, wxT(NO_GML_FILE_SELECTED_TEXT), wxDefaultPosition, wxSize(200, 20));
 
 	if (m_saveFile == NULL)
 	{

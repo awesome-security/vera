@@ -263,6 +263,19 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 		}
 		else if (path.EndsWith(wxT(".trace")))
 		{
+			// If the file doesn't exist update title bar, status bar, display an error box
+			if (!wxFileExists(path))
+			{
+				wxMessageBox(
+					wxString::Format(
+						wxT("Error loading trace file %s"),
+						path.c_str())
+					);
+				this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
+				this->SetStatusText(wxString::Format(wxT("Error loading %s"), path.c_str()));
+				return;
+			}
+
 			// We need more information to open a trace file, so use that to open the file.
 			traceWiz = new wxWizard(this, 
 						wxID_ANY, 
@@ -303,11 +316,22 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 
 				}
 
+				wxString saveFile = page1->m_saveFile->GetValue();
+
+				// Check for invalid save file or duplicates
+				if ( saveFile.StartsWith(wxT(NO_GML_FILE_SELECTED_TEXT)) )
+				{
+					wxMessageBox(wxT("You must choose where to save\nthe graph data file."),
+						     wxT("Trace Processing Error"), 
+						     wxICON_ERROR);
+					return;
+				}
+
 				// Check for invalid exe files
 				int answer = -1;
 				bool doProcessExe = true;
 
-				if ( page1->m_origExeFile->GetValue().StartsWith(wxT("Enter")) )
+				if ( page1->m_origExeFile->GetValue().StartsWith(wxT(NO_EXE_FILE_SELECTED_TEXT)) )
 				{
 					// Ask the user if they want to generate a trace without the executable
 					answer = wxMessageBox(
@@ -332,19 +356,8 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					}
 				}
 
-				wxString saveFile = page1->m_saveFile->GetValue();
-
-				// Check for invalid save file or duplicates
-				if ( saveFile.StartsWith(wxT("Enter")) )
-				{
-					wxMessageBox(wxT("You must choose where to save\nthe graph data file."),
-						     wxT("Trace Processing Error"), 
-						     wxICON_ERROR);
-					return;
-				}
-
 				// Check to see if the GML file already exists
-				bool doProcessBasicBlocks = page1->m_genAllAddressesCheckBox->GetValue();
+				bool doProcessBasicBlocks = page1->m_genBblAddressesCheckBox->GetValue();
 				bool doProcessAllBlocks   = page1->m_genAllAddressesCheckBox->GetValue();
 				
 				// Check for the basic blocks file
