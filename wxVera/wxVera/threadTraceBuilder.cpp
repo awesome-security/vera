@@ -159,6 +159,8 @@ void *threadTraceBuilder::Entry()
 		wxMutexGuiEnter();
 		wxLogDebug(wxString::Format(wxT("Error processing trace: %s"), e));
 		wxMutexGuiLeave();
+
+		return NULL;
 	}
 
 
@@ -169,7 +171,7 @@ void *threadTraceBuilder::Entry()
 		wxMutexGuiLeave();
 	}
 
-	if (m_prog != NULL)
+	if (m_prog)
 	{
 		wxMutexGuiEnter();
 		m_prog->Destroy();
