@@ -20,117 +20,147 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 
 void *threadTraceBuilder::Entry()
 {
-	// Process the basic blocks
-	if (m_doBbl)
+	try 
 	{
-		// Add "bbl-" to the beginning of the file name
-		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
-		wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-bbl-"));
-		
-		Trace *t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
-
-		if (t == NULL)
+		// Process the basic blocks
+		if (m_doBbl)
 		{
-			//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
-			return NULL;
+			// Add "bbl-" to the beginning of the file name
+			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
+			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-bbl-"));
+			
+			Trace *t = NULL;
+			try 
+			{
+				t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+			}
+			catch (char *e)
+			{
+				wxMutexGuiEnter();
+				wxLogDebug(wxString::Format(wxT("Error: %s"), e));
+				wxMutexGuiLeave();
+			}
+
+			if (t == NULL)
+			{
+				//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+				return NULL;
+			}
+
+			t->process(true); // Process basic blocks
+
+			if (m_prog)
+			{
+				wxMutexGuiEnter();
+				m_prog->Update(10);
+				wxMutexGuiLeave();
+			}
+
+			t->writeGmlFile(tmpfilename);
+
+			if (m_prog)
+			{
+				wxMutexGuiEnter();
+				m_prog->Update(20);
+				wxMutexGuiLeave();
+			}
+
+			t->layoutGraph(tmpfilename);
+
+			if (m_prog)
+			{
+				wxMutexGuiEnter();
+				m_prog->Update(30);
+				wxMutexGuiLeave();
+			}
+
+			delete t;
+			
+			if (!wxRemoveFile(tmpfilename))
+			{
+				//wxLogDebug(wxT("Could not remove temp file"));
+			}
 		}
 
-		t->process(true); // Process basic blocks
-
-		if (m_prog)
+		if (m_prog) 
 		{
 			wxMutexGuiEnter();
-			m_prog->Update(10);
+			m_prog->Update(50);
 			wxMutexGuiLeave();
 		}
 
-
-		t->writeGmlFile(tmpfilename);
-
-		if (m_prog)
+		// Process all addresses
+		if (m_doAll)
 		{
-			wxMutexGuiEnter();
-			m_prog->Update(20);
-			wxMutexGuiLeave();
+			// Add "all-" to the beginning of the file name
+			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
+			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-all-"));
+
+			Trace *t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+			
+			if (t == NULL)
+			{
+				wxMutexGuiEnter();
+				wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+				wxMutexGuiLeave();
+				return NULL;
+			}
+
+			t->process(false); // Process basic blocks
+
+			if (m_prog)
+			{
+				wxMutexGuiEnter();
+				m_prog->Update(60);
+				wxMutexGuiLeave();
+			}
+
+			t->writeGmlFile(tmpfilename);
+
+			if (m_prog)
+			{
+				wxMutexGuiEnter();
+				m_prog->Update(80);
+				wxMutexGuiLeave();
+			}
+
+			t->layoutGraph(tmpfilename);
+
+			if (m_prog)
+			{
+				wxMutexGuiEnter();
+				m_prog->Update(90);
+				wxMutexGuiLeave();
+			}
+
+			delete t;
+
+			if (!wxRemoveFile(tmpfilename))
+			{
+				wxMutexGuiEnter();
+				wxLogDebug(wxT("Could not remove temp file"));
+				wxMutexGuiLeave();
+			}
 		}
-
-		t->layoutGraph(tmpfilename);
-
-		if (m_prog)
-		{
-			wxMutexGuiEnter();
-			m_prog->Update(30);
-			wxMutexGuiLeave();
-		}
-
-		delete t;
-		
-		if (!wxRemoveFile(tmpfilename))
-		{
-			//wxLogDebug(wxT("Could not remove temp file"));
-		}
-	}
-
-	if (m_prog) 
+	} // end try
+	catch (char *e)
 	{
+		wxCommandEvent ErrEvt( wxEVT_COMMAND_BUTTON_CLICKED );
+		ErrEvt.SetInt(THREAD_TRACE_ERROR);
+		ErrEvt.SetString(wxString(e));
+
+		if (m_parentFrame)
+		{
+			wxMutexGuiEnter();
+			wxPostEvent(m_parentFrame, ErrEvt);
+			wxMutexGuiLeave();
+		}
+
 		wxMutexGuiEnter();
-		m_prog->Update(50);
+		wxLogDebug(wxString::Format(wxT("Error processing trace: %s"), e));
 		wxMutexGuiLeave();
 	}
 
-	// Process all addresses
-	if (m_doAll)
-	{
-		// Add "all-" to the beginning of the file name
-		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
-		wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-all-"));
-
-		Trace *t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
-
-		if (t == NULL)
-		{
-			wxMutexGuiEnter();
-			wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
-			wxMutexGuiLeave();
-			return NULL;
-		}
-
-		t->process(false); // Process basic blocks
-
-		if (m_prog)
-		{
-			wxMutexGuiEnter();
-			m_prog->Update(60);
-			wxMutexGuiLeave();
-		}
-
-		t->writeGmlFile(tmpfilename);
-
-		if (m_prog)
-		{
-			wxMutexGuiEnter();
-			m_prog->Update(80);
-			wxMutexGuiLeave();
-		}
-
-		t->layoutGraph(tmpfilename);
-
-		if (m_prog)
-		{
-			wxMutexGuiEnter();
-			m_prog->Update(90);
-			wxMutexGuiLeave();
-		}
-
-		delete t;
-
-		if (!wxRemoveFile(tmpfilename))
-		{
-			wxMutexGuiEnter();
-			wxLogDebug(wxT("Could not remove temp file"));
-			wxMutexGuiLeave();
-		}
-	}
 
 	if (m_prog)
 	{

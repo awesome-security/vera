@@ -17,10 +17,15 @@ FLAGS=`/usr/local/bin/wx-config --cppflags` -cpp-precomp -g -arch i386 -D_USE_WX
 LIBS=-L../../ogdf/mac/ogdf `/usr/local/bin/wx-config --libs` -lwx_mac_gl-2.8 -framework GLUT -lfreetype -lOGDF
 endif
 
-all: wxvera tests tracegen
+all: wxvera tests tracegen Vera.app
 
-poop:
-	@echo $(FLAGS) $(LIBS)
+# Mac OS X application bundler
+Vera.app: wxvera tracegen
+	mkdir Vera.app
+	mkdir -p Vera.app/Contents
+	cp -f Info.plist Vera.app/Contents
+	mkdir -p Vera.app/Contents/MacOS
+	cp -f wxvera Vera.app/Contents/MacOS
 
 wxvera: util.o FreeType.o Config.o ConfigFrame.o LegendFrame.o ThreadTraceBuilder.o \
 	Viz.o VizFrame.o Trace.o TraceWizard.o wxvera.o #ThreadIdaServer.o
@@ -75,4 +80,4 @@ Trace.o: Trace.cpp Trace.h
 	$(CC) $(FLAGS) $(INCLUDE) -c Trace.cpp -o Trace.o
 
 clean:
-	rm -rf *.o wxvera tracegen testTrace *~ unittest/*gml
+	rm -rf *.o wxvera tracegen testTrace Vera.app *~ unittest/*gml

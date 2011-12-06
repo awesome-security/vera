@@ -1,0 +1,11 @@
+basedll_stdpaths_cf.o: ../src/mac/corefoundation/stdpaths_cf.cpp \
+  ../include/wx/stdpaths.h ../include/wx/defs.h ../include/wx/string.h \
+  ../include/wx/filefn.h ../include/wx/mac/corefoundation/stdpaths.h \
+  ../include/wx/unix/stdpaths.h ../include/wx/filename.h \
+  ../include/wx/arrstr.h ../include/wx/datetime.h \
+  ../include/wx/longlong.h ../include/wx/dynarray.h ../include/wx/intl.h \
+  ../include/wx/mac/private.h ../include/wx/mac/carbon/private.h \
+  ../include/wx/defs.h ../include/wx/mac/corefoundation/cfstring.h \
+  ../include/wx/fontenc.h ../include/wx/mac/corefoundation/cfdataref.h \
+  ../include/wx/mac/corefoundation/cfref.h \
+  ../include/wx/mac/corefoundation/cfstring.h

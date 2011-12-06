@@ -331,13 +331,19 @@ void Trace::process(bool doBasicBlocks)
 
 	fclose(fin);
 
-	if ( (wcsstr(linew, L"vera_trace_version=0.1") == linew) ||
-		 (wcsstr(linew, L"n") == linew) ||
-		 (wcsstr(linew, L"m") == linew) ||
-		 (wcsstr(linew, L"i") == linew) )
+	// The first line of the file determines the type of trace
+	// Validate it before proceeding
+
+	if ( (wcsstr(linew, L"vera_trace_version=0.1") == linew) )
 		processVeraPin(doBasicBlocks);
-	else
+	else if ( wcsstr(linew, L"After init") == linew )
 		processEther(doBasicBlocks);
+	else
+	{
+		char errstr[128] = {0};
+		sprintf(errstr, "Unrecognized trace file %s (unrecognized format)", this->tracefile);
+		throw errstr;
+	}
 
 	if (bblMap.size() <= 1 || edgeMap.size() <= 1) // Error
 	{
