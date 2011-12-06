@@ -195,7 +195,7 @@ wxGLCanvas(parent, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas
     int argc = 1;
     char* argv[1] = { wxString((wxTheApp->argv)[0]).char_str() };
  
-    glutInit(&argc, argv);
+    //glutInit(&argc, argv);
 	
 	this->parentVizFrame = parentVizFrame;
 
