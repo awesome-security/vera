@@ -515,6 +515,7 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 			wxString errorMsg = event.GetString();
 			wxLogDebug(wxT("Error processing file: %s"), errorMsg.c_str());
 			this->dlgProgress->Destroy();
+			this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
 			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg.c_str()),
 						 wxT("Graph Processing Error"),
 						 wxICON_ERROR);
