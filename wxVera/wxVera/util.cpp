@@ -102,3 +102,33 @@ bool isHexString(const char *str, size_t len)
 
 	return ret;
 }
+
+bool parseTraceLine(char *src, char *lcol, size_t lcol_len, char *rcol, size_t rcol_len)
+{
+	char *pos = strchr(src, ':');
+
+	// All pointers must have values
+	if (src == NULL || lcol == NULL || lcol_len == 0 || rcol == NULL || rcol_len == 0)
+		return false;
+
+	if (pos == NULL)
+	{
+		strncpy(lcol, src, lcol_len);
+
+		// If a '\n' is found, replace it with a null
+		pos = strchr(lcol, '\n');
+		if (pos)
+			*pos = 0;
+		
+		memset(rcol, 0, rcol_len);
+	}
+	else
+	{
+		pos[0] = 0;
+		pos++;
+		strncpy(lcol, src, lcol_len);
+		strncpy(rcol, pos, rcol_len);
+	}
+
+	return true;
+}

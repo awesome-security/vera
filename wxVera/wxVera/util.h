@@ -22,6 +22,7 @@
 int		xtoi(const char* xs, unsigned int* result);
 wxString	prependFileName(wxFileName input, wxString stringToPrepend);
 bool isHexString(const char *str, size_t len);
+bool parseTraceLine(char *src, char *lcol, size_t lcol_len, char *rcol, size_t rcol_len);
 
 #define MAX(x,y) ((x) > (y) ? (x) : (y))
 #define MIN(x,y) ((x) < (y) ? (x) : (y))

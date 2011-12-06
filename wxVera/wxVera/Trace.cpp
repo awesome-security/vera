@@ -374,6 +374,7 @@ void Trace::processVeraPin(bool doBasicBlocks)
 	uint32_t inum = 0;
 	uint32_t bblnum = 0;
 	uint32_t edgenum = 0;
+	char *pos = NULL;
 
 	bool isFirstAddr = true;
 	bool isImport = false;
@@ -394,12 +395,14 @@ void Trace::processVeraPin(bool doBasicBlocks)
 		case 'm':
 		case 'n':
 			// Just get the normal instructions
-			sscanf(&in[1], "%[^:\n]:%[^\n]", addr, inst);
+
+			parseTraceLine(&in[1], addr, sizeof(addr), inst, sizeof(inst));
+
 			isImport = false;
 			break;
 		case 'i':
 			// Import
-			sscanf(&in[1], "%[^:\n]:%[^\n]", addr, api);
+			parseTraceLine(&in[1], addr, sizeof(addr), api, sizeof(api));
 			isImport = true;
 			break;
 		default:
