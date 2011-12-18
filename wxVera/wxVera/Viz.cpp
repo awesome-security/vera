@@ -94,6 +94,7 @@ void VeraPane::mouseMoved(wxMouseEvent& event)
 		DrawAndRender();
 	}
 }
+
 void VeraPane::leftMouseDown(wxMouseEvent& event) 
 {
 	if (nodesLoaded)
@@ -104,6 +105,17 @@ void VeraPane::leftMouseDown(wxMouseEvent& event)
 		lastMousePos.y = point.y;
 		sawLeftMouseDown = true;
 	}
+}
+
+void VeraPane::goToPoint(GLdouble x, GLdouble y, GLfloat zoom)
+{
+
+	// Need to set: tx, ty, and zoom
+	this->tx = midX - x;
+	this->ty = midY - y;
+	this->zoom = zoom;
+
+	DrawAndRender();
 }
 
 void VeraPane::zoomControl(bool doZoomIn)
@@ -336,6 +348,7 @@ void VeraPane::DrawScene(void)
 
 			for(int i = 0 ; i < numedges ; i++)
 			{
+				// Set the position using the midpoint and the translation amount
 				GLfloat sourceX = nodeMap[edgeVector[i]->source]->x - midX + tx;
 				GLfloat sourceY = nodeMap[edgeVector[i]->source]->y - midY + ty;
 				GLfloat targetX = nodeMap[edgeVector[i]->target]->x - midX + tx;
@@ -373,6 +386,7 @@ void VeraPane::DrawScene(void)
 				if (node == NULL)
 					continue;
 
+				// Set the position using the midpoint and the translation amount
 				GLfloat xPos = node->x - midX + tx;
 				GLfloat yPos = node->y - midY + ty;
 				GLfloat nodeDimensions[4] = {0};

@@ -132,6 +132,7 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	bmpConfig = new wxBitmap(gear_32_xpm);
 	bmpAbout = new wxBitmap(help_32_xpm);
 #ifdef _WIN32
+	// IDA integration is only working in Windows at the moment
 	bmpIda = new wxBitmap(ida_32_xpm);
 #endif
 	//bmpEther = new wxBitmap(ether_32_xpm);
@@ -244,7 +245,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 
 		if (path.EndsWith(wxT(".gml")))
 		{
-			// Check the return value here.
+			// Do the visualization. Check the return value here.
 			if (!veraPane->openFile(path))
 			{
 				wxMessageBox(
@@ -634,14 +635,23 @@ void VizFrame::SearchTextEvent(wxCommandEvent &event)
 					 wxICON_ERROR);
 
 	std::string searchVal = event.GetString().MakeLower().ToAscii();
-	node_t *s = veraPane->searchByString(searchVal);
+	node_t *s = NULL;
+
+	if (strcmp(searchVal.c_str(), "start") == 0)
+		s = veraPane->searchByString(START_NODE_LABEL);
+	else
+		s = veraPane->searchByString(searchVal);
 
 	if (s != NULL)
 	{
+		veraPane->goToPoint(s->x, s->y, MAX_ZOOM);
 		this->SetStatusText(wxString::Format(wxT("Found %s"), s->label));
 	}
 	else
+	{
+		this->SetStatusText(wxString::Format(wxT("Could not find %s"), searchVal.c_str()));
 		wxLogMessage(wxT("Could not find search term %s"), searchVal.c_str());
+	}
 
 
 }
