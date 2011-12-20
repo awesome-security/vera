@@ -8,6 +8,7 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
     EVT_MENU(Vera_Quit,  VizFrame::OnQuit)
 	EVT_MENU(Vera_Open, VizFrame::OnOpen)
     EVT_MENU(Vera_About, VizFrame::OnAbout)
+	EVT_MENU(Vera_Help, VizFrame::OnHelp)
 	EVT_CLOSE(VizFrame::OnCloseWindow)
 	EVT_MENU(Vera_Check_Updates, VizFrame::CheckForUpdate)
 #ifdef _WIN32
@@ -97,7 +98,8 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	}
 
 	// Help Menu Items
-	helpMenu->Append(Vera_About, wxT("&About...\tF1"), wxT("Show about dialog"));
+	helpMenu->Append(Vera_Help, wxT("&Help\tF1"), wxT("Show help document"));
+	helpMenu->Append(Vera_About, wxT("&About..."), wxT("Show about dialog"));
 	helpMenu->Append(Vera_Check_Updates, wxT("&Updates"), wxT("Check for updates"));
 
 	// now append the freshly created menu to the menu bar...
@@ -130,7 +132,7 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	// Icons for the toolBar
 	bmpOpen = new wxBitmap(folder_32_xpm);
 	bmpConfig = new wxBitmap(gear_32_xpm);
-	bmpAbout = new wxBitmap(help_32_xpm);
+	bmpHelp = new wxBitmap(help_32_xpm);
 #ifdef _WIN32
 	// IDA integration is only working in Windows at the moment
 	bmpIda = new wxBitmap(ida_32_xpm);
@@ -155,7 +157,7 @@ void VizFrame::SetVeraToolbar(wxToolBar *tb)
 	tb->AddTool(Vera_ConnectToIDA, *bmpIda, wxT("Start IDA Pro module listener"));
 #endif
 	tb->AddTool(wxID_PROPERTIES, *bmpConfig, wxT("Configure VERA"));
-	tb->AddTool(wxID_ABOUT, *bmpAbout, wxT("About VERA"));
+	tb->AddTool(Vera_Help, *bmpHelp, wxT("About VERA"));
 	
 	// Actual controls have to have the new toolbar as the base, so set that up here.
 	if (NULL != textSearch)
@@ -182,14 +184,14 @@ VizFrame::~VizFrame(void)
 	// Clean up all the allocated icons
 	delete bmpOpen;
 	delete bmpConfig;
-	delete bmpAbout;
+	delete bmpHelp;
 #ifdef _WIN32
 	delete bmpIda;
 	bmpIda = NULL;
 #endif
 	bmpOpen    = NULL;
 	bmpConfig  = NULL;
-	bmpAbout   = NULL;
+	bmpHelp   = NULL;
 }
 
 // event handlers
@@ -578,6 +580,18 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 		break;
 	}
 	
+}
+void VizFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
+{
+	wxMessageBox(wxT("VERA Quick Help"
+		"Move the view: left-click with your mouse on any part of the screen and drag\n"
+		"Zoom:            Scroll-wheel or A/Z keys\n"
+		"Open:            CTRL-O\n"
+		"Help:            F1\n"
+		"Connect to IDA:  CTRL-I\n"
+		"Navigate in IDA: Right-click address (not a library) with the mouse\n"
+		)
+		);
 }
 
 void VizFrame::OnAbout(wxCommandEvent& WXUNUSED(event))

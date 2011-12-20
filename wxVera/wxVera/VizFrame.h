@@ -28,6 +28,7 @@ public:
     void OnQuit(wxCommandEvent& event);
 	void OnOpen(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+	void VizFrame::OnHelp(wxCommandEvent& event);
 	void OnIda(wxCommandEvent& event);
 	void OnConfig(wxCommandEvent& event);
 	void OnCloseWindow(wxCloseEvent &event);
@@ -62,7 +63,7 @@ private:
 	wxToolBar *				toolBar;
 	wxBitmap *bmpOpen;
 	wxBitmap *bmpConfig;
-	wxBitmap *bmpAbout;
+	wxBitmap *bmpHelp;
 	wxBitmap *bmpIda;
 	wxTextCtrl * textSearch;
 	bool textSearchIsCleared;
@@ -90,6 +91,7 @@ enum
 	Vera_About				= wxID_ABOUT,
 	Vera_Open				= wxID_OPEN,
 	Vera_Config				= wxID_PROPERTIES,
+	Vera_Help,
 	Vera_ConnectToIDA,
 	Vera_ConnectToEther,
 	Vera_Check_Updates,
