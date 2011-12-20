@@ -28,7 +28,7 @@ public:
     void OnQuit(wxCommandEvent& event);
 	void OnOpen(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
-	void VizFrame::OnHelp(wxCommandEvent& event);
+	void OnHelp(wxCommandEvent& event);
 	void OnIda(wxCommandEvent& event);
 	void OnConfig(wxCommandEvent& event);
 	void OnCloseWindow(wxCloseEvent &event);
