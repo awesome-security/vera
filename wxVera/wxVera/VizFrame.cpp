@@ -19,6 +19,8 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
 	EVT_COMMAND(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED, VizFrame::ProcessEvent)
     EVT_TEXT(Vera_Search, VizFrame::SearchTextFocused)
 	EVT_TEXT_ENTER(Vera_Search, VizFrame::SearchTextEvent)
+	EVT_MENU(Vera_Search, VizFrame::SearchTextButton)
+	EVT_MENU(Vera_Home, VizFrame::HomeDisplay)
 END_EVENT_TABLE()
 #endif
 
@@ -133,6 +135,8 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	bmpOpen = new wxBitmap(folder_32_xpm);
 	bmpConfig = new wxBitmap(gear_32_xpm);
 	bmpHelp = new wxBitmap(help_32_xpm);
+	bmpFind = new wxBitmap(find_xpm);
+	bmpHome = new wxBitmap(home_xpm);
 #ifdef _WIN32
 	// IDA integration is only working in Windows at the moment
 	bmpIda = new wxBitmap(ida_32_xpm);
@@ -158,7 +162,8 @@ void VizFrame::SetVeraToolbar(wxToolBar *tb)
 #endif
 	tb->AddTool(wxID_PROPERTIES, *bmpConfig, wxT("Configure VERA"));
 	tb->AddTool(Vera_Help, *bmpHelp, wxT("About VERA"));
-	
+	tb->AddTool(Vera_Home, *bmpHome, wxT("Reset the view back to the default"));
+
 	// Actual controls have to have the new toolbar as the base, so set that up here.
 	if (NULL != textSearch)
 		delete textSearch;
@@ -172,6 +177,7 @@ void VizFrame::SetVeraToolbar(wxToolBar *tb)
 	}
 	
 	tb->AddControl(textSearch);
+	tb->AddTool(Vera_Search, *bmpFind, wxT("Search for address"));
 	tb->Realize();
 
 	SetToolBar(tb);
@@ -185,13 +191,17 @@ VizFrame::~VizFrame(void)
 	delete bmpOpen;
 	delete bmpConfig;
 	delete bmpHelp;
+	delete bmpFind;
+	delete bmpHome;
 #ifdef _WIN32
 	delete bmpIda;
-	bmpIda = NULL;
+	bmpIda     = NULL;
 #endif
 	bmpOpen    = NULL;
 	bmpConfig  = NULL;
-	bmpHelp   = NULL;
+	bmpHelp    = NULL;
+	bmpFind    = NULL;
+	bmpHome    = NULL;
 }
 
 // event handlers
@@ -574,7 +584,6 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 	case THREAD_TRACE_ALL_ADDRESSES_PROCESSED:
 		veraPane->openFile(filename);
 		this->SetStatusText(wxString::Format(wxT("Loaded %s"), filename.c_str()));
-		veraPane->DrawAndRender();
 		break;
 	default:
 		break;
@@ -641,6 +650,14 @@ void VizFrame::SearchTextFocused(wxCommandEvent &event)
 	}
 }
 
+void VizFrame::SearchTextButton(wxCommandEvent &event)
+{
+	wxCommandEvent ev;
+	ev.SetString(textSearch->GetValue());
+
+	this->SearchTextEvent(ev);
+}
+
 void VizFrame::SearchTextEvent(wxCommandEvent &event)
 {
 	if (event.GetString().Find(wxT(TEXT_SEARCH_DEFAULT)) != wxNOT_FOUND)
@@ -701,6 +718,12 @@ void VizFrame::CheckForUpdate(wxCommandEvent& event)
 		wxMessageBox(wxT("You are at the latest version of VERA"), wxT("Up-to-date"), wxOK);
 	}
 }
+
+void VizFrame::HomeDisplay(wxCommandEvent &event)
+{
+	veraPane->resetView();
+}
+
 
 void VizFrame::OnCloseWindow(wxCloseEvent &event)
 {

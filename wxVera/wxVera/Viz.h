@@ -117,6 +117,7 @@ public:
 	void keyReleased		(wxKeyEvent& event);
 	node_t * searchByString (string searchString);
 	void goToPoint(GLdouble x, GLdouble y, GLfloat zoom);
+	void resetView(void);
 
 private:
 	void DrawScene			(void);

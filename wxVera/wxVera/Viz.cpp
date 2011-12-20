@@ -95,6 +95,15 @@ void VeraPane::mouseMoved(wxMouseEvent& event)
 	}
 }
 
+void VeraPane::resetView(void)
+{
+	tx = 0.0;
+	ty = 0.0;
+	zoom = MIN_ZOOM;
+
+	DrawAndRender();
+}
+
 void VeraPane::leftMouseDown(wxMouseEvent& event) 
 {
 	if (nodesLoaded)
@@ -834,6 +843,7 @@ bool VeraPane::openFile(wxString filename)
 		return false;
 
 	nodesLoaded = true;
+	resetView();
 
 	return true;
 }

@@ -101,6 +101,8 @@ using namespace __gnu_cxx;
 #include "icons/ether_32.xpm"
 #include "icons/help_32.xpm"
 #include "icons/idaConnected_32.xpm"
+#include "icons/find.xpm"
+#include "icons/home.xpm"
 #endif
 
 // Identifier strings

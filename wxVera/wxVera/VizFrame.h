@@ -47,6 +47,8 @@ public:
 	void ProcessEvent(wxCommandEvent & event);
 	void SearchTextEvent(wxCommandEvent & event);
 	void SearchTextFocused(wxCommandEvent &event);
+	void SearchTextButton(wxCommandEvent &event);
+	void HomeDisplay(wxCommandEvent &event);
 	bool sendIdaMsg(char *msg);
 
 private:
@@ -65,6 +67,8 @@ private:
 	wxBitmap *bmpConfig;
 	wxBitmap *bmpHelp;
 	wxBitmap *bmpIda;
+	wxBitmap *bmpFind;
+	wxBitmap *bmpHome;
 	wxTextCtrl * textSearch;
 	bool textSearchIsCleared;
 	//wxBitmap *bmpEther;
@@ -96,6 +100,7 @@ enum
 	Vera_ConnectToEther,
 	Vera_Check_Updates,
 	Vera_Search,
+	Vera_Home,
 	IDA_SERVER_ID,
 };
 
