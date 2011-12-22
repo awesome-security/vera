@@ -488,15 +488,15 @@ void VeraPane::DrawScene(void)
 			} // End node drawing
 		}
 	}
-	else // No nodes are loaded
-	{
-		glPushMatrix();
-		glTranslatef(0, 0, -1000);
-		glColor3f(TEXT_COLOR_GLF);
-		freetype::print(freefont_startlabel, -100, 0, false, "Welcome to VERA v" __VERA_VERSION__, cnt1);
-		freetype::print(freefont_startlabel, -110, -30, false, "Open a file to get started", cnt1);
-		glPopMatrix();
-	}
+	//else // No nodes are loaded
+	//{
+	//	glPushMatrix();
+	//	glTranslatef(0, 0, -1000);
+	//	glColor3f(TEXT_COLOR_GLF);
+	//	freetype::print(freefont_startlabel, -100, 0, false, "Welcome to VERA v" __VERA_VERSION__, cnt1);
+	//	freetype::print(freefont_startlabel, -110, -30, false, "Open a file to get started", cnt1);
+	//	glPopMatrix();
+	//}
 
 }
 

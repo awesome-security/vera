@@ -74,6 +74,7 @@ using namespace __gnu_cxx;
 #include "wx/wizard.h"
 #include "wx/thread.h"
 #include "wx/checkbox.h"
+#include "wx/richtext/richtextctrl.h"
 
 // wxVera includes
 #include "threadTraceBuilder.h"

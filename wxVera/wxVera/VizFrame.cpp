@@ -50,18 +50,30 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 		return;
 	}
 
-	// Create the VeraPane rendering class
-	int args[] = VERA_OBJECT_ARGS;
-	veraPane = new VeraPane(noteBook, args, this);
+	// Start with the veraPane null and just display a text label
+	veraPane = NULL;
 
-	if (veraPane == NULL)
-	{
-		wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
-		return;
-	}
+	wxRichTextCtrl *introMessage = new wxRichTextCtrl(
+		noteBook, 
+		wxID_ANY, 
+		wxEmptyString, 
+		wxDefaultPosition, 
+		wxSize(200, 200),
+		wxNO_BORDER|wxWANTS_CHARS|wxRE_READONLY|wxRE_CENTER_CARET);
 
+	introMessage->BeginAlignment(wxTEXT_ALIGNMENT_CENTER);
+	introMessage->BeginBold();
+	introMessage->BeginFontSize(50);
+	introMessage->Newline();
+	introMessage->Newline();
+	introMessage->WriteText(wxT("Welcome to VERA v" __VERA_VERSION__));
+	introMessage->EndFontSize();
+	introMessage->EndBold();
+	introMessage->Newline();
+	introMessage->EndAlignment();
+	
 	// First page to be displayed.
-	noteBook->AddPage(veraPane, wxT("Visualization"));
+	noteBook->AddPage(introMessage, wxT("Visualization"));
 
 	// Create the File Menu
 	wxMenu *fileMenu = new wxMenu;
@@ -227,6 +239,24 @@ void VizFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 	Close(true);
 }
 
+inline void VizFrame::StartVeraPane(void)
+{
+	if (veraPane == NULL)
+	{
+		int args[] = VERA_OBJECT_ARGS;
+		veraPane = new VeraPane(noteBook, args, this);
+
+		if (veraPane == NULL)
+		{
+			wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+			return;
+		}
+
+		noteBook->DeleteAllPages();
+		noteBook->AddPage(veraPane, wxT("Visualization"));
+	}
+}
+
 void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 {
 	// Open a dialog for just the .gml files
@@ -258,6 +288,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 		if (path.EndsWith(wxT(".gml")))
 		{
 			// Do the visualization. Check the return value here.
+			StartVeraPane();
 			if (!veraPane->openFile(path))
 			{
 				wxMessageBox(
@@ -508,7 +539,8 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 	OpenDialog.Destroy();
 
 	// Trigger a render event
-	veraPane->DrawAndRender();
+	if (veraPane)
+		veraPane->DrawAndRender();
 }
 
 // This function strikes me as ugly and non-optimal -Danny
@@ -582,6 +614,7 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 	case THREAD_TRACE_BASIC_BLOCKS_PROCESSED:
 	case THREAD_TRACE_BOTH_PROCESSED:
 	case THREAD_TRACE_ALL_ADDRESSES_PROCESSED:
+		StartVeraPane();
 		veraPane->openFile(filename);
 		this->SetStatusText(wxString::Format(wxT("Loaded %s"), filename.c_str()));
 		break;
@@ -593,11 +626,11 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 void VizFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
 {
 	wxMessageBox(wxT("VERA Quick Help"
-		"Move the view: left-click with your mouse on any part of the screen and drag\n"
-		"Zoom:            Scroll-wheel or A/Z keys\n"
-		"Open:            CTRL-O\n"
-		"Help:            F1\n"
-		"Connect to IDA:  CTRL-I\n"
+		"Move the view:	left-click with your mouse on any part of the screen and drag\n"
+		"Zoom: Scroll-wheel or A/Z keys\n"
+		"Open: CTRL-O\n"
+		"Help: F1\n"
+		"Connect to IDA: CTRL-I\n"
 		"Navigate in IDA: Right-click address (not a library) with the mouse\n"
 		)
 		);
@@ -660,10 +693,21 @@ void VizFrame::SearchTextButton(wxCommandEvent &event)
 
 void VizFrame::SearchTextEvent(wxCommandEvent &event)
 {
+	if (veraPane == NULL)
+	{
+		wxMessageBox(wxT("No graph is loaded, try again"),
+					 wxT("Invalid Search"),
+					 wxICON_ERROR);
+		return;
+	}
+
 	if (event.GetString().Find(wxT(TEXT_SEARCH_DEFAULT)) != wxNOT_FOUND)
+	{
 		wxMessageBox(wxT("Please search for an address or function name"),
 					 wxT("Invalid Search"),
 					 wxICON_ERROR);
+		return;
+	}
 
 	std::string searchVal = event.GetString().MakeLower().ToAscii();
 	node_t *s = NULL;
@@ -721,7 +765,8 @@ void VizFrame::CheckForUpdate(wxCommandEvent& event)
 
 void VizFrame::HomeDisplay(wxCommandEvent &event)
 {
-	veraPane->resetView();
+	if (veraPane)
+		veraPane->resetView();
 }
 
 
