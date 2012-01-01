@@ -3,9 +3,11 @@
 #define _TRACE_H_
 
 #include <map>
+#include <assert.h>
 #include "wx/string.h"
 
 // Special rules for compiling outside of wxVera
+#include <math.h>
 
 #ifndef _WXVERA_H_
 
@@ -71,6 +73,15 @@ enum GRAPH_COLORING_ALG
 	GRAPH_COLOR_BY_MODULE
 };
 
+// This corresponds to the values in the combo box from traceWizard->m_layoutAlgorithm
+enum GRAPH_LAYOUT_LIBRARY
+{
+	GRAPH_LAYOUT_LIBRARY_INVALID = -2,
+	GRAPH_LAYOUT_LIBRARY_UNSPECIFIED = -1,
+	GRAPH_LAYOUT_LIBRARY_OGDF = 0,
+	GRAPH_LAYOUT_LIBRARY_IGRAPH = 1
+};
+
 // Structures
 
 typedef struct Trace_Address {
@@ -118,7 +129,7 @@ private:
 	PIMAGE_SECTION_HEADER		                pSectionHeader;
 	PIMAGE_OPTIONAL_HEADER		                pOptHeader;
 	enum GRAPH_COLORING_ALG		                graphColoringAlgorithm;
-	bool						doColorBlind; 
+	bool						doColorBlind;
 	bool						doProcessExe;
 
 	inline uint32_t	        addrColor(uint32_t addr);
@@ -138,10 +149,12 @@ public:
 	void 			writeGmlFile(char *gmlfile);
 	void 			writeGmlFile(wxString infile);
 	void 			writeGmlFile(void);
-	void 			layoutGraph(const char *infile, const char *outfile);
 	void 			layoutGraph(wxString infile, wxString outfile);
 	void 			layoutGraph(wxString infile);
 	void 			layoutGraph(const char* infile);
+	// This is the method that needs to get implemented in derived classes for new layout algorithms
+	virtual void	layoutGraph(const char *infile, const char *outfile);
+
 	void			setGraphColoringAlg(enum GRAPH_COLORING_ALG);
 	~Trace(void);
 };

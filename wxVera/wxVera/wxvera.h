@@ -107,7 +107,7 @@ using namespace __gnu_cxx;
 #endif
 
 // Identifier strings
-#define __VERA_VERSION__				"0.40"
+#define __VERA_VERSION__				"0.50"
 #define __VERA_UPDATE_URL__				"http://www.offensivecomputing.net/vera/currentversion"
 #define __VERA_UPDATE_DOWNLOAD_URL__	"http://www.offensivecomputing.net/vera/"
 #define VERA_OBJECT_ARGS				{WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0}

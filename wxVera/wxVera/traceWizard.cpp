@@ -18,6 +18,18 @@ traceWizard::traceWizard(wxWizard *parent, wxWizardPage *prev, wxWizardPage *nex
 	m_genAllAddressesCheckBox	= new wxCheckBox(this, wxID_ANY, wxT("All addresses"));
 	m_genBblAddressesCheckBox	= new wxCheckBox(this, wxID_ANY, wxT("Basic blocks"));
 
+	wxArrayString choices;
+	choices.Add(wxT("OGDF Layout"));
+	choices.Add(wxT("iGraph Layout"));
+
+	m_layoutAlgorithmComboBox	= new wxComboBox(this, 
+		wxID_ANY, 
+		wxT("Choose a layout algorithm"),
+		wxDefaultPosition, 
+		wxDefaultSize, 
+		choices,
+		wxCB_READONLY | wxCB_DROPDOWN);
+
 	m_genAllAddressesCheckBox->SetValue(true);
 	m_genBblAddressesCheckBox->SetValue(true);
 
@@ -85,6 +97,7 @@ traceWizard::traceWizard(wxWizard *parent, wxWizardPage *prev, wxWizardPage *nex
 	
 	mainSizer->Add(m_genAllAddressesCheckBox);
 	mainSizer->Add(m_genBblAddressesCheckBox);
+	mainSizer->Add(m_layoutAlgorithmComboBox);
 
 	SetSizer(mainSizer);
 	mainSizer->Fit(this);

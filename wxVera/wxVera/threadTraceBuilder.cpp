@@ -5,6 +5,7 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 				       wxString gmlSaveFile, 
 				       bool doBbl, 
 				       bool doAll,
+					   int graphLayoutAlgorithm,
 				       wxFrame *parentFrame,
 				       wxProgressDialog *prog)
 {
@@ -16,10 +17,33 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 	m_doAll = doAll;
 	m_parentFrame = parentFrame;
 
+	m_graphLayoutAlgorithm = graphLayoutAlgorithm;
+
+}
+
+Trace *threadTraceBuilder::allocateTraceClass(wxString outfilename)
+{
+	Trace *ret = NULL;
+
+	switch (this->m_graphLayoutAlgorithm)
+	{
+	case GRAPH_LAYOUT_LIBRARY_UNSPECIFIED:
+	case GRAPH_LAYOUT_LIBRARY_IGRAPH:
+		// Not implemented yet
+	case GRAPH_LAYOUT_LIBRARY_OGDF:
+		ret = new OgdfTrace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+		break;
+	case GRAPH_LAYOUT_LIBRARY_INVALID:
+	default:
+		throw "Invalid layout library specified";
+	}
+	
+	return ret;
 }
 
 void *threadTraceBuilder::Entry()
 {
+
 	try 
 	{
 		// Process the basic blocks
@@ -29,22 +53,12 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-bbl-"));
 			
-			Trace *t = NULL;
-			try 
-			{
-				t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
-			}
-			catch (char *e)
-			{
-				wxMutexGuiEnter();
-				wxLogDebug(wxString::Format(wxT("Error: %s"), e));
-				wxMutexGuiLeave();
-			}
+			Trace *t = allocateTraceClass(outfilename);
 
 			if (t == NULL)
 			{
 				//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
-				return NULL;
+				throw "Could not allocate memory for Trace object";
 			}
 
 			t->process(true); // Process basic blocks
@@ -78,7 +92,9 @@ void *threadTraceBuilder::Entry()
 			
 			if (!wxRemoveFile(tmpfilename))
 			{
-				//wxLogDebug(wxT("Could not remove temp file"));
+				wxMutexGuiEnter();
+				wxLogDebug(wxT("Could not remove temp file"));
+				wxMutexGuiLeave();
 			}
 		}
 
@@ -96,14 +112,12 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-all-"));
 
-			Trace *t = new Trace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+			Trace *t = allocateTraceClass(outfilename);
 			
 			if (t == NULL)
 			{
-				wxMutexGuiEnter();
-				wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
-				wxMutexGuiLeave();
-				return NULL;
+				wxString err(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+				throw err.c_str();
 			}
 
 			t->process(false); // Process basic blocks

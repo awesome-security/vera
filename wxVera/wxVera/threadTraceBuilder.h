@@ -2,6 +2,8 @@
 #define __THREAD_TRACE_BUILDER_H__
 
 #include "wxvera.h"
+#include "Trace.h"
+#include "OgdfTrace.h"
 
 class threadTraceBuilder :
 	public wxThread
@@ -12,8 +14,10 @@ public:
 					   wxString gmlSaveFile, 
 					   bool doBbl, 
 					   bool doAll,
+					   int graphLayoutAlgorithm=GRAPH_LAYOUT_LIBRARY_UNSPECIFIED,
 					   wxFrame *parentFrame=NULL,
-					   wxProgressDialog *prog=NULL);
+					   wxProgressDialog *prog=NULL
+					   );
 
 	~threadTraceBuilder(void);
 
@@ -29,6 +33,8 @@ private:
 	bool 				m_doBbl;
 	bool 				m_doAll;
 	bool				m_doProcessExe;
+	int					m_graphLayoutAlgorithm;
+	Trace *				allocateTraceClass(wxString);
 
 };
 

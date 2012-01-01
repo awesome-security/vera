@@ -15,8 +15,10 @@
 #include <GL/glut.h>
 #endif
 
-#include <math.h>
 #include "FreeType.h"
+
+// igraph includes
+#include "igraph.h"
 
 #define PI					3.1415926
 

@@ -1,7 +1,6 @@
 //#include "wxvera.h"
 
 #include "Trace.h"
-#include "ogdf/energybased/FMMMLayout.h"
 
 // The edge keys contain a unique value of the combination of the source key and
 // the destination edge key. It is stored in a 64 bit integer that contains as so:
@@ -818,42 +817,8 @@ void Trace::layoutGraph(wxString infile, wxString outfile)
 
 void Trace::layoutGraph(const char *infile, const char *outfile)
 {
-	if (!infile)
-	{
-		throw "Specify input file";
-	}
-
-	if (!outfile)
-	{
-		throw "Specify output file";
-	}
-
-	using namespace ogdf;
-	
-	Graph G;
-	GraphAttributes GA(G,
-			   GraphAttributes::nodeGraphics |
-			   GraphAttributes::edgeGraphics |
-			   GraphAttributes::nodeLabel |
-			   GraphAttributes::edgeStyle |
-			   GraphAttributes::nodeColor
-		);
-
-	if( !GA.readGML(G, infile) )
-	{
-		throw "Could not read GML file\n";
-	}
-	
-	FMMMLayout fmmm;
-	
-	fmmm.useHighLevelOptions(true);
-	fmmm.unitEdgeLength(300.0);
-	fmmm.newInitialPlacement(true);
-	fmmm.qualityVersusSpeed(FMMMLayout::qvsGorgeousAndEfficient);
-	
-	fmmm.call(GA);
-	GA.writeGML(outfile);
-	
+	// The base, non-virtual function implementation of this class should never be called.
+	assert(FALSE);
 }
 
 uint32_t Trace::packerAddrColor(uint32_t addr)
@@ -861,9 +826,7 @@ uint32_t Trace::packerAddrColor(uint32_t addr)
 	// Color the start address blue
 	if (START_ADDR == addr)
 		return doColorBlind ? CB_START_ADDR_COLOR : START_ADDR_COLOR;
-
-	if (doProcessExe == false)
-		return doColorBlind ? CB_NORMAL_COLOR : NORMAL_COLOR;
+	if (doProcessExe == false)		return doColorBlind ? CB_NORMAL_COLOR : NORMAL_COLOR;
 
 	DWORD rva = addr - pOptHeader->ImageBase;
 	PIMAGE_SECTION_HEADER pSection = pSectionHeader;

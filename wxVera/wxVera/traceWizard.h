@@ -33,6 +33,7 @@ public:
 	wxButton *					m_gmlButton;
 	wxCheckBox *				m_genAllAddressesCheckBox;
 	wxCheckBox *				m_genBblAddressesCheckBox;
+	wxComboBox *				m_layoutAlgorithmComboBox;
 
 	DECLARE_EVENT_TABLE();
 

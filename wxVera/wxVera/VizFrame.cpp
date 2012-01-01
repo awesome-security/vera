@@ -486,6 +486,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 								  saveFile, 
 								  doProcessBasicBlocks,
 								  doProcessAllBlocks,
+								  page1->m_layoutAlgorithmComboBox->GetSelection(), 
 								  this,
 								  dlgProgress);
 
