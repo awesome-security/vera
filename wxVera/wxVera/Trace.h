@@ -90,7 +90,9 @@ typedef struct Trace_Address {
 		char inst[INSTLEN];
 		char api[APILEN];
 	} info;
-	DWORD count;
+	uint32_t x;
+	uint32_t y;
+	uint32_t count;
 	uint32_t num;
 	bool isApi;
 } trace_address_t;

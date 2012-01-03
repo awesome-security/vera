@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/ignore:4099"
 				AdditionalDependencies="opengl32.lib wxbase28d_net.lib wxmsw28d_richtext.lib wxmsw28d_html.lib wxmsw28d_gl.lib wxmsw28d_core.lib wxbase28d.lib wxmsw28d_adv.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib wxexpatd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib freetype.lib ogdf.lib ws2_32.lib igraph.lib"
-				AdditionalLibraryDirectories="&quot;..\..\libs\windows\igraph\igraph-0.5.5-msvc\Debug&quot;;..\..\ogdf\windows\debug\;&quot;..\..\libs\windows\wxWidgets-2.8.12\lib\vc_lib&quot;;..\..\libs\windows;..\..\libs\windows\GnuWin32\lib"
+				AdditionalLibraryDirectories="&quot;..\..\libs\windows\igraph\igraph-0.5.5-msvc\Release&quot;;..\..\ogdf\windows\debug\;&quot;..\..\libs\windows\wxWidgets-2.8.12\lib\vc_lib&quot;;..\..\libs\windows;..\..\libs\windows\GnuWin32\lib"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IgraphTrace.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\LegendFrame.cpp"
 				>
 			</File>
@@ -250,6 +254,10 @@
 			</File>
 			<File
 				RelativePath=".\FreeType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IgraphTrace.h"
 				>
 			</File>
 			<File

@@ -29,7 +29,8 @@ Trace *threadTraceBuilder::allocateTraceClass(wxString outfilename)
 	{
 	case GRAPH_LAYOUT_LIBRARY_UNSPECIFIED:
 	case GRAPH_LAYOUT_LIBRARY_IGRAPH:
-		// Not implemented yet
+		ret = new IgraphTrace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
+		break;
 	case GRAPH_LAYOUT_LIBRARY_OGDF:
 		ret = new OgdfTrace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
 		break;

@@ -732,8 +732,8 @@ void Trace::writeGmlFile(char *gmlfile)
 			addrCharLen = 0;
 		}
 		fprintf(fout, "graphics [\n");
-		fprintf(fout, "x 51.00000000\n");
-		fprintf(fout, "y 31.00000000\n");
+		fprintf(fout, "x %u.00000000\n", addr->x);
+		fprintf(fout, "y %u.00000000\n", addr->y);
 		fprintf(fout, "w %u.00000000\n", (addrCharLen <= 8 ? 80 : 10 * (unsigned int) addrCharLen));
 		fprintf(fout, "h 20.00000000\n");
 		fprintf(fout, "fill \"#%6.6x\"\n", addrColor(addr->addr));

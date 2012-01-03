@@ -4,6 +4,7 @@
 #include "wxvera.h"
 #include "Trace.h"
 #include "OgdfTrace.h"
+#include "IgraphTrace.h"
 
 class threadTraceBuilder :
 	public wxThread
