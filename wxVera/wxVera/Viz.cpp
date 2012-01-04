@@ -354,6 +354,7 @@ void VeraPane::DrawScene(void)
 		if(!edgeVector.empty())
 		{
 			int numedges = edgeVector.size();
+			int numnodes = nodeMap.size();
 
 			for(int i = 0 ; i < numedges ; i++)
 			{

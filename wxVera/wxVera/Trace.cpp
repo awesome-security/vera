@@ -705,6 +705,9 @@ void Trace::writeGmlFile(char *gmlfile)
 		throw "Could not open gml file for output";
 	}
 
+	int numedges = edgeMap.size();
+	int numverts = bblMap.size();
+
 	// GML header info
 	fprintf(fout, "Creator \"ogdf::GraphAttributes::writeGML\"\n");
 	fprintf(fout, "directed 1\n");
