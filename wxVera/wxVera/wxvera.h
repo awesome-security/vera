@@ -104,6 +104,10 @@ using namespace __gnu_cxx;
 #include "icons/idaConnected_32.xpm"
 #include "icons/find.xpm"
 #include "icons/home.xpm"
+#include "icons/play.xpm"
+#include "icons/stop.xpm"
+#include "icons/rewind.xpm"
+#include "icons/fastforward.xpm"
 #endif
 
 // Identifier strings

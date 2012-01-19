@@ -21,6 +21,10 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
 	EVT_TEXT_ENTER(Vera_Search, VizFrame::SearchTextEvent)
 	EVT_MENU(Vera_Search, VizFrame::SearchTextButton)
 	EVT_MENU(Vera_Home, VizFrame::HomeDisplay)
+	EVT_MENU(Vera_Rewind, VizFrame::RewindTemporalTrace)
+	EVT_MENU(Vera_Play, VizFrame::PlayTemporalTrace)
+	EVT_MENU(Vera_FastForward, VizFrame::FastForwardTemporalTrace)
+	EVT_MENU(Vera_StopTemporal, VizFrame::StopTemporalTrace)
 END_EVENT_TABLE()
 #endif
 
@@ -149,6 +153,10 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	bmpHelp = new wxBitmap(help_32_xpm);
 	bmpFind = new wxBitmap(find_xpm);
 	bmpHome = new wxBitmap(home_xpm);
+	bmpRewind = new wxBitmap(rewind_xpm);
+	bmpPlay = new wxBitmap(play_xpm);
+	bmpFastForward = new wxBitmap(fastforward_xpm);
+	bmpStop = new wxBitmap(stop_xpm);
 #ifdef _WIN32
 	// IDA integration is only working in Windows at the moment
 	bmpIda = new wxBitmap(ida_32_xpm);
@@ -176,6 +184,7 @@ void VizFrame::SetVeraToolbar(wxToolBar *tb)
 	tb->AddTool(Vera_Help, *bmpHelp, wxT("About VERA"));
 	tb->AddTool(Vera_Home, *bmpHome, wxT("Reset the view back to the default"));
 
+
 	// Actual controls have to have the new toolbar as the base, so set that up here.
 	if (NULL != textSearch)
 		delete textSearch;
@@ -190,6 +199,11 @@ void VizFrame::SetVeraToolbar(wxToolBar *tb)
 	
 	tb->AddControl(textSearch);
 	tb->AddTool(Vera_Search, *bmpFind, wxT("Search for address"));
+
+	tb->AddTool(Vera_Rewind, *bmpRewind, wxT("Rewind temporal trace view to the beginning of execution"));
+	tb->AddTool(Vera_Play, *bmpPlay, wxT("Play (animate) the temporal trace view"));
+	tb->AddTool(Vera_FastForward, *bmpFastForward, wxT("Fast forward to the end of the temporal trace view"));
+	tb->AddTool(Vera_StopTemporal, *bmpStop, wxT("Stop the temporal trace view"));
 	tb->Realize();
 
 	SetToolBar(tb);
@@ -205,6 +219,10 @@ VizFrame::~VizFrame(void)
 	delete bmpHelp;
 	delete bmpFind;
 	delete bmpHome;
+	delete bmpStop;
+	delete bmpFastForward;
+	delete bmpPlay;
+	delete bmpRewind;
 #ifdef _WIN32
 	delete bmpIda;
 	bmpIda     = NULL;
@@ -214,6 +232,10 @@ VizFrame::~VizFrame(void)
 	bmpHelp    = NULL;
 	bmpFind    = NULL;
 	bmpHome    = NULL;
+	bmpStop	   = NULL;
+	bmpFastForward = NULL;
+	bmpPlay    = NULL;
+	bmpRewind  = NULL;
 }
 
 // event handlers
@@ -770,6 +792,25 @@ void VizFrame::HomeDisplay(wxCommandEvent &event)
 		veraPane->resetView();
 }
 
+void VizFrame::RewindTemporalTrace(wxCommandEvent &event)
+{
+	wxLogDebug(wxT("Rewind"));
+}
+
+void VizFrame::PlayTemporalTrace(wxCommandEvent &event)
+{
+	wxLogDebug(wxT("Play"));
+}
+
+void VizFrame::FastForwardTemporalTrace(wxCommandEvent &event)
+{
+	wxLogDebug(wxT("Fast Forward"));
+}
+
+void VizFrame::StopTemporalTrace(wxCommandEvent &event)
+{
+	wxLogDebug(wxT("Stop"));
+}
 
 void VizFrame::OnCloseWindow(wxCloseEvent &event)
 {

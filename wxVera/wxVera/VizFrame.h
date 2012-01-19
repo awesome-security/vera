@@ -49,6 +49,10 @@ public:
 	void SearchTextFocused(wxCommandEvent &event);
 	void SearchTextButton(wxCommandEvent &event);
 	void HomeDisplay(wxCommandEvent &event);
+	void RewindTemporalTrace(wxCommandEvent &event);
+	void PlayTemporalTrace(wxCommandEvent &event);
+	void FastForwardTemporalTrace(wxCommandEvent &event);
+	void StopTemporalTrace(wxCommandEvent &event);
 	bool sendIdaMsg(char *msg);
 
 private:
@@ -69,6 +73,10 @@ private:
 	wxBitmap *bmpIda;
 	wxBitmap *bmpFind;
 	wxBitmap *bmpHome;
+	wxBitmap *bmpRewind;
+	wxBitmap *bmpPlay;
+	wxBitmap *bmpFastForward;
+	wxBitmap *bmpStop;
 	wxTextCtrl * textSearch;
 	bool textSearchIsCleared;
 	//wxBitmap *bmpEther;
@@ -102,6 +110,10 @@ enum
 	Vera_Check_Updates,
 	Vera_Search,
 	Vera_Home,
+	Vera_Rewind,
+	Vera_Play,
+	Vera_FastForward,
+	Vera_StopTemporal,
 	IDA_SERVER_ID,
 };
 
