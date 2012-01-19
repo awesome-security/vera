@@ -579,6 +579,7 @@ void Trace::processEther(bool doBasicBlocks)
 				initEdge(&edgeMap[MAKE_EDGE_KEY(START_ADDR, daddr)], START_ADDR, daddr, 1, edgenum++);
 				isFirstAddr = false;
 				lastbbl = daddr;
+				orderVector.push_back(daddr);
 			}
 			else if (!inBranch && branchMatch(inst))
 			{
@@ -602,6 +603,8 @@ void Trace::processEther(bool doBasicBlocks)
 				{
 					initAddress(&bblMap[daddr], daddr, inst, 0, bblnum++);
 				}
+
+				orderVector.push_back(daddr);
 
 				// Add an edge to the edge list
 				// current = daddr
@@ -627,7 +630,7 @@ void Trace::processEther(bool doBasicBlocks)
 					inBranch = false;
 			}
 		}
-		else
+		else // Process all addresses
 		{
 			if (isFirstAddr)
 			{
@@ -635,6 +638,7 @@ void Trace::processEther(bool doBasicBlocks)
 				initEdge(&edgeMap[MAKE_EDGE_KEY(START_ADDR, daddr)], START_ADDR, daddr, 1, edgenum++);
 				isFirstAddr = false;
 				lastbbl = daddr;
+				orderVector.push_back(daddr);
 			}
 			else
 			{
@@ -647,6 +651,8 @@ void Trace::processEther(bool doBasicBlocks)
 				{
 					initAddress(&bblMap[daddr], daddr, inst, 0, bblnum++);
 				}
+
+				orderVector.push_back(daddr);
 				
 				unsigned long long edgekey = 0;
 				edgekey = MAKE_EDGE_KEY(lastbbl, daddr);
@@ -816,6 +822,19 @@ void Trace::layoutGraph(wxString infile, wxString outfile)
 	strncpy(tmpoutfile, outfile.ToAscii(), sizeof(tmpoutfile) - 1);
 
 	this->layoutGraph(tmpinfile, tmpoutfile);
+
+	// Add the order to the end of the graph
+	FILE *fout = fopen(tmpoutfile, "w+");
+	fseek(fout, 0, SEEK_END);
+
+	fprintf(fout, "\n");
+	
+	for (orderVector_t::const_iterator it = orderVector.begin() ; it != orderVector.end() ; it++)
+	{
+		fprintf(fout, "%8.8x\n", *it);
+	}
+
+	fclose(fout);
 }
 
 void Trace::layoutGraph(const char *infile, const char *outfile)

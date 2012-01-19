@@ -616,6 +616,7 @@ bool VeraPane::openFile(wxString filename)
 	bool inNode = false;
 	bool inEdge = false;
 	bool inGraphics = false;
+	bool inOrder = false;
 
 	FILE *fin = NULL;
 	
@@ -657,6 +658,12 @@ bool VeraPane::openFile(wxString filename)
 		{
 			inNode = false;
 			inEdge = true;
+		}
+		else if (strstr(line, "order ["))
+		{
+			inNode = false;
+			inEdge = false;
+			inOrder = true;
 		}
 
 		if(inNode) {
@@ -845,8 +852,12 @@ bool VeraPane::openFile(wxString filename)
 				
 			}
 		} // end if(inEdge)
+		else if (inOrder)
+		{
+
+		} // end if(inOrder
 		
-	}
+	} // end while()
 	
 	midX = (maxX - minX) / 2;
 	midY = (maxY - minY) / 2;

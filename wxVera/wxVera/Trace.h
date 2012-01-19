@@ -3,6 +3,7 @@
 #define _TRACE_H_
 
 #include <map>
+#include <vector>
 #include <assert.h>
 #include "wx/string.h"
 
@@ -107,6 +108,7 @@ typedef struct Trace_Edge {
 // Maps and what-not
 typedef map<uint32_t, trace_address_t> bblMap_t; // Possible 64 bit conversion problem
 typedef map<uint64_t, trace_edge_t> edgeMap_t;
+typedef vector<uint32_t> orderVector_t;
 
 // Prototypes
 inline void initEdge(trace_edge_t *edge, uint32_t src, uint32_t dst, uint32_t count, uint32_t inum);
@@ -145,6 +147,7 @@ public:
 	Trace();
 	bblMap_t					bblMap;
 	edgeMap_t					edgeMap;
+	orderVector_t				orderVector;
 	void			process(bool doBasicBlocks);
 	void 			processEther(bool doBasicBlocks);
 	void			processVeraPin(bool doBasicBlocks);

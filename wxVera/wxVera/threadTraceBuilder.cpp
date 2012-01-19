@@ -27,10 +27,10 @@ Trace *threadTraceBuilder::allocateTraceClass(wxString outfilename)
 
 	switch (this->m_graphLayoutAlgorithm)
 	{
-	case GRAPH_LAYOUT_LIBRARY_UNSPECIFIED:
 	case GRAPH_LAYOUT_LIBRARY_IGRAPH:
 		ret = new IgraphTrace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
 		break;
+	case GRAPH_LAYOUT_LIBRARY_UNSPECIFIED:
 	case GRAPH_LAYOUT_LIBRARY_OGDF:
 		ret = new OgdfTrace(m_traceFile.GetFullPath(), m_exeFile.GetFullPath(), outfilename);
 		break;
