@@ -120,10 +120,17 @@ public:
 	node_t * searchByString (string searchString);
 	void goToPoint(GLdouble x, GLdouble y, GLfloat zoom);
 	void resetView(void);
+	int doAnimationStep(int num);
+	int setAnimationStep(size_t step);
+	int setAnimationStatus(bool b_doAni);
+	bool getAnimationStatus(void);
+	void DrawAndRender		(void);
+
+	bool doAnimation;
+	size_t stepNum;
 
 private:
 	void DrawScene			(void);
-	void DrawAndRender		(void);
 	void drawArrow			(float sourceX, float sourceY, float targetX, float targetY, float width);
 	int	 GetScreenItems		(int *items, size_t maxItems);
 	int  ProcessSelection	(wxPoint point, int *items, size_t maxItems, bool useScreenPickSize);
@@ -131,6 +138,8 @@ private:
 	void DeleteNodes		(void);
 	void DeleteEdges		(void);
 	void zoomControl		(bool doZoomIn);
+	void RenderEdges		(void);
+	void RenderNodes		(void);
 	
 #ifdef _WIN32 // Windows
 	stdext::hash_map<int, node_t *>	nodeMap;

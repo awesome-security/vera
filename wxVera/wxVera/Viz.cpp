@@ -231,6 +231,8 @@ wxGLCanvas(parent, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas
 	gettingSelection = false;
 	fontsInitialized = false;
 	sawLeftMouseDown = false;
+	doAnimation = false;
+	stepNum = 0;
 }
  
 void VeraPane::resized(wxSizeEvent& evt)
@@ -350,145 +352,10 @@ void VeraPane::DrawScene(void)
 
 	if (nodesLoaded)
 	{
-		// Render the edges
-		if(!edgeVector.empty())
-		{
-			int numedges = edgeVector.size();
-			int numnodes = nodeMap.size();
-
-			for(int i = 0 ; i < numedges ; i++)
-			{
-				// Set the position using the midpoint and the translation amount
-				GLfloat sourceX = nodeMap[edgeVector[i]->source]->x - midX + tx;
-				GLfloat sourceY = nodeMap[edgeVector[i]->source]->y - midY + ty;
-				GLfloat targetX = nodeMap[edgeVector[i]->target]->x - midX + tx;
-				GLfloat targetY = nodeMap[edgeVector[i]->target]->y - midY + ty;
-
-				glPushMatrix();
-				  glColor3f(0.0, 0.0, 0.0);
-				  glLineWidth(edgeVector[i]->lineWidth);
-				  glBegin(GL_LINES);
-				  glVertex3f(sourceX, sourceY, zoom);
-				  glVertex3f(targetX, targetY, zoom);
-				  glEnd();
-
-				  // Draw the arrow head
-				  drawArrow(sourceX, sourceY, targetX, targetY, edgeVector[i]->lineWidth);
-
-				glPopMatrix();
-			}
-		}
-
-		// render the nodes
-		if(!nodeMap.empty()) 
-		{
-#ifdef _WIN32
-			hash_map<int, node_t *>::iterator ii=nodeMap.begin();
-#elif defined __GNUC__
-			hash_map<int, node_t *>::iterator ii=nodeMap.begin();
-#endif
-			int numnodes = nodeMap.size();
-
-			for (  ; ii != nodeMap.end() ; ii++ )
-			{
-				node_t *node = ii->second;
-
-				if (node == NULL)
-					continue;
-
-				// Set the position using the midpoint and the translation amount
-				GLfloat xPos = node->x - midX + tx;
-				GLfloat yPos = node->y - midY + ty;
-				GLfloat nodeDimensions[4] = {0};
-
-				// Draw the node boxes
-				glLoadName(node->id); // Setup for the selection rectangles
-				glPushMatrix();
-				glColor3f(node->cr, node->cg, node->cb);
-				glTranslatef(xPos, yPos, zoom);
-				
-				if (zoom <= MAX_ZOOM - 2*ZOOM_STEPPING)
-				{
-					// Calculate the stepping so the blocks are visible from a zoomed out view
-
-					// Call attention to the start label
-					if (strcmp(node->label, START_NODE_LABEL) == 0)
-					{
-						nodeDimensions[0] = 0.0;
-						nodeDimensions[1] = 0.0;
-						nodeDimensions[2] = MAX((zoom/-100000)*520.0 * 10.0, 130.0);
-						nodeDimensions[3] = MAX((zoom/-100000)*200.0 * 10.0, 50.0);
-					}
-					else
-					{
-						nodeDimensions[0] = 0.0;
-						nodeDimensions[1] = 0.0;
-						nodeDimensions[2] = MAX((zoom/-100000)*520.0,130.0);
-						nodeDimensions[3] = MAX((zoom/-100000)*200.0,50.0);
-
-					}
-				}
-				else
-				{
-					nodeDimensions[0] = 0.0;
-					nodeDimensions[1] = 0.0;
-					nodeDimensions[2] = strlen(node->label) > 8 ? (14.0 * strlen(node->label)) : 130.0; // I just messed around until these numbers looked good
-					nodeDimensions[3] = 50.0;
-				}
-
-				glRectf(nodeDimensions[0], nodeDimensions[1], nodeDimensions[2], nodeDimensions[3]);
-
-				glTranslatef(0.0, 0.0, 1.0);
-				glPopMatrix();
-
-			}
-
-			// Draw the visible text nodes
-			if(!gettingSelection && doFontRendering && zoom > MAX_ZOOM - 2 * ZOOM_STEPPING)
-			{
-				int *items = (int *) malloc(sizeof(int) * (numnodes+1));
-				
-				if (items == NULL)
-				{
-					wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
-					return;
-				}
-				
-				memset(items, -1, sizeof(int) * (numnodes+1));
-
-				// Only draw the number of nodes that are actually visible on the screen
-				int numberVisibleNodes = GetScreenItems(items, numnodes+1);
-
-				for (int j = 0 ; j < numberVisibleNodes ; j++)
-				{
-					int i = items[j];
-					GLfloat xPos = nodeMap[i]->x - midX + tx;
-					GLfloat yPos = nodeMap[i]->y - midY + ty;
-					
-					glPushMatrix();
-					
-					glTranslatef(xPos, yPos, zoom-.1);
-					
-					// Handle the starting indicator
-					if(strcmp(nodeMap[i]->label, START_NODE_LABEL) == 0) 
-					{
-						glColor3f(START_COLOR_GLF);
-						freetype::print(freefont_startlabel, 0, 20, false, "START", cnt1);
-					}
-					else
-					{
-						// Normal addresses
-						glColor3f(TEXT_COLOR_GLF);
-						freetype::print(freefont_label, 0, 20, false, nodeMap[i]->label, cnt1);
-					}
-					
-					glPopMatrix();
-				}
-
-				free(items);
-			} // End node drawing
-		}
+		RenderEdges();
+		RenderNodes();
 	}
+
 	//else // No nodes are loaded
 	//{
 	//	glPushMatrix();
@@ -499,6 +366,153 @@ void VeraPane::DrawScene(void)
 	//	glPopMatrix();
 	//}
 
+}
+
+void VeraPane::RenderEdges(void)
+{
+	size_t numedges = edgeVector.size();
+
+	// Render the edges
+	if(!edgeVector.empty())
+	{
+
+		for(size_t i = 0 ; i < numedges ; i++)
+		{
+			// Set the position using the midpoint and the translation amount
+			GLfloat sourceX = nodeMap[edgeVector[i]->source]->x - midX + tx;
+			GLfloat sourceY = nodeMap[edgeVector[i]->source]->y - midY + ty;
+			GLfloat targetX = nodeMap[edgeVector[i]->target]->x - midX + tx;
+			GLfloat targetY = nodeMap[edgeVector[i]->target]->y - midY + ty;
+
+			glPushMatrix();
+			  glColor3f(0.0, 0.0, 0.0);
+			  glLineWidth(edgeVector[i]->lineWidth);
+			  glBegin(GL_LINES);
+			  glVertex3f(sourceX, sourceY, zoom);
+			  glVertex3f(targetX, targetY, zoom);
+			  glEnd();
+
+			  // Draw the arrow head
+			  drawArrow(sourceX, sourceY, targetX, targetY, edgeVector[i]->lineWidth);
+
+			glPopMatrix();
+		}
+	}
+}
+
+void VeraPane::RenderNodes(void)
+{
+	size_t numnodes = nodeMap.size();
+
+	// render the nodes
+	if(!nodeMap.empty()) 
+	{
+#ifdef _WIN32
+		hash_map<int, node_t *>::iterator ii=nodeMap.begin();
+#elif defined __GNUC__
+		hash_map<int, node_t *>::iterator ii=nodeMap.begin();
+#endif
+
+		//for (  ; ii != nodeMap.end() ; ii++ )
+		for (  size_t n = 0 ; (doAnimation ? (n < stepNum) : (n < numnodes) ) ; n++ )
+		{
+			node_t *node = nodeMap[n];
+
+			if (node == NULL)
+				continue;
+
+			// Set the position using the midpoint and the translation amount
+			GLfloat xPos = node->x - midX + tx;
+			GLfloat yPos = node->y - midY + ty;
+			GLfloat nodeDimensions[4] = {0};
+
+			// Draw the node boxes
+			glLoadName(node->id); // Setup for the selection rectangles
+			glPushMatrix();
+			glColor3f(node->cr, node->cg, node->cb);
+			glTranslatef(xPos, yPos, zoom);
+			
+			if (zoom <= MAX_ZOOM - 2*ZOOM_STEPPING)
+			{
+				// Calculate the stepping so the blocks are visible from a zoomed out view
+
+				// Call attention to the start label
+				if (strcmp(node->label, START_NODE_LABEL) == 0)
+				{
+					nodeDimensions[0] = 0.0;
+					nodeDimensions[1] = 0.0;
+					nodeDimensions[2] = MAX((zoom/-100000)*520.0 * 10.0, 130.0);
+					nodeDimensions[3] = MAX((zoom/-100000)*200.0 * 10.0, 50.0);
+				}
+				else
+				{
+					nodeDimensions[0] = 0.0;
+					nodeDimensions[1] = 0.0;
+					nodeDimensions[2] = MAX((zoom/-100000)*520.0,130.0);
+					nodeDimensions[3] = MAX((zoom/-100000)*200.0,50.0);
+
+				}
+			}
+			else
+			{
+				nodeDimensions[0] = 0.0;
+				nodeDimensions[1] = 0.0;
+				nodeDimensions[2] = strlen(node->label) > 8 ? (14.0 * strlen(node->label)) : 130.0; // I just messed around until these numbers looked good
+				nodeDimensions[3] = 50.0;
+			}
+
+			glRectf(nodeDimensions[0], nodeDimensions[1], nodeDimensions[2], nodeDimensions[3]);
+
+			glTranslatef(0.0, 0.0, 1.0);
+			glPopMatrix();
+
+		}
+
+		// Draw the visible text nodes
+		if(!gettingSelection && doFontRendering && zoom > MAX_ZOOM - 2 * ZOOM_STEPPING)
+		{
+			int *items = (int *) malloc(sizeof(int) * (numnodes+1));
+			
+			if (items == NULL)
+			{
+				wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+				return;
+			}
+			
+			memset(items, -1, sizeof(int) * (numnodes+1));
+
+			// Only draw the number of nodes that are actually visible on the screen
+			int numberVisibleNodes = GetScreenItems(items, numnodes+1);
+
+			for (int j = 0 ; j < numberVisibleNodes ; j++)
+			{
+				int i = items[j];
+				GLfloat xPos = nodeMap[i]->x - midX + tx;
+				GLfloat yPos = nodeMap[i]->y - midY + ty;
+				
+				glPushMatrix();
+				
+				glTranslatef(xPos, yPos, zoom-.1);
+				
+				// Handle the starting indicator
+				if(strcmp(nodeMap[i]->label, START_NODE_LABEL) == 0) 
+				{
+					glColor3f(START_COLOR_GLF);
+					freetype::print(freefont_startlabel, 0, 20, false, "START", cnt1);
+				}
+				else
+				{
+					// Normal addresses
+					glColor3f(TEXT_COLOR_GLF);
+					freetype::print(freefont_label, 0, 20, false, nodeMap[i]->label, cnt1);
+				}
+				
+				glPopMatrix();
+			}
+
+			free(items);
+		} // End node drawing
+	}
 }
 
 int VeraPane::GetScreenItems(int *items, size_t maxItems)
@@ -972,7 +986,53 @@ node_t * VeraPane::searchByString (string searchString)
 
 
 
+int VeraPane::doAnimationStep(int num)
+{
+	int ret = 0;
+	
+	if (stepNum + num > nodeMap.size())
+	{
+		stepNum = nodeMap.size();
+		ret = -1;
+	}
+	else
+	{
+		stepNum += num;
+	}
 
+	return ret;
+}
+
+int VeraPane::setAnimationStep(size_t step)
+{
+	int ret = 0;
+
+	if (step > nodeMap.size())
+	{
+		stepNum = nodeMap.size();
+		ret = -1;
+	}
+	else
+	{
+		stepNum = step;
+	}
+
+	return ret;
+}
+	
+int VeraPane::setAnimationStatus(bool b_doAni)
+{
+	int ret = 0;
+
+	doAnimation = b_doAni;
+
+	return ret;
+}
+
+bool VeraPane::getAnimationStatus(void)
+{
+	return doAnimation;
+}
 
 
 

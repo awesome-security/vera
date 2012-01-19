@@ -53,6 +53,7 @@ public:
 	void PlayTemporalTrace(wxCommandEvent &event);
 	void FastForwardTemporalTrace(wxCommandEvent &event);
 	void StopTemporalTrace(wxCommandEvent &event);
+	void AnimationTimer(wxTimerEvent &event);
 	bool sendIdaMsg(char *msg);
 
 private:
@@ -67,6 +68,8 @@ private:
 	traceWizard *			page1;
 	threadIdaServer	*		idaServer;
 	wxToolBar *				toolBar;
+	wxTimer *				animationTimer;
+	static const int		animationTimerInterval = 30;
 	wxBitmap *bmpOpen;
 	wxBitmap *bmpConfig;
 	wxBitmap *bmpHelp;
@@ -114,6 +117,7 @@ enum
 	Vera_Play,
 	Vera_FastForward,
 	Vera_StopTemporal,
+	Vera_AnimationTimer,
 	IDA_SERVER_ID,
 };
 

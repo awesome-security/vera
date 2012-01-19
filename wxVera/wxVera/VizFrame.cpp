@@ -25,6 +25,7 @@ BEGIN_EVENT_TABLE(VizFrame, wxFrame)
 	EVT_MENU(Vera_Play, VizFrame::PlayTemporalTrace)
 	EVT_MENU(Vera_FastForward, VizFrame::FastForwardTemporalTrace)
 	EVT_MENU(Vera_StopTemporal, VizFrame::StopTemporalTrace)
+	EVT_TIMER(Vera_AnimationTimer, VizFrame::AnimationTimer)
 END_EVENT_TABLE()
 #endif
 
@@ -44,6 +45,7 @@ VizFrame::VizFrame(const wxString& title, wxPoint pnt, wxSize size, MyApp *paren
 	idaServer   = NULL;
 	#endif
 	textSearchIsCleared = false;
+	animationTimer = NULL;
 
 	// This is for the "tabbed" view at the top of the application
 	noteBook = new wxNotebook(this, wxID_ANY, pnt, size, wxNB_TOP);
@@ -223,6 +225,7 @@ VizFrame::~VizFrame(void)
 	delete bmpFastForward;
 	delete bmpPlay;
 	delete bmpRewind;
+
 #ifdef _WIN32
 	delete bmpIda;
 	bmpIda     = NULL;
@@ -236,6 +239,12 @@ VizFrame::~VizFrame(void)
 	bmpFastForward = NULL;
 	bmpPlay    = NULL;
 	bmpRewind  = NULL;
+
+	if (animationTimer)
+	{
+		delete animationTimer;
+		animationTimer = NULL;
+	}
 }
 
 // event handlers
@@ -792,24 +801,68 @@ void VizFrame::HomeDisplay(wxCommandEvent &event)
 		veraPane->resetView();
 }
 
+void VizFrame::AnimationTimer(wxTimerEvent &event)
+{
+	wxLogDebug(wxT("I am a timer!\n"));
+	veraPane->doAnimationStep(1);
+	veraPane->DrawAndRender();
+}
+
 void VizFrame::RewindTemporalTrace(wxCommandEvent &event)
 {
 	wxLogDebug(wxT("Rewind"));
+	
+	if (animationTimer)
+	{
+		animationTimer->Stop();
+		veraPane->setAnimationStep(0);
+		veraPane->DrawAndRender();
+	}
 }
 
 void VizFrame::PlayTemporalTrace(wxCommandEvent &event)
 {
 	wxLogDebug(wxT("Play"));
+
+	if (animationTimer == NULL)
+	{
+		animationTimer = new wxTimer(this, Vera_AnimationTimer);
+
+		if (animationTimer == NULL)
+		{
+			wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
+			return;
+		}
+
+		veraPane->setAnimationStatus(true);
+		animationTimer->Start(animationTimerInterval);
+	}
+	else
+	{
+		animationTimer->Start();
+	}
 }
 
 void VizFrame::FastForwardTemporalTrace(wxCommandEvent &event)
 {
 	wxLogDebug(wxT("Fast Forward"));
+
+	if (animationTimer)
+	{
+		animationTimer->Stop();
+		veraPane->setAnimationStep(-1);
+		veraPane->DrawAndRender();
+	}
 }
 
 void VizFrame::StopTemporalTrace(wxCommandEvent &event)
 {
 	wxLogDebug(wxT("Stop"));
+
+	if (animationTimer)
+	{
+		animationTimer->Stop();
+	}
 }
 
 void VizFrame::OnCloseWindow(wxCloseEvent &event)
