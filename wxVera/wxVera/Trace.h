@@ -157,6 +157,8 @@ public:
 	void 			layoutGraph(wxString infile, wxString outfile);
 	void 			layoutGraph(wxString infile);
 	void 			layoutGraph(const char* infile);
+	void			writeExecutionOrder(wxString outfile);
+	void			writeExecutionOrder(const char *outfile);
 	// This is the method that needs to get implemented in derived classes for new layout algorithms
 	virtual void	layoutGraph(const char *infile, const char *outfile);
 

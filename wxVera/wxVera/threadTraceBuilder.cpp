@@ -81,6 +81,7 @@ void *threadTraceBuilder::Entry()
 			}
 
 			t->layoutGraph(tmpfilename);
+			t->writeExecutionOrder(tmpfilename);
 
 			if (m_prog)
 			{
@@ -140,6 +141,7 @@ void *threadTraceBuilder::Entry()
 			}
 
 			t->layoutGraph(tmpfilename);
+			t->writeExecutionOrder(outfilename);
 
 			if (m_prog)
 			{

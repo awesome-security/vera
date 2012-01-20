@@ -822,17 +822,28 @@ void Trace::layoutGraph(wxString infile, wxString outfile)
 	strncpy(tmpoutfile, outfile.ToAscii(), sizeof(tmpoutfile) - 1);
 
 	this->layoutGraph(tmpinfile, tmpoutfile);
+}
 
+void Trace::writeExecutionOrder(wxString outfile)
+{
+	writeExecutionOrder(outfile.c_str());
+}
+
+void Trace::writeExecutionOrder(const char *outfile)
+{
 	// Add the order to the end of the graph
-	FILE *fout = fopen(tmpoutfile, "w+");
+	FILE *fout = fopen(outfile, "w+");
 	fseek(fout, 0, SEEK_END);
 
 	fprintf(fout, "\n");
-	
+	fprintf(fout, "order [\n");
+
 	for (orderVector_t::const_iterator it = orderVector.begin() ; it != orderVector.end() ; it++)
 	{
 		fprintf(fout, "%8.8x\n", *it);
 	}
+
+	fprintf(fout, "]\n");
 
 	fclose(fout);
 }
