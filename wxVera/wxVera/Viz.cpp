@@ -403,6 +403,7 @@ void VeraPane::RenderEdges(void)
 void VeraPane::RenderNodes(void)
 {
 	size_t numnodes = nodeMap.size();
+	size_t ordervector_size = orderVector.size();
 
 	// render the nodes
 	if(!nodeMap.empty()) 
@@ -414,9 +415,14 @@ void VeraPane::RenderNodes(void)
 #endif
 
 		//for (  ; ii != nodeMap.end() ; ii++ )
-		for (  size_t n = 0 ; (doAnimation ? (n < stepNum) : (n < numnodes) ) ; n++ )
+		for (  size_t n = 0 ; (doAnimation ? (n < ordervector_size && n < stepNum) : (n < numnodes) ) ; n++ )
 		{
-			node_t *node = nodeMap[n];
+			node_t *node = NULL;
+			
+			if (doAnimation)
+				node = nodeMap[orderVector[n]];
+			else
+				node = nodeMap[n];
 
 			if (node == NULL)
 				continue;
@@ -512,7 +518,7 @@ void VeraPane::RenderNodes(void)
 
 			free(items);
 		} // End node drawing
-	}
+	} // end for loop
 }
 
 int VeraPane::GetScreenItems(int *items, size_t maxItems)
@@ -611,7 +617,7 @@ int VeraPane::ProcessSelection(wxPoint point, int *items, size_t maxItems, bool 
 // This should only be used to open a GML file
 bool VeraPane::openFile(wxString filename)
 {
-	char line[256] = {0};
+	char line[LINELEN] = {0};
 
 	bool inNode = false;
 	bool inEdge = false;
@@ -653,17 +659,20 @@ bool VeraPane::openFile(wxString filename)
 		{
 			inNode = true;
 			inEdge = false;
+			inOrder = false;
 		}
 		else if (strstr(line, "edge ["))
 		{
 			inNode = false;
 			inEdge = true;
+			inOrder = false;
 		}
 		else if (strstr(line, "order ["))
 		{
 			inNode = false;
 			inEdge = false;
 			inOrder = true;
+			continue;
 		}
 
 		if(inNode) {
@@ -790,11 +799,13 @@ bool VeraPane::openFile(wxString filename)
 				tmp->cg = cg;
 				tmp->cb = cb;
 				tmp->id = id;
+				tmp->rendered = false;
 
 				strncpy(tmp->label,
 					label, 
 					sizeof(tmp->label) - 1);
 
+				// Label can be either an address or an API
 				size_t len = strlen(tmp->label) < sizeof(tmp->label) ? strlen(label) : sizeof(tmp->label);
 				TOLOWER(tmp->label, len);
 
@@ -854,6 +865,29 @@ bool VeraPane::openFile(wxString filename)
 		} // end if(inEdge)
 		else if (inOrder)
 		{
+			if (strstr(line, "]"))
+			{
+				inOrder = false;
+				continue;
+			}
+
+			// Make sure the start label is the first one rendered
+			if (orderVector.size() == 0)
+				orderVector.push_back(nodeHashMap[START_NODE_LABEL]->id);
+
+			// Parse the address
+			uint32_t addr = 0;
+			char saddr[LINELEN] = {0};
+			sscanf(line, "%s", saddr);
+			
+			// Lookup the address in the nodemap, then store the ID in the 
+			// orderVector so we know the order to draw the items.
+
+			if (nodeHashMap[saddr]->rendered == false)
+			{
+				orderVector.push_back(nodeHashMap[saddr]->id);
+				nodeHashMap[saddr]->rendered = true;
+			}
 
 		} // end if(inOrder
 		
@@ -1004,7 +1038,7 @@ int VeraPane::doAnimationStep(int num)
 	if (stepNum + num > nodeMap.size())
 	{
 		stepNum = nodeMap.size();
-		ret = -1;
+		ret = VIZ_ANIMATION_FINISHED;
 	}
 	else
 	{

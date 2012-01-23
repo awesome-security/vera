@@ -50,6 +50,8 @@
 #define ABS(x)	((x) < 0 ? (x) *-1 : (x))
 #define ASPECT(cx, cy) ((float(cx))/(float(cy)))
 
+#define VIZ_ANIMATION_FINISHED -1
+
 typedef struct Node {
 	int					id;
 	GLfloat 				x;
@@ -61,6 +63,7 @@ typedef struct Node {
 	GLfloat 				labelcr;
 	GLfloat 				labelcg;
 	GLfloat 				labelcb;
+	bool					rendered;
 } node_t;
 
 typedef struct Edge {
@@ -150,6 +153,7 @@ private:
 #endif
 
 	vector<edge_t *>			        edgeVector;
+	vector<int>							orderVector;
 	GLfloat					maxX, maxY, midX, midY, minX, minY;
 	GLfloat 				zoom;
 	GLfloat 				tx;

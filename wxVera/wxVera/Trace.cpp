@@ -831,9 +831,12 @@ void Trace::writeExecutionOrder(wxString outfile)
 
 void Trace::writeExecutionOrder(const char *outfile)
 {
+	struct stat st = {0};
+	stat(outfile, &st);
+
 	// Add the order to the end of the graph
-	FILE *fout = fopen(outfile, "w+");
-	fseek(fout, 0, SEEK_END);
+	FILE *fout = fopen(outfile, "a");
+	fseek(fout, st.st_size, SEEK_SET);
 
 	fprintf(fout, "\n");
 	fprintf(fout, "order [\n");
