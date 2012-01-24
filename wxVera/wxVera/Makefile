@@ -5,7 +5,7 @@ ifeq ($(UNAME), Linux)
 CC=/usr/bin/g++
 FLAGS=`/usr/bin/wx-config --cppflags` -g -D_USE_WX_EVENTS_ -Wno-write-strings -Wno-deprecated \
 	-I/usr/include/freetype2 -I../../ogdf/linux
-OGDF=../../ogdf/linux/ogdf/libOGDF.a
+ OGDF=../../ogdf/linux/ogdf/libOGDF.a
 LIBS=-L../../ogdf/linux `/usr/bin/wx-config --libs` -lglut -lfreetype -lpthread -lwx_gtk2u_gl-2.8 
 endif
 
@@ -30,10 +30,10 @@ Vera.app: wxvera tracegen
 wxvera: util.o FreeType.o Config.o ConfigFrame.o LegendFrame.o ThreadTraceBuilder.o \
 	Viz.o VizFrame.o Trace.o TraceWizard.o wxvera.o #ThreadIdaServer.o
 	$(CC) $(FLAGS) $(LIBS) util.o FreeType.o Config.o ConfigFrame.o LegendFrame.o \
-	Viz.o VizFrame.o ThreadTraceBuilder.o TraceWizard.o Trace.o wxvera.o $(OGDF) -o wxvera
+	Viz.o VizFrame.o ThreadTraceBuilder.o TraceWizard.o Trace.o wxvera.o OgdfTrace.o $(OGDF) -o wxvera
 
 tracegen: util.o Trace.o tracegen.cpp tracegen.h
-	$(CC) $(FLAGS) $(LIBS) util.o Trace.o tracegen.cpp $(OGDF) -o tracegen
+	$(CC) $(FLAGS) $(LIBS) util.o Trace.o tracegen.cpp OgdfTrace.o $(OGDF) -o tracegen
 
 tests: testTrace
 
@@ -76,8 +76,14 @@ ThreadTraceBuilder.o: threadTraceBuilder.cpp threadTraceBuilder.h
 TraceWizard.o: traceWizard.cpp traceWizard.h
 	$(CC) $(FLAGS) $(INCLUDE) -c traceWizard.cpp -o TraceWizard.o
 
-Trace.o: Trace.cpp Trace.h
+Trace.o: OgdfTrace.o Trace.cpp Trace.h
 	$(CC) $(FLAGS) $(INCLUDE) -c Trace.cpp -o Trace.o
+
+OgdfTrace.o: OgdfTrace.cpp OgdfTrace.h
+	$(CC) $(FLAGS) $(INCLUDE) -c OgdfTrace.cpp -o OgdfTrace.o
+
+#IgraphTrace.o: IgraphTrace.cpp IgraphTrace.h
+#	$(CC) $(FLAGS) $(INCLUDE) -c IgraphTrace.cpp -o IgraphIgraTrace.o
 
 clean:
 	rm -rf *.o wxvera tracegen testTrace Vera.app *~ unittest/*gml

@@ -18,7 +18,7 @@
 #include "FreeType.h"
 
 // igraph includes
-#include "igraph.h"
+//#include "igraph.h"
 
 #define PI					3.1415926
 

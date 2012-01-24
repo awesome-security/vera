@@ -1,10 +1,14 @@
 #ifndef __THREAD_TRACE_BUILDER_H__
 #define __THREAD_TRACE_BUILDER_H__
 
-#include "wxvera.h"
+//#include "wxvera.h"
 #include "Trace.h"
 #include "OgdfTrace.h"
-#include "IgraphTrace.h"
+//#include "IgraphTrace.h"
+
+using namespace std;
+
+class Trace;
 
 class threadTraceBuilder :
 	public wxThread
@@ -15,7 +19,7 @@ public:
 					   wxString gmlSaveFile, 
 					   bool doBbl, 
 					   bool doAll,
-					   int graphLayoutAlgorithm=GRAPH_LAYOUT_LIBRARY_UNSPECIFIED,
+					   int graphLayoutAlgorithm=GRAPH_LAYOUT_LIBRARY_OGDF,
 					   wxFrame *parentFrame=NULL,
 					   wxProgressDialog *prog=NULL
 					   );

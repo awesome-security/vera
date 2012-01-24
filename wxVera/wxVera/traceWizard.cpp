@@ -18,7 +18,7 @@ traceWizard::traceWizard(wxWizard *parent, wxWizardPage *prev, wxWizardPage *nex
 	m_genAllAddressesCheckBox	= new wxCheckBox(this, wxID_ANY, wxT("All addresses"));
 	m_genBblAddressesCheckBox	= new wxCheckBox(this, wxID_ANY, wxT("Basic blocks"));
 
-	wxArrayString choices;
+	/*wxArrayString choices;
 	choices.Add(wxT("OGDF Layout"));
 	choices.Add(wxT("iGraph Layout"));
 
@@ -28,10 +28,10 @@ traceWizard::traceWizard(wxWizard *parent, wxWizardPage *prev, wxWizardPage *nex
 		wxDefaultPosition, 
 		wxDefaultSize, 
 		choices,
-		wxCB_READONLY | wxCB_DROPDOWN);
+		wxCB_READONLY | wxCB_DROPDOWN);*/
 
 	m_genAllAddressesCheckBox->SetValue(true);
-	m_genBblAddressesCheckBox->SetValue(true);
+	m_genBblAddressesCheckBox->SetValue(false);
 
 	mainSizer->Add(new wxStaticText(this, wxID_ANY, 
 		wxT("You have chosen to open a trace file. In order to process it\n"
@@ -97,7 +97,7 @@ traceWizard::traceWizard(wxWizard *parent, wxWizardPage *prev, wxWizardPage *nex
 	
 	mainSizer->Add(m_genAllAddressesCheckBox);
 	mainSizer->Add(m_genBblAddressesCheckBox);
-	mainSizer->Add(m_layoutAlgorithmComboBox);
+	// mainSizer->Add(m_layoutAlgorithmComboBox);
 
 	SetSizer(mainSizer);
 	mainSizer->Fit(this);

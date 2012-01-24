@@ -19,6 +19,15 @@
 
 #endif
 
+// This corresponds to the values in the combo box from traceWizard->m_layoutAlgorithm
+enum GRAPH_LAYOUT_LIBRARY
+{
+	GRAPH_LAYOUT_LIBRARY_INVALID = -2,
+	GRAPH_LAYOUT_LIBRARY_UNSPECIFIED = -1,
+	GRAPH_LAYOUT_LIBRARY_OGDF = 0,
+	GRAPH_LAYOUT_LIBRARY_IGRAPH = 1
+};
+
 // Windows Compatibility headers
 #ifdef _WIN32
 // To get the C99 standard uintXX_t types Upgrading to Visual Studio 2010 is purported to fix this
@@ -72,15 +81,6 @@ enum GRAPH_COLORING_ALG
 	GRAPH_COLOR_PACKER,
 	GRAPH_COLOR_PACKER_COLORBLIND,
 	GRAPH_COLOR_BY_MODULE
-};
-
-// This corresponds to the values in the combo box from traceWizard->m_layoutAlgorithm
-enum GRAPH_LAYOUT_LIBRARY
-{
-	GRAPH_LAYOUT_LIBRARY_INVALID = -2,
-	GRAPH_LAYOUT_LIBRARY_UNSPECIFIED = -1,
-	GRAPH_LAYOUT_LIBRARY_OGDF = 0,
-	GRAPH_LAYOUT_LIBRARY_IGRAPH = 1
 };
 
 // Structures

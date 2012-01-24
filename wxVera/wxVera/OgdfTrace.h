@@ -1,7 +1,7 @@
 #ifndef __OGDF_TRACE_H__
 #define __OGDF_TRACE_H__
 
-#include "trace.h"
+#include "Trace.h"
 
 class OgdfTrace : public Trace
 {

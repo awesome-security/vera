@@ -147,7 +147,7 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 
 
 	// perform the trace generation
-	Trace* thetrace	= new Trace(input_trace.c_str(), input_executable.c_str(), output_graph.c_str());
+	Trace* thetrace	= new OgdfTrace(input_trace.c_str(), input_executable.c_str(), output_graph.c_str());
 	
 	// only process basic blocks if command line option was passed
 	if (bopt)
@@ -161,6 +161,7 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 
 	thetrace->writeGmlFile();	// default with no parameters writes to file passed to Trace constructor
 	thetrace->layoutGraph(output_graph.c_str(), output_finalgraph.c_str());
+	thetrace->writeExecutionOrder(output_finalgraph);
 
 	delete thetrace;
 

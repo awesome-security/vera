@@ -1,7 +1,11 @@
 #ifndef __IGRAPH_TRACE_H__
 #define __IGRAPH_TRACE_H__
 
-#include "trace.h"
+//#include "wxvera.h"
+//#include "Trace.h"
+#include "igraph.h"
+
+class Trace;
 
 class IgraphTrace : public Trace
 {

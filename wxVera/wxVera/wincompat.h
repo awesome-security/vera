@@ -7,8 +7,6 @@
 
 #ifndef _WIN32
 
-#include "wxvera.h"
-
 #include <stdint.h>
 #include <stdio.h>
 
