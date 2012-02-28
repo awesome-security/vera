@@ -21,6 +21,7 @@ all: wxvera tests tracegen Vera.app
 
 # Mac OS X application bundler
 Vera.app: wxvera tracegen
+	rm -rf Vera.app
 	mkdir Vera.app
 	mkdir -p Vera.app/Contents
 	cp -f Info.plist Vera.app/Contents
@@ -32,8 +33,11 @@ wxvera: util.o FreeType.o Config.o ConfigFrame.o LegendFrame.o ThreadTraceBuilde
 	$(CC) $(FLAGS) $(LIBS) util.o FreeType.o Config.o ConfigFrame.o LegendFrame.o \
 	Viz.o VizFrame.o ThreadTraceBuilder.o TraceWizard.o Trace.o wxvera.o OgdfTrace.o $(OGDF) -o wxvera
 
-tracegen: util.o Trace.o tracegen.cpp tracegen.h
-	$(CC) $(FLAGS) $(LIBS) util.o Trace.o tracegen.cpp OgdfTrace.o $(OGDF) -o tracegen
+tracegen: util.o Trace.o tracegen.o tracegen.h
+	$(CC) $(FLAGS) $(LIBS) util.o Trace.o tracegen.o OgdfTrace.o $(OGDF) -o tracegen
+
+tracegen.o: tracegen.cpp tracegen.h
+	$(CC) $(FLAGS) $(INCLUDE) -c tracegen.cpp -o tracegen.o
 
 tests: testTrace
 

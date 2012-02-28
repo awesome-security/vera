@@ -339,14 +339,14 @@ void Trace::process(bool doBasicBlocks)
 		processEther(doBasicBlocks);
 	else
 	{
-		char errstr[128] = {0};
+		char *errstr = (char *) malloc(sizeof(char) * 128);
 		sprintf(errstr, "Unrecognized trace file %s (unrecognized format)", this->tracefile);
 		throw errstr;
 	}
 
 	if (bblMap.size() <= 1 || edgeMap.size() <= 1) // Error
 	{
-		char errstr[128] = {0};
+		char *errstr = (char *) malloc(sizeof(char) * 128);
 		sprintf(errstr, "Could not parse trace file %s (bad format)", this->tracefile);
 		throw errstr;
 	}
@@ -413,6 +413,8 @@ void Trace::processVeraPin(bool doBasicBlocks)
 			continue;
 		
 		xtoi(addr, &daddr);
+
+		orderVector.push_back(daddr);
 
 		if (doBasicBlocks)
 		{} // Todo

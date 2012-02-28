@@ -517,7 +517,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 								  saveFile, 
 								  doProcessBasicBlocks,
 								  doProcessAllBlocks,
-								  page1->m_layoutAlgorithmComboBox->GetSelection(), 
+								  GRAPH_LAYOUT_LIBRARY_OGDF, 
 								  this,
 								  dlgProgress);
 
@@ -527,7 +527,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					return;
 				}
 
-				wxThreadError err = tbThread->Create();
+				wxThreadError err = tbThread->Create(DEFAULT_THREAD_STACK_SIZE);
 
 				if (wxTHREAD_NO_ERROR != err)
 				{
@@ -672,8 +672,8 @@ void VizFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	// Tech Transfer's contribution to the product.
 	wxMessageBox(wxT("VERA version " __VERA_VERSION__ " built " __TIMESTAMP__ "\n\n")
-				 wxT("Copyright (C) 2011 Los Alamos National Laboratory, All Rights Reserved\n")
-				 wxT("Patent Pending, LA-CC-10-131\n\n")
+				 wxT("Copyright (C) 2012 Los Alamos National Laboratory, All Rights Reserved\n")
+				 wxT("Patent Pending, LA-CC-12-005\n\n")
 				 wxT("This program was prepared by Los Alamos National Security, LLC at Los ")
 				 wxT("Alamos National Laboratory (LANL) under contract No. DE-AC52-06NA25396 ")
 				 wxT("with the U.S. Department of Energy (DOE). All rights in the program are ")

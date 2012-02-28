@@ -135,6 +135,9 @@ enum CUSTOM_EVENT_IDS
 #define NAV_CMD "NAV"
 #define MAX_IDA_SERVER_MSG_SIZE 128
 
+// Thread creation stack size
+#define DEFAULT_THREAD_STACK_SIZE 1024*1000*8
+
 class LegendFrame;
 
 // ----------------------------------------------------------------------------

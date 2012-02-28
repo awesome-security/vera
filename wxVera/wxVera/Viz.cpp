@@ -349,12 +349,20 @@ void VeraPane::DrawScene(void)
 	  glRectf(-1000.0, -1000.0, 1000.0, 1000.0);
 	glPopMatrix();
 
+	int ovsize = orderVector.size();
 
-	if (nodesLoaded)
+	// If animation is on the then the edge rendering is done in RenderNodes()
+	if (nodesLoaded && doAnimation == true && ovsize > 0)
 	{
 		RenderEdges();
 		RenderNodes();
 	}
+	else if (nodesLoaded && !doAnimation)
+	{
+		RenderEdges();
+		RenderNodes();
+	}
+		
 
 	//else // No nodes are loaded
 	//{
@@ -368,6 +376,27 @@ void VeraPane::DrawScene(void)
 
 }
 
+void VeraPane::RenderEdge(edge_t *e)
+{
+	// Set the position using the midpoint and the translation amount
+	GLfloat sourceX = nodeMap[e->source]->x - midX + tx;
+	GLfloat sourceY = nodeMap[e->source]->y - midY + ty;
+	GLfloat targetX = nodeMap[e->target]->x - midX + tx;
+	GLfloat targetY = nodeMap[e->target]->y - midY + ty;
+	
+	glPushMatrix();
+	   glColor3f(0.0, 0.0, 0.0);
+	   glLineWidth(e->lineWidth);
+	   glBegin(GL_LINES);
+	   glVertex3f(sourceX, sourceY, zoom);
+	   glVertex3f(targetX, targetY, zoom);
+	   glEnd();
+	   
+	   // Draw the arrow head
+	   drawArrow(sourceX, sourceY, targetX, targetY, e->lineWidth);
+	glPopMatrix();
+}
+
 void VeraPane::RenderEdges(void)
 {
 	size_t numedges = edgeVector.size();
@@ -377,26 +406,7 @@ void VeraPane::RenderEdges(void)
 	{
 
 		for(size_t i = 0 ; i < numedges ; i++)
-		{
-			// Set the position using the midpoint and the translation amount
-			GLfloat sourceX = nodeMap[edgeVector[i]->source]->x - midX + tx;
-			GLfloat sourceY = nodeMap[edgeVector[i]->source]->y - midY + ty;
-			GLfloat targetX = nodeMap[edgeVector[i]->target]->x - midX + tx;
-			GLfloat targetY = nodeMap[edgeVector[i]->target]->y - midY + ty;
-
-			glPushMatrix();
-			  glColor3f(0.0, 0.0, 0.0);
-			  glLineWidth(edgeVector[i]->lineWidth);
-			  glBegin(GL_LINES);
-			  glVertex3f(sourceX, sourceY, zoom);
-			  glVertex3f(targetX, targetY, zoom);
-			  glEnd();
-
-			  // Draw the arrow head
-			  drawArrow(sourceX, sourceY, targetX, targetY, edgeVector[i]->lineWidth);
-
-			glPopMatrix();
-		}
+			RenderEdge(edgeVector[i]);
 	}
 }
 
@@ -415,7 +425,7 @@ void VeraPane::RenderNodes(void)
 #endif
 
 		//for (  ; ii != nodeMap.end() ; ii++ )
-		for (  size_t n = 0 ; (doAnimation ? (n < ordervector_size && n < stepNum) : (n < numnodes) ) ; n++ )
+		for (  size_t n = 0 ; (doAnimation && ordervector_size > 0 ? (n < ordervector_size && n < stepNum) : (n < numnodes) ) ; n++ )
 		{
 			node_t *node = NULL;
 			
@@ -855,6 +865,7 @@ bool VeraPane::openFile(wxString filename)
 				tmp->lineWidth = lineWidth;
 
 				edgeVector.push_back(tmp);
+				edgeMatrix[tmp->source][tmp->target] = tmp;
 
 				source = target = 0;
 				lineWidth = 0.0;
@@ -883,7 +894,9 @@ bool VeraPane::openFile(wxString filename)
 			// Lookup the address in the nodemap, then store the ID in the 
 			// orderVector so we know the order to draw the items.
 
-			if (nodeHashMap[saddr]->rendered == false)
+			node_t *n = nodeHashMap[saddr];
+
+			if (n && n->rendered == false)
 			{
 				orderVector.push_back(nodeHashMap[saddr]->id);
 				nodeHashMap[saddr]->rendered = true;

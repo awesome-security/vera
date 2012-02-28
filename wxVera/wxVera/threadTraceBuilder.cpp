@@ -5,14 +5,20 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 				       wxString gmlSaveFile, 
 				       bool doBbl, 
 				       bool doAll,
-					   int graphLayoutAlgorithm,
+				       int graphLayoutAlgorithm,
 				       wxFrame *parentFrame,
 				       wxProgressDialog *prog)
 {
 	m_traceFile = traceFile;
 	m_exeFile = exeFile;
 	m_gmlSaveFile = gmlSaveFile;
+        // Due to this bug with wxWidgets: http://trac.wxwidgets.org/ticket/4272
+	// No progress updates on the Mac
+#ifdef __APPLE__ 
+	m_prog = NULL;
+#else
 	m_prog = prog;
+#endif
 	m_doBbl = doBbl;
 	m_doAll = doAll;
 	m_parentFrame = parentFrame;
@@ -54,8 +60,9 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-bbl-"));
 			
+			//Trace *t = allocateTraceClass(outfilename);
 			Trace *t = allocateTraceClass(outfilename);
-
+			
 			if (t == NULL)
 			{
 				//wxLogDebug(wxString::Format(wxT("Could not allocate memory: %s:%u"), __FILE__, __LINE__));
@@ -177,6 +184,8 @@ void *threadTraceBuilder::Entry()
 		wxLogDebug(wxString::Format(wxT("Error processing trace: %s"), e));
 		wxMutexGuiLeave();
 
+		delete e;
+		
 		return NULL;
 	}
 

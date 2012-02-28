@@ -74,6 +74,8 @@ typedef struct Edge {
 
 #ifdef __GNUC__
 /** BEGIN FIX **/
+// This is Mike Fisk butt magic
+// I don't know why it works
 
 namespace __gnu_cxx
 {
@@ -143,12 +145,14 @@ private:
 	void zoomControl		(bool doZoomIn);
 	void RenderEdges		(void);
 	void RenderNodes		(void);
+	void RenderEdge                 (edge_t *e);
 	
 #ifdef _WIN32 // Windows
 	stdext::hash_map<int, node_t *>	nodeMap;
 	stdext::hash_map<string, node_t *> nodeHashMap;
 #elif defined __GNUC__
 	hash_map<int, node_t *>	nodeMap;
+	hash_map<int, hash_map<int, edge_t *> > edgeMatrix;
 	hash_map<string, node_t *> nodeHashMap;
 #endif
 

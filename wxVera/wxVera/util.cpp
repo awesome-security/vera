@@ -119,6 +119,10 @@ bool parseTraceLine(char *src, char *lcol, size_t lcol_len, char *rcol, size_t r
 		pos = strchr(lcol, '\n');
 		if (pos)
 			*pos = 0;
+
+		pos = strchr(lcol, '\r');
+		if (pos)
+			*pos = 0;
 		
 		memset(rcol, 0, rcol_len);
 	}
