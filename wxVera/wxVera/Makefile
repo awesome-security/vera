@@ -26,7 +26,9 @@ Vera.app: wxvera tracegen
 	mkdir -p Vera.app/Contents
 	cp -f Info.plist Vera.app/Contents
 	mkdir -p Vera.app/Contents/MacOS
+	mkdir -p Vera.app/Contents/Resources
 	cp -f wxvera Vera.app/Contents/MacOS
+	cp -f icons/vera.icns Vera.app/Contents/Resources
 
 wxvera: util.o FreeType.o Config.o ConfigFrame.o LegendFrame.o ThreadTraceBuilder.o \
 	Viz.o VizFrame.o Trace.o TraceWizard.o wxvera.o #ThreadIdaServer.o

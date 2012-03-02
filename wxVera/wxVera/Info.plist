@@ -25,7 +25,7 @@
                 <string>GML</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>appico.icns</string>
+            <string>vera.icns</string>
             <key>CFBundleTypeName</key>
             <string>VERA Graphs</string>
             <key>CFBundleTypeRole</key>
@@ -35,7 +35,7 @@
         </dict>
     </array>
 	<key>CFBundleIconFile</key>
-	<string>appico.icns</string>
+	<string>vera.icns</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleGetInfoString</key>
@@ -47,8 +47,8 @@
 	<key>CFBundleIdentifier</key>
 	<string>gov.lanl.vera</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.40</string>
+	<string>0.50</string>
 	<key>CFBundleVersion</key>
-	<string>2011103101</string>
+	<string>2012103101</string>
 </dict>
 </plist>
