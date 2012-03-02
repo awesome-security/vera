@@ -75,6 +75,8 @@ using namespace __gnu_cxx;
 #include "wx/thread.h"
 #include "wx/checkbox.h"
 #include "wx/richtext/richtextctrl.h"
+#include "wx/stdpaths.h"
+#include "wx/filename.h"
 
 // wxVera includes
 #include "threadTraceBuilder.h"
