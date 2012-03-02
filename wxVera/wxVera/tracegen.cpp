@@ -1,6 +1,5 @@
 /*
-//      Written by Nathan Brown
-//      Modified by Danny Quist
+//      Written by Nathan Brown and Danny Quist
 //
 //      Copyright (C) 2011 Los Alamos National Security, All rights reserved.
 //      No use permitted without explicit written permission.
@@ -93,7 +92,7 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 		output_finalgraph = wxString(oopt);
 
 	// This should be fixed to not collide with multiple running versions
-	output_graph = wxT("temp_graph.gml");
+	output_graph = wxFileName::CreateTempFileName(wxT("tracegen-"));
 
 	bool printedUsage = false;
 	
@@ -169,7 +168,7 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 	}
 	catch (char *e)
 	{
-		fprintf(stderr, "ERROR: %s", e);
+		fprintf(stderr, "ERROR: %s\n", e);
 		delete e;
 	}
 	
@@ -179,11 +178,6 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 		fprintf(stderr, "Error while deleting temporary graph file %s\n", output_graph.c_str());
 		return 1;
 	}
-	else
-	{
-		cout << "Deleted temporary graph file " << output_graph << endl;
-	}
-	
 
 	return 0;
 }
