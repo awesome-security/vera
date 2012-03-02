@@ -339,9 +339,20 @@ void Trace::process(bool doBasicBlocks)
 		processEther(doBasicBlocks);
 	else
 	{
-		char *errstr = (char *) malloc(sizeof(char) * 128);
-		sprintf(errstr, "Unrecognized trace file %s (unrecognized format)", this->tracefile);
-		throw errstr;
+		// Check to make sure it isn't an Ether trace file without the header.
+		char *colPos = strchr(line, ':');
+		size_t colLen = ((size_t) colPos) - ((size_t) line);
+
+		if (colPos && colLen > 0 && isHexString(line, colLen) )
+		{
+			processEther(doBasicBlocks);
+		}
+		else
+		{
+			char *errstr = (char *) malloc(sizeof(char) * 128);
+			sprintf(errstr, "Unrecognized trace file %s (unrecognized format)", this->tracefile);
+			throw errstr;
+		}
 	}
 
 	if (bblMap.size() <= 1 || edgeMap.size() <= 1) // Error
