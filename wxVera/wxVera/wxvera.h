@@ -120,6 +120,12 @@ using namespace __gnu_cxx;
 #define VERA_QUIET_UPDATE_CHECK			1
 #define __VERA_WINDOW_TITLE__			"VERA - Version " __VERA_VERSION__
 
+#ifdef _WIN32
+#define TRACEGEN_CMD "tracegen.exe"
+#else
+#define TRACEGEN_CMD "tracegen"
+#endif
+
 // Custom event message IDs
 enum CUSTOM_EVENT_IDS
 {

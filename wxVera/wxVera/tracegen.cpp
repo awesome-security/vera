@@ -62,19 +62,19 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 	{
 		switch (c)
 		{
-		case 't':
+		case 't': // Trace file
 			topt = optarg;
 			break;
-		case 'e':
+		case 'e': // executable file to use
 			eopt = optarg;
 			break;
-		case 'o':
+		case 'o': // Output GML file
 			oopt = optarg;
 			break;
-		case 'b':
+		case 'b': // Process basic blocks only
 			bopt = 1;
 			break;
-		case 'v':
+		case 'v': // Print the version
 			version();
 			exit(0);
 		default:
@@ -110,14 +110,7 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 
 	if (input_executable.length() == 0)
 	{
-		if (!printedUsage)
-		{
-			usage();
-			printedUsage = true;
-		}
-
-		fprintf(stderr, "ERROR: No executable specified, use -e executable\n");
-		missing_arguments = true;
+		fprintf(stderr, "WARNING: No executable specified. Use -e to specify executable. Output file will be missing features\n");
 	}
 
 	if (output_finalgraph.length() == 0)

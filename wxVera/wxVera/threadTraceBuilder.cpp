@@ -10,11 +10,16 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 				       wxProgressDialog *prog)
 {
 	m_traceFile = traceFile;
-	m_exeFile = exeFile;
+
+	if (exeFile.length() == 0)
+		m_exeFile.Clear();
+	else
+		m_exeFile = exeFile;
+	
 	m_gmlSaveFile = gmlSaveFile;
         // Due to this bug with wxWidgets: http://trac.wxwidgets.org/ticket/4272
 	// No progress updates on the Mac
-#ifdef __APPLE__ 
+#ifdef __APPLE__
 	m_prog = NULL;
 #else
 	m_prog = prog;
@@ -51,8 +56,48 @@ Trace *threadTraceBuilder::allocateTraceClass(wxString outfilename)
 void *threadTraceBuilder::Entry()
 {
 
+#ifdef __APPLE__
+	wxString pathToTracegen = wxString::Format("%s%s%s",
+						   wxPathOnly(wxStandardPaths::Get().GetExecutablePath()).c_str(),
+						   wxFileName::GetPathSeparators().c_str(),
+						   wxT(TRACEGEN_CMD));
+						   
+	wxString bblOpt = wxT("");
+
+	wxString exe = (m_exeFile.IsOk()) ?
+		wxString::Format(wxT("-e %s"), m_exeFile.GetFullPath().c_str()):
+		wxT("") ;
+
+	if (m_doBbl)
+	{
+		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
+		wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s %s"),
+						pathToTracegen.c_str(),
+						m_traceFile.GetFullPath().c_str(),
+						exe.c_str(),
+						outfilename.c_str(),
+						bblOpt.c_str());
+		
+		system(cmd.c_str());
+	}
+
+	if (m_doAll)
+	{
+		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
+		wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s %s"),
+						pathToTracegen.c_str(),
+						m_traceFile.GetFullPath().c_str(),
+						exe.c_str(),
+						outfilename.c_str(),
+						bblOpt.c_str());
+		
+		system(cmd.c_str());
+	}
+		
+#else
 	try 
 	{
+
 		// Process the basic blocks
 		if (m_doBbl)
 		{
@@ -188,7 +233,7 @@ void *threadTraceBuilder::Entry()
 		
 		return NULL;
 	}
-
+#endif // ifdef __APPLE__
 
 	if (m_prog)
 	{

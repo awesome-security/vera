@@ -496,6 +496,9 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					return;
 				}
 
+#ifdef __APPLE__
+				dlgProgress = NULL;
+#else
 				// Begin the actual processing
 				dlgProgress = new wxProgressDialog(wxT("Processing trace file"),
 								   wxT("Processing the tracefile"),
@@ -510,8 +513,9 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 				}
 
 				dlgProgress->Show(true);
-
+#endif
 				// Create a new thread to handle the actual trace generation
+
 				tbThread = new threadTraceBuilder(path, 
 								  (doProcessExe ? page1->m_origExeFile->GetValue() : wxString(wxT("")) ), // Empty string indicates processing trace file without a PE
 								  saveFile, 
@@ -591,7 +595,8 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 		{
 			wxString errorMsg = event.GetString();
 			wxLogDebug(wxT("Error processing file: %s"), errorMsg.c_str());
-			this->dlgProgress->Destroy();
+			if (dlgProgress)
+				dlgProgress->Destroy();
 			this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
 			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg.c_str()),
 						 wxT("Graph Processing Error"),
