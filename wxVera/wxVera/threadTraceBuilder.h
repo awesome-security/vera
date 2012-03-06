@@ -40,6 +40,7 @@ private:
 	bool				m_doProcessExe;
 	int					m_graphLayoutAlgorithm;
 	Trace *				allocateTraceClass(wxString);
+	void                            updateProgress(int);
 
 };
 

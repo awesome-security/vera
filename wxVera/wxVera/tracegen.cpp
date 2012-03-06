@@ -159,10 +159,9 @@ int main(int argc, char **argv)	// add command line inputs argv/argc later
 		
 		delete thetrace;
 	}
-	catch (char *e)
+	catch (wxString e)
 	{
-		fprintf(stderr, "ERROR: %s\n", e);
-		delete e;
+		fprintf(stderr, "ERROR: %s\n", e.c_str());
 	}
 	
 	// it is safe to delete output_graph file now

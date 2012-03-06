@@ -18,6 +18,7 @@ LIBS=-L../../ogdf/mac/ogdf `/usr/local/bin/wx-config --libs` -lwx_mac_gl-2.8 -fr
 endif
 
 all: wxvera tests tracegen Vera.app
+	@grep TODO *h *cpp || true
 
 # Mac OS X application bundler
 Vera.app: wxvera tracegen

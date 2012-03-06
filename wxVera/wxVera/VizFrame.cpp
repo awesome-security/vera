@@ -496,9 +496,6 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 					return;
 				}
 
-#ifdef __APPLE__
-				dlgProgress = NULL;
-#else
 				// Begin the actual processing
 				dlgProgress = new wxProgressDialog(wxT("Processing trace file"),
 								   wxT("Processing the tracefile"),
@@ -513,7 +510,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 				}
 
 				dlgProgress->Show(true);
-#endif
+
 				// Create a new thread to handle the actual trace generation
 
 				tbThread = new threadTraceBuilder(path, 
@@ -592,18 +589,34 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 		wxLogDebug(wxT("No trace processed"));
 		return;
 	case THREAD_TRACE_ERROR:
-		{
-			wxString errorMsg = event.GetString();
-			wxLogDebug(wxT("Error processing file: %s"), errorMsg.c_str());
-			if (dlgProgress)
-				dlgProgress->Destroy();
-			this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
-			wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg.c_str()),
-						 wxT("Graph Processing Error"),
-						 wxICON_ERROR);
+	{
+		wxString errorMsg = event.GetString();
+		wxLogDebug(wxT("Error processing file: %s"), errorMsg.c_str());
 
+		dlgProgress->Destroy();
+
+		this->SetTitle(wxString::Format(wxT("%s"), wxT(__VERA_WINDOW_TITLE__)));
+		wxMessageBox(wxString::Format(wxT("Error processing trace file: %s"), errorMsg.c_str()),
+			     wxT("Graph Processing Error"),
+			     wxICON_ERROR);
+		
+		return;
+	}
+	case THREAD_TRACE_UPDATE_PROGRESS:
+	{
+		int pctDone = wxAtoi(event.GetString());
+		wxLogDebug(wxT("Thread trace update received"));
+
+		if (pctDone < 0 || pctDone > 100)
+		{
+			wxLogDebug(wxT("Bad percentage trace update progress received %d"), pctDone);
 			return;
 		}
+		
+		dlgProgress->Update(pctDone);
+
+		return;
+	}
 	case THREAD_TRACE_BASIC_BLOCKS_PROCESSED: // Processed a basic block graph
 	case THREAD_TRACE_BOTH_PROCESSED: // Processed both a basic block and an instruction graph
 	case THREAD_TRACE_ALL_ADDRESSES_PROCESSED: // All instruction graph processed
@@ -651,10 +664,13 @@ void VizFrame::ProcessEvent(wxCommandEvent & event)
 	case THREAD_TRACE_BASIC_BLOCKS_PROCESSED:
 	case THREAD_TRACE_BOTH_PROCESSED:
 	case THREAD_TRACE_ALL_ADDRESSES_PROCESSED:
+	{
 		StartVeraPane();
 		veraPane->openFile(filename);
-		this->SetStatusText(wxString::Format(wxT("Loaded %s"), filename.c_str()));
+		SetStatusText(wxString::Format(wxT("Loaded %s"), filename.c_str()));
+		dlgProgress->Destroy();
 		break;
+	}
 	default:
 		break;
 	}
