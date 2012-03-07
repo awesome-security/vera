@@ -808,8 +808,6 @@ void VizFrame::HomeDisplay(wxCommandEvent &event)
 
 void VizFrame::AnimationTimer(wxTimerEvent &event)
 {
-	wxLogDebug(wxT("I am an animation timer!"));
-
 	if (veraPane->doAnimationStep(1) == VIZ_ANIMATION_FINISHED)
 		if (animationTimer)
 			animationTimer->Stop();

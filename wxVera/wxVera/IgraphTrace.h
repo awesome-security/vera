@@ -2,7 +2,7 @@
 #define __IGRAPH_TRACE_H__
 
 //#include "wxvera.h"
-//#include "Trace.h"
+#include "Trace.h"
 #include "igraph.h"
 
 class Trace;

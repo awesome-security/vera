@@ -149,6 +149,7 @@ private:
 	
 #ifdef _WIN32 // Windows
 	stdext::hash_map<int, node_t *>	nodeMap;
+	stdext::hash_map<int, stdext::hash_map<int, edge_t *> > edgeMatrix;
 	stdext::hash_map<string, node_t *> nodeHashMap;
 #elif defined __GNUC__
 	hash_map<int, node_t *>	nodeMap;
