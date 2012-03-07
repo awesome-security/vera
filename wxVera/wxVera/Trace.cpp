@@ -137,7 +137,7 @@ void Trace::parseFiles(void)
 
 	if (fin == NULL)
 	{
-		throw "Could not open executable file for reading";
+		throw wxString(wxT("Could not open executable file for reading"));
 	}
 	
 	// Allocate and initialize to zero
@@ -145,7 +145,7 @@ void Trace::parseFiles(void)
 
 	if (origData == NULL)
 	{
-		throw "Could not allocate data";
+		throw wxString(wxT("Could not allocate data"));
 	}
 	
 	memset(origData, 0, st.st_size);
@@ -156,7 +156,7 @@ void Trace::parseFiles(void)
 	// Should return 1 for one block read
 	if (readData != 1)
 	{
-		throw "Could not read original file data";
+		throw wxString(wxT("Could not read original file data"));
 	}
 	
 	fclose(fin);
@@ -164,7 +164,7 @@ void Trace::parseFiles(void)
 	if (!origData)
 	{
 		//wxLogDebug(wxT("Could not MapViewOfFile for original file")); 
-		throw "Could not MapViewOfFile for original file";
+		throw wxString(wxT("Could not MapViewOfFile for original file"));
 	}
 
 	// Get the DOS headers
@@ -174,7 +174,7 @@ void Trace::parseFiles(void)
 	if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE)
 	{
 		//wxLogDebug(wxT("Not a valid DOS header"));
-		throw "Not a valid DOS header";
+		throw wxString(wxT("Not a valid DOS header"));
 	}
 
 	// Get the NT headers
@@ -190,7 +190,7 @@ void Trace::parseFiles(void)
 	if(pPeHeader->Signature != IMAGE_NT_SIGNATURE)
 	{
 		//wxLogDebug(wxT("Not a valid NT header"));
-		throw "Not a valid NT header";
+		throw wxString(wxT("Not a valid NT header"));
 	}
 
 	pOptHeader = &(pPeHeader->OptionalHeader);
@@ -316,9 +316,7 @@ void Trace::process(bool doBasicBlocks)
 	
 	if (fin == 0)
 	{
-		char errstr[128] = {0};
-		sprintf(errstr, "Could not open trace file %s", this->tracefile);
-		throw errstr;
+		throw wxString(wxT("Could not open trace file"));
 	}
 	
 	wchar_t linew[LINELEN] = {0};
@@ -349,17 +347,13 @@ void Trace::process(bool doBasicBlocks)
 		}
 		else
 		{
-			char *errstr = (char *) malloc(sizeof(char) * 128);
-			sprintf(errstr, "Unrecognized trace file %s (unrecognized format)", this->tracefile);
-			throw errstr;
+			throw wxString(wxT("Unrecognized trace file %s (unrecognized format)"));
 		}
 	}
 
 	if (bblMap.size() <= 1 || edgeMap.size() <= 1) // Error
 	{
-		char *errstr = (char *) malloc(sizeof(char) * 128);
-		sprintf(errstr, "Could not parse trace file %s (bad format)", this->tracefile);
-		throw errstr;
+		throw wxString(wxT("Could not parse trace file (bad format)"));
 	}
 }
 
@@ -367,8 +361,8 @@ void Trace::processVeraPin(bool doBasicBlocks)
 {
 	//wxLogDebug(wxT("Trace::processVeraPin stub handler\n"));
 
-	if (doBasicBlocks)
-		return;
+	//if (doBasicBlocks)
+	//	return;
 
 	wchar_t widein[LINELEN] = {0};
 	char in[LINELEN] = {0};
@@ -411,7 +405,7 @@ void Trace::processVeraPin(bool doBasicBlocks)
 			isImport = false;
 			break;
 		case 'i':
-			// Import
+			// Handle a detected import string
 			parseTraceLine(&in[1], addr, sizeof(addr), api, sizeof(api));
 			isImport = true;
 			break;
@@ -420,53 +414,49 @@ void Trace::processVeraPin(bool doBasicBlocks)
 			break;
 		}
 
-		if (wcsstr(widein, L"vera_trace_version=") == widein) // skip the version string
+		// Skip the version string. 
+		if (wcsstr(widein, L"vera_trace_version=") == widein)
 			continue;
-		
+
 		xtoi(addr, &daddr);
 
 		orderVector.push_back(daddr);
 
-		if (doBasicBlocks)
-		{} // Todo
+		if (isFirstAddr)
+		{
+			initAddress(&bblMap[daddr], daddr, (isImport == true ? api : inst), 0, bblnum++);
+			initEdge(&edgeMap[MAKE_EDGE_KEY(START_ADDR, daddr)], START_ADDR, daddr, 1, edgenum++);
+			isFirstAddr = false;
+			lastbbl = daddr;
+		}
 		else
 		{
-			if (isFirstAddr)
+			if(bblMap.find(daddr) != bblMap.end())
 			{
-				initAddress(&bblMap[daddr], daddr, (isImport == true ? api : inst), 0, bblnum++);
-				initEdge(&edgeMap[MAKE_EDGE_KEY(START_ADDR, daddr)], START_ADDR, daddr, 1, edgenum++);
-				isFirstAddr = false;
-				lastbbl = daddr;
+				bblMap[daddr].count++;
 			}
 			else
 			{
-				if(bblMap.find(daddr) != bblMap.end())
-				{
-					bblMap[daddr].count++;
-				}
-				else
-				{
-					initAddress(&bblMap[daddr], daddr, (char *) (isImport == true ? api : inst), 0, bblnum++);
-					bblMap[daddr].isApi = isImport;
-				}
-				
-				uint64_t edgekey = 0;
-				edgekey = MAKE_EDGE_KEY(lastbbl, daddr);
-				
-				// Add the edge to the list
-				if(edgeMap.find(edgekey) != edgeMap.end())
-					edgeMap[edgekey].count++;
-				else
-					initEdge(&edgeMap[edgekey],
-						 (uint32_t) GET_SRC_FROM_EDGE_KEY(edgekey),
-						 (uint32_t) GET_DST_FROM_EDGE_KEY(edgekey),
-						 (uint32_t) 1,
-						 edgenum++);
-
-				lastbbl = daddr;
+				initAddress(&bblMap[daddr], daddr, (char *) (isImport == true ? api : inst), 0, bblnum++);
+				bblMap[daddr].isApi = isImport;
 			}
+			
+			uint64_t edgekey = 0;
+			edgekey = MAKE_EDGE_KEY(lastbbl, daddr);
+			
+			// Add the edge to the list
+			if(edgeMap.find(edgekey) != edgeMap.end())
+				edgeMap[edgekey].count++;
+			else
+				initEdge(&edgeMap[edgekey],
+					 (uint32_t) GET_SRC_FROM_EDGE_KEY(edgekey),
+					 (uint32_t) GET_DST_FROM_EDGE_KEY(edgekey),
+					 (uint32_t) 1,
+					 edgenum++);
+			
+			lastbbl = daddr;
 		}
-
+		
 		inum++;
 		lines++;
 		
@@ -720,8 +710,8 @@ void Trace::writeGmlFile(char *gmlfile)
 
 	if (fout == NULL)
 	{
-		//wxLogDebug(wxT("Could not open gml file for output"));
-		throw "Could not open gml file for output";
+		throw wxString(wxT("Could not open gml file for output"));
+
 	}
 
 	int numedges = edgeMap.size();
