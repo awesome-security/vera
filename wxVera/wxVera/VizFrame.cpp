@@ -519,8 +519,7 @@ void VizFrame::OnOpen(wxCommandEvent& WXUNUSED(event))
 								  doProcessBasicBlocks,
 								  doProcessAllBlocks,
 								  GRAPH_LAYOUT_LIBRARY_OGDF, 
-								  this,
-								  dlgProgress);
+								  this);
 
 				if (tbThread == NULL)
 				{

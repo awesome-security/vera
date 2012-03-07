@@ -66,9 +66,9 @@ Trace::~Trace(void)
 		free(sectionEntropy);
 		sectionEntropy = NULL;
 	
-		if (sectionCharProb == NULL)
+		if (sectionCharProb != NULL)
 		{
-			// Free character probability of =each section
+			// Free character probability of each section
 			for(WORD i = 0 ; i < pPeHeader->FileHeader.NumberOfSections ; i++)
 			{
 				free(sectionCharProb[i]);

@@ -20,8 +20,7 @@ public:
 					   bool doBbl, 
 					   bool doAll,
 					   int graphLayoutAlgorithm=GRAPH_LAYOUT_LIBRARY_OGDF,
-					   wxFrame *parentFrame=NULL,
-					   wxProgressDialog *prog=NULL
+					   wxFrame *parentFrame=NULL
 					   );
 
 	~threadTraceBuilder(void);
@@ -34,7 +33,6 @@ private:
 	wxFileName 			m_traceFile;
 	wxFileName 			m_exeFile;
 	wxFileName 			m_gmlSaveFile;
-	wxProgressDialog *	m_prog;
 	bool 				m_doBbl;
 	bool 				m_doAll;
 	bool				m_doProcessExe;

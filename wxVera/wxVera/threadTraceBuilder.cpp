@@ -6,8 +6,7 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 				       bool doBbl, 
 				       bool doAll,
 				       int graphLayoutAlgorithm,
-				       wxFrame *parentFrame,
-				       wxProgressDialog *prog)
+				       wxFrame *parentFrame)
 {
 	m_traceFile = traceFile;
 
@@ -17,13 +16,7 @@ threadTraceBuilder::threadTraceBuilder(wxString traceFile,
 		m_exeFile = exeFile;
 	
 	m_gmlSaveFile = gmlSaveFile;
-        // Due to this bug with wxWidgets: http://trac.wxwidgets.org/ticket/4272
-	// No progress updates on the Mac
-#ifdef __APPLE__
-	m_prog = NULL;
-#else
-	m_prog = prog;
-#endif
+
 	m_doBbl = doBbl;
 	m_doAll = doAll;
 	m_parentFrame = parentFrame;
@@ -122,6 +115,7 @@ void *threadTraceBuilder::Entry()
 	updateProgress(100);
 		
 #else
+	Trace *t = NULL;
 	try 
 	{
 
@@ -132,8 +126,7 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-bbl-"));
 			
-			//Trace *t = allocateTraceClass(outfilename);
-			Trace *t = allocateTraceClass(outfilename);
+			t = allocateTraceClass(outfilename);
 			
 			if (t == NULL)
 				throw "Could not allocate memory for Trace object";
@@ -153,6 +146,7 @@ void *threadTraceBuilder::Entry()
 			updateProgress(30);
 
 			delete t;
+			t = NULL;
 			
 			if (!wxRemoveFile(tmpfilename))
 			{
@@ -171,7 +165,7 @@ void *threadTraceBuilder::Entry()
 			wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
 			wxString tmpfilename = prependFileName(m_gmlSaveFile, wxT("tmp-all-"));
 
-			Trace *t = allocateTraceClass(outfilename);
+			t = allocateTraceClass(outfilename);
 			
 			if (t == NULL)
 			{
@@ -193,6 +187,7 @@ void *threadTraceBuilder::Entry()
 			updateProgress(90);
 
 			delete t;
+			t = NULL;
 
 			if (!wxRemoveFile(tmpfilename))
 			{
@@ -221,6 +216,12 @@ void *threadTraceBuilder::Entry()
 
 		delete e;
 		
+		if (t)
+		{
+			delete t;
+			t = NULL;
+		}
+		
 		return NULL;
 	}
 	catch (wxString e)
@@ -239,7 +240,12 @@ void *threadTraceBuilder::Entry()
 		wxMutexGuiEnter();
 		wxLogDebug(wxString::Format(wxT("Error processing trace: %s"), e.c_str()));
 		wxMutexGuiLeave();
-
+		
+		if (t)
+		{
+			delete t;
+			t = NULL;
+		}
 		return NULL;
 	}
 
