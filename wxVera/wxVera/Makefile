@@ -12,13 +12,15 @@ endif
 # Mac OS X
 ifeq ($(UNAME), Darwin)
 CC=/usr/bin/g++
-FLAGS=`/usr/local/bin/wx-config --cppflags` -cpp-precomp -g -arch i386 -D_USE_WX_EVENTS_ -Wno-write-strings -Wno-deprecated \
+FLAGS=`/usr/local/bin/wx-config --cppflags` -cpp-precomp -g -O2 -arch i386 -D_USE_WX_EVENTS_ -Wno-write-strings -Wno-deprecated \
 	-I/usr/local/include/freetype2 -I../../ogdf/mac
 LIBS=-L../../ogdf/mac/ogdf `/usr/local/bin/wx-config --libs` -lwx_mac_gl-2.8 -framework GLUT -lfreetype -lOGDF
 endif
 
 all: wxvera tests tracegen Vera.app
 	@grep TODO *h *cpp || true
+
+dist: all
 
 # Mac OS X application bundler
 Vera.app: wxvera tracegen
@@ -29,7 +31,9 @@ Vera.app: wxvera tracegen
 	mkdir -p Vera.app/Contents/MacOS
 	mkdir -p Vera.app/Contents/Resources
 	cp -f wxvera Vera.app/Contents/MacOS
+	cp -f tracegen Vera.app/Contents/MacOS
 	cp -f icons/vera.icns Vera.app/Contents/Resources
+	cp -rf fonts Vera.app/Contents/Resources
 
 wxvera: util.o FreeType.o Config.o ConfigFrame.o LegendFrame.o ThreadTraceBuilder.o \
 	Viz.o VizFrame.o Trace.o TraceWizard.o wxvera.o #ThreadIdaServer.o
