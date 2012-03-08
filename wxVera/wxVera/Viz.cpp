@@ -274,11 +274,24 @@ void VeraPane::prepare3DViewport(int topleft_x, int topleft_y, int bottomright_x
 	if (!fontsInitialized)
 	{
 		#ifdef __APPLE__
+		wxString pathToFonts = wxString::Format(wxT("%s%sResources%sfonts%s"),
+							wxPathOnly(wxStandardPaths::Get().GetResourcesDir()).c_str(),
+							wxFileName::GetPathSeparators().c_str(),
+							wxFileName::GetPathSeparators().c_str(),
+							wxFileName::GetPathSeparators().c_str()
+			);
 
-		// Mac, Windows, etc.
-		freefont_label.init("fonts/cour.ttf", 16);
-		freefont_startlabel.init("fonts/arial.ttf", 16);
-		freefont_info.init("fonts/tahoma.ttf", 12);
+		// Special debugging case. If the program is not being run from the App directory, then use the local version
+		// This makes it easier to debug
+		pathToFonts = wxDirExists(pathToFonts) ? pathToFonts : wxString::Format(wxT("%s/fonts/"), wxPathOnly(wxStandardPaths::Get().GetExecutablePath()).c_str() );
+		
+		wxString courPath = wxString::Format(wxT("%scour.ttf"), pathToFonts.c_str());
+		wxString arialPath = wxString::Format(wxT("%sarial.ttf"), pathToFonts.c_str());
+		wxString tahomaPath = wxString::Format(wxT("%stahoma.ttf"), pathToFonts.c_str());
+		freefont_label.init(courPath.c_str(), 16);
+		fprintf(stderr, "%s\n", arialPath.c_str());
+		freefont_startlabel.init(arialPath.c_str(), 16);
+		freefont_info.init(tahomaPath.c_str(), 12);
 
 		#elif defined __linux__
 		// Something here for the Linux port
