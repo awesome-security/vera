@@ -36,9 +36,10 @@ private:
 	bool 				m_doBbl;
 	bool 				m_doAll;
 	bool				m_doProcessExe;
-	int					m_graphLayoutAlgorithm;
+	int				m_graphLayoutAlgorithm;
 	Trace *				allocateTraceClass(wxString);
 	void                            updateProgress(int);
+	void                            sendErrorEvent(wxString);
 
 };
 

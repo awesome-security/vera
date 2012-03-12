@@ -87,13 +87,25 @@ void *threadTraceBuilder::Entry()
 	if (m_doBbl)
 	{
 		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
-		wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s -b"),
+		wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s -b 2>&1 "),
 						pathToTracegen.c_str(),
 						m_traceFile.GetFullPath().c_str(),
 						exe.c_str(),
 						outfilename.c_str());
+
+		char line[128] = {0};
+		FILE *pout = popen(cmd.c_str(), "r");
+		FILE *flog = fopen("/tmp/vera.log", "a+");
+
+		while ( fgets(line, sizeof(line)-1, pout) != NULL )
+		{
+			fprintf(flog, "%s", line);
+			memset(line, 0, sizeof(line));
+		}
+
+		fclose(flog);
+		fclose(pout);
 		
-		system(cmd.c_str());
 		updateProgress(30);
 	}
 
@@ -102,13 +114,42 @@ void *threadTraceBuilder::Entry()
 	if (m_doAll)
 	{
 		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
-		wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s"),
+		//wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s 2>&1 "),
+		wxString cmd = wxString::Format(wxT("%s -z %s %s -o %s 2>&1 "),
 						pathToTracegen.c_str(),
 						m_traceFile.GetFullPath().c_str(),
 						exe.c_str(),
 						outfilename.c_str());
 		
-		system(cmd.c_str());
+		char line[128] = {0};
+		FILE *pout = popen(cmd.c_str(), "r");
+		FILE *flog = fopen("/tmp/vera.log", "a+");
+
+		if (pout == NULL)
+			return NULL;
+		
+		while ( fread(line, sizeof(line) - 1, 1, pout) != NULL )
+		{
+			fprintf(flog, "%s", line);
+
+			// If an error is seen, send a message to the main thread saying as much
+			if (strstr("ERROR", line) || strstr("Bad input", line) )
+			{
+				sendErrorEvent(wxT("Problem with trace generation. See /tmp/vera.log for more info"));
+				fprintf(flog, "tracegen returned: %s\n", line);
+
+				fclose(flog);
+				fclose(pout);
+				return NULL;
+			}
+
+
+			memset(line, 0, sizeof(line));
+		}
+
+		fclose(flog);
+		fclose(pout);
+		
 		updateProgress(90);
 	}
 
@@ -277,6 +318,21 @@ void *threadTraceBuilder::Entry()
 	}
 
 	return NULL;
+}
+
+void threadTraceBuilder::sendErrorEvent(wxString e)
+{
+	wxCommandEvent ErrEvt( wxEVT_COMMAND_BUTTON_CLICKED );
+	ErrEvt.SetInt(THREAD_TRACE_ERROR);
+	ErrEvt.SetString(e);
+	
+	if (m_parentFrame)
+	{
+		wxMutexGuiEnter();
+		wxPostEvent(m_parentFrame, ErrEvt);
+		wxMutexGuiLeave();
+	}
+	
 }
 
 void threadTraceBuilder::OnExit(void)
