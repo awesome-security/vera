@@ -81,30 +81,53 @@ void *threadTraceBuilder::Entry()
 	// Check to see that the executable has been specified. If it hasn't, then just leave
 	// it blank
 	wxString exe = (m_exeFile.IsOk()) ?
-		wxString::Format(wxT("-e %s"), m_exeFile.GetFullPath().c_str()):
+		wxString::Format(wxT("-e \"%s\""), m_exeFile.GetFullPath().c_str()):
 		wxT("") ;
 
 	if (m_doBbl)
 	{
-		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("bbl-"));
-		wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s -b 2>&1 "),
+		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
+		wxString tmpTraceOutput(wxFileName::CreateTempFileName(wxT("tracegen-"), (wxFile *)NULL));
+		wxString cmd = wxString::Format(wxT("(%s -t \"%s\" %s -o \"%s\" -b 2>&1) > %s"),
 						pathToTracegen.c_str(),
 						m_traceFile.GetFullPath().c_str(),
 						exe.c_str(),
-						outfilename.c_str());
-
+						outfilename.c_str(),
+						tmpTraceOutput.c_str());
+		
 		char line[128] = {0};
-		FILE *pout = popen(cmd.c_str(), "r");
+
+		// Run the command using system, block the process, save the world
+		system(cmd.c_str());
+
+		FILE *ftrace = fopen(tmpTraceOutput.c_str(), "w");
 		FILE *flog = fopen("/tmp/vera.log", "a+");
 
-		while ( fgets(line, sizeof(line)-1, pout) != NULL )
+		if (ftrace == NULL)
+			return NULL;
+
+		if (flog == NULL)
+			return NULL;
+		
+		while ( fread(line, sizeof(line) - 1, 1, ftrace) != 0 )
 		{
-			fprintf(flog, "%s", line);
+			// If an error is seen, send a message to the main thread saying as much
+			if (strlen(line) > 0 && strstr("WARNING: No executable specified", line))
+			{
+				sendErrorEvent(wxT("Problem with trace generation. See /tmp/vera.log for more info"));
+				fprintf(flog, "tracegen returned: %s\n", line);
+
+				fclose(flog);
+				fclose(ftrace);
+				return NULL;
+			}
+
+
 			memset(line, 0, sizeof(line));
 		}
 
 		fclose(flog);
-		fclose(pout);
+		fclose(ftrace);
 		
 		updateProgress(30);
 	}
@@ -114,32 +137,38 @@ void *threadTraceBuilder::Entry()
 	if (m_doAll)
 	{
 		wxString outfilename = prependFileName(m_gmlSaveFile, wxT("all-"));
-		//wxString cmd = wxString::Format(wxT("%s -t %s %s -o %s 2>&1 "),
-		wxString cmd = wxString::Format(wxT("%s -z %s %s -o %s 2>&1 "),
+		wxString tmpTraceOutput(wxFileName::CreateTempFileName(wxT("tracegen-"), (wxFile *)NULL));
+		wxString cmd = wxString::Format(wxT("(%s -t \"%s\" %s -o \"%s\" 2>&1) > %s"),
 						pathToTracegen.c_str(),
 						m_traceFile.GetFullPath().c_str(),
 						exe.c_str(),
-						outfilename.c_str());
+						outfilename.c_str(),
+						tmpTraceOutput.c_str());
 		
 		char line[128] = {0};
-		FILE *pout = popen(cmd.c_str(), "r");
+
+		// Run the command using system, block the process, save the world
+		system(cmd.c_str());
+
+		FILE *ftrace = fopen(tmpTraceOutput.c_str(), "w");
 		FILE *flog = fopen("/tmp/vera.log", "a+");
 
-		if (pout == NULL)
+		if (ftrace == NULL)
+			return NULL;
+
+		if (flog == NULL)
 			return NULL;
 		
-		while ( fread(line, sizeof(line) - 1, 1, pout) != NULL )
+		while ( fread(line, sizeof(line) - 1, 1, ftrace) != 0 )
 		{
-			fprintf(flog, "%s", line);
-
 			// If an error is seen, send a message to the main thread saying as much
-			if (strstr("ERROR", line) || strstr("Bad input", line) )
+			if (strlen(line) > 0 && strstr("WARNING: No executable specified", line))
 			{
 				sendErrorEvent(wxT("Problem with trace generation. See /tmp/vera.log for more info"));
 				fprintf(flog, "tracegen returned: %s\n", line);
 
 				fclose(flog);
-				fclose(pout);
+				fclose(ftrace);
 				return NULL;
 			}
 
@@ -148,7 +177,7 @@ void *threadTraceBuilder::Entry()
 		}
 
 		fclose(flog);
-		fclose(pout);
+		fclose(ftrace);
 		
 		updateProgress(90);
 	}
@@ -300,7 +329,7 @@ void *threadTraceBuilder::Entry()
 	// Put the save file name in the event for later display 
 	DoneEvent.SetString(m_gmlSaveFile.GetFullPath());
 
-	// Set the flags so the receiving event knwos what's going on
+	// Set the flags so the receiving event knows what's going on
 	if (m_doBbl && m_doAll)
 		DoneEvent.SetInt(THREAD_TRACE_BOTH_PROCESSED);
 	else if (m_doBbl && !m_doAll)
